@@ -1,0 +1,55 @@
+# --- Системные файлы ---
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# --- Логи и временные файлы ---
+*.log
+logs
+*.tmp
+*.temp
+*.swp
+*.bak
+
+# --- Зависимости (не стоит хранить в гите) ---
+node_modules/
+bower_components/
+jspm_packages/
+# Python
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+
+# --- Папки IDE и редакторов ---
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# --- Сборка и дистрибутивы ---
+dist/
+build/
+out/
+bin/
+obj/
+target/
+
+# --- Секреты и конфигурация (ВАЖНО) ---
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+auth.json
+
+# --- Специфичное для документации (если есть) ---
+.auto_doc_cache/
