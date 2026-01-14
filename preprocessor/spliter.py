@@ -36,9 +36,13 @@ def split_data(data: str, max_symbols: int) -> list[str]:
 
     return split_objects
 
-def write_docs_by_parts(part: str, global_info: str, prev_info: str = None):
+def write_docs_by_parts(part: str, global_info: str, prev_info: str = None, language: str = "en"):
     if prev_info is None:
         prompt = [
+            {
+                "role": "system",
+                "content": f"For the following task use language {language}"
+            },
             {
                 "role": "system",
                 "content": BASE_PART_COMPLITE_TEXT
@@ -57,6 +61,10 @@ def write_docs_by_parts(part: str, global_info: str, prev_info: str = None):
         prompt = [
             {
                 "role": "system",
+                "content": f"For the following task use language {language}"
+            },
+            {
+                "role": "system",
                 "content": BASE_PART_COMPLITE_TEXT
             },
             {
@@ -71,6 +79,7 @@ def write_docs_by_parts(part: str, global_info: str, prev_info: str = None):
                 "role": "user",
                 "content": part
             }
+            
         ]
     answer: str = GPTModel().get_answer_without_history(prompt=prompt)
     temp_answer = answer.removeprefix("```")

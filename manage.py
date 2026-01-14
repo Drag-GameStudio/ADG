@@ -15,13 +15,13 @@ class Manager:
         "output_doc": "output_doc.md"
     }
 
-    MAX_GLOBAL_SYMBOLS = 10000
 
 
-    def __init__(self, project_directory: str, ignore_files: list = [], progress_bar: Progress = None):
+    def __init__(self, project_directory: str, ignore_files: list = [], language: str = "en", progress_bar: Progress = None):
         self.project_directory = project_directory
         self.ignore_files = ignore_files
         self.progress_bar = progress_bar
+        self.language = language
 
         cache_path = os.path.join(self.project_directory, self.CACHE_FOLDER_NAME)
 
@@ -35,30 +35,29 @@ class Manager:
         cm = CodeMix(self.project_directory, self.ignore_files)
         cm.build_repo_content(self.get_file_path("code_mix"))
 
-    def generate_global_info_file(self):
+    def generate_global_info_file(self, max_symbols=10_000):
         with open(self.get_file_path("code_mix"), "r", encoding="utf-8") as file:
             data = file.read()
 
-        splited_data = split_data(data, self.MAX_GLOBAL_SYMBOLS)
+        splited_data = split_data(data, max_symbols)
         result = compress_to_one(splited_data, 2, progress_bar=self.progress_bar)
         with open(self.get_file_path("global_info"), "w", encoding="utf-8") as file:
             file.write(result)
 
-    def generete_doc_parts(self):
-        MAX_SYMBOLS = 5000
+    def generete_doc_parts(self, max_symbols=5_000):
         with open(self.get_file_path("global_info"), "r", encoding="utf-8") as file:
             global_info = file.read()
 
         with open(self.get_file_path("code_mix"), "r", encoding="utf-8") as file:
             full_code_mix = file.read()
 
-        splited_data = split_data(full_code_mix, MAX_SYMBOLS)
+        splited_data = split_data(full_code_mix, max_symbols)
         result = None
 
         sub_task = self.progress_bar.add_task(f"[green]  generete doc parts", total=len(splited_data))
 
         for el in splited_data:
-            result = write_docs_by_parts(el, global_info, result)
+            result = write_docs_by_parts(el, global_info, result, self.language)
             with open(self.get_file_path("output_doc"), "a", encoding="utf-8") as file:
                 file.write(result)
                 file.write("\n\n")
@@ -78,7 +77,7 @@ class Manager:
             curr_doc = file.read()
 
         links = get_all_html_links(curr_doc)
-        intro = get_introdaction(links, global_info)
+        intro = get_introdaction(links, global_info, self.language)
 
         with open(self.get_file_path("output_doc"), "r", encoding="utf-8") as file:
             old_data = file.read()
@@ -91,7 +90,7 @@ class Manager:
 
 if __name__ == "__main__":
     ignore_list = [
-        "*.pyo", "*.pyd", "*.pdb", "*.pkl", "*.log", "*.sqlite3", "*.db",
+        "*.pyo", "*.pyd", "*.pdb", "*.pkl", "*.log", "*.sqlite3", "*.db", "data",
         "venv", "env", ".venv", ".env", ".vscode", ".idea", "*.iml", ".gitignore", ".ruff_cache", ".auto_doc_cache",
         "*.pyc", "__pycache__", ".git", ".coverage", "htmlcov", "migrations", "*.md", "static", "staticfiles", ".mypy_cache"
     ]
@@ -104,7 +103,7 @@ if __name__ == "__main__":
         BarColumn(),                # Сам прогресс-бар
         TaskProgressColumn(),       # Процент выполнения
     ) as progress:
-        manager = Manager(r"C:\Users\huina\Python Projects\Impotant projects\AutoDocGenerateGimini", ignore_list, progress_bar=progress)
+        manager = Manager(r"C:\Users\huina\Python Projects\Impotant projects\ShareDataSet", ignore_list, progress_bar=progress, language="en")
 
         chapters = ["generete code mix file ...", "generete global info file ...", "generete doc parts ...", "generete intro and links ..."]
         main_task = progress.add_task("[bold magenta]Общий прогресс", total=len(chapters))

@@ -42,8 +42,12 @@ def get_all_html_links(data: str) -> list[str]:
     return links
 
 
-def get_introdaction(links: list[str], global_data: str) -> str:
+def get_introdaction(links: list[str], global_data: str, language: str = "en") -> str:
     prompt = [
+        {
+            "role": "system",
+            "content": f"For the following task use language {language}"
+        },
         {
             "role": "system",
             "content": BASE_INTRODACTION_CREATE_TEXT
@@ -56,6 +60,10 @@ def get_introdaction(links: list[str], global_data: str) -> str:
     intro_links = GPTModel().get_answer_without_history(prompt=prompt)
 
     prompt = [
+        {
+            "role": "system",
+            "content": f"For the following task use language {language}"
+        },
         {
             "role": "system",
             "content": BASE_INTRO_CREATE
