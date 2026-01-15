@@ -1,12 +1,11 @@
-from .model import Model, AsyncModel, API_KEY
+from .model import Model, AsyncModel, API_KEY, History
 from groq import Groq, AsyncGroq
 from ..config.config import MODELS_NAME
 
 
-
 class AsyncGPTModel(AsyncModel):
-    def __init__(self, api_key=API_KEY):
-        super().__init__(api_key)
+    def __init__(self, api_key=API_KEY, history = History()):
+        super().__init__(api_key, history)
         self.client = AsyncGroq(api_key=self.api_key)
 
     async def generate_answer(self, with_history: bool = True, prompt: str = None) -> str:
@@ -17,8 +16,9 @@ class AsyncGPTModel(AsyncModel):
             messages = prompt
         
         chat_completion = None
-
-        for model_name in MODELS_NAME:
+        
+        while True:
+            model_name = self.regen_models_name[self.current_model_index]
             try:
                 chat_completion = await self.client.chat.completions.create(
                     messages=messages,
@@ -26,8 +26,10 @@ class AsyncGPTModel(AsyncModel):
                 )
                 break
             except Exception as e:
-                print(e)
-                pass
+                self.current_model_index = 0
+                if model_name in self.regen_models_name:
+                    self.regen_models_name.remove(model_name)
+                    
 
         if chat_completion is None:
             raise Exception("all models do not work")
@@ -35,8 +37,8 @@ class AsyncGPTModel(AsyncModel):
         return chat_completion.choices[0].message.content
 
 class GPTModel(Model):
-    def __init__(self, api_key=API_KEY):
-        super().__init__(api_key)
+    def __init__(self, api_key=API_KEY, history = History()):
+        super().__init__(api_key, history)
         self.client = Groq(api_key=self.api_key)
 
     def generate_answer(self, with_history: bool = True, prompt: str = None) -> str:
@@ -48,9 +50,8 @@ class GPTModel(Model):
         
         chat_completion = None
 
-        models_del = []
-
-        for model_name in MODELS_NAME:
+        while True:
+            model_name = self.regen_models_name[self.current_model_index]
             try:
                 chat_completion = self.client.chat.completions.create(
                     messages=messages,
@@ -58,12 +59,9 @@ class GPTModel(Model):
                 )
                 break
             except Exception as e:
-                print(e)
-                models_del.append(model_name)
-                pass
-
-        for el in models_del:
-            MODELS_NAME.remove(el)
+                self.current_model_index = 0
+                if model_name in self.regen_models_name:
+                    self.regen_models_name.remove(model_name)
 
         if chat_completion is None:
             raise Exception("all models do not work")

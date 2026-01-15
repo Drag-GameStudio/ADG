@@ -1,4 +1,5 @@
-from ..config.config import BASE_SYSTEM_TEXT, API_KEY
+from ..config.config import BASE_SYSTEM_TEXT, API_KEY, MODELS_NAME
+import random
 
 class History:
     def __init__(self, system_prompt: str = BASE_SYSTEM_TEXT):
@@ -13,10 +14,18 @@ class History:
         })
 
 
-class Model:
-    def __init__(self, api_key: str = API_KEY, history: History = History()):
-        self.api_key = api_key
+class ParentModel():
+    def __init__(self, api_key=API_KEY, history: History = History()):
         self.history = history
+        self.api_key = api_key
+
+        self.current_model_index = 0
+        models_copy = MODELS_NAME.copy()
+        random.shuffle(models_copy)
+        self.regen_models_name = models_copy
+
+
+class Model(ParentModel):
 
     def generate_answer(self, with_history: bool = True, prompt: str = None) -> str:
         return "answer"
@@ -30,10 +39,7 @@ class Model:
         self.history.add_to_history("assistant", model_answer)
         return model_answer
     
-class AsyncModel:
-    def __init__(self, api_key: str = API_KEY, history: History = History()):
-        self.api_key = api_key
-        self.history = history
+class AsyncModel(ParentModel):
 
     async def generate_answer(self, with_history: bool = True, prompt: str = None) -> str:
         return "answer"

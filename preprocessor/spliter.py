@@ -1,5 +1,7 @@
-from engine.models.gpt_model import GPTModel
+from engine.models.gpt_model import GPTModel, AsyncGPTModel, AsyncModel, Model
 from engine.config.config import BASE_PART_COMPLITE_TEXT
+from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeRemainingColumn
+import asyncio
 
 def split_data(data: str, max_symbols: int) -> list[str]:
 
@@ -36,9 +38,8 @@ def split_data(data: str, max_symbols: int) -> list[str]:
 
     return split_objects
 
-def write_docs_by_parts(part: str, global_info: str, prev_info: str = None, language: str = "en"):
-    if prev_info is None:
-        prompt = [
+def write_docs_by_parts(part: str, model: Model, global_info: str, prev_info: str = None, language: str = "en"):
+    prompt = [
             {
                 "role": "system",
                 "content": f"For the following task use language {language}"
@@ -55,33 +56,20 @@ def write_docs_by_parts(part: str, global_info: str, prev_info: str = None, lang
                 "role": "user",
                 "content": part
             }
-        ]
+    ]
 
-    else:
-        prompt = [
-            {
-                "role": "system",
-                "content": f"For the following task use language {language}"
-            },
-            {
-                "role": "system",
-                "content": BASE_PART_COMPLITE_TEXT
-            },
-            {
-                "role": "system",
-                "content": global_info
-            },
-            {
+    if prev_info is not None:
+        prompt.append({
                 "role": "system",
                 "content": f"it is last part of documentation that you have write before{prev_info}"
-            },
-            {
+            })
+
+    prompt.append({
                 "role": "user",
                 "content": part
-            }
-            
-        ]
-    answer: str = GPTModel().get_answer_without_history(prompt=prompt)
+            })
+    
+    answer: str = model.get_answer_without_history(prompt=prompt)
     temp_answer = answer.removeprefix("```")
     if answer == temp_answer:
         return answer
@@ -89,3 +77,90 @@ def write_docs_by_parts(part: str, global_info: str, prev_info: str = None, lang
     answer = temp_answer.removesuffix("```")
     return answer
 
+async def async_write_docs_by_parts(part: str, async_model: AsyncModel, global_info: str, semaphore, prev_info: str = None, language: str = "en", update_progress = None):
+
+    async with semaphore:
+
+        prompt = [
+            {
+                "role": "system",
+                "content": f"For the following task use language {language}"
+            },
+            {
+                "role": "system",
+                "content": BASE_PART_COMPLITE_TEXT
+            },
+            {
+                "role": "system",
+                "content": global_info
+            },
+            {
+                "role": "user",
+                "content": part
+            }
+        ]
+
+        if prev_info is not None:
+            prompt.append({
+                    "role": "system",
+                    "content": f"it is last part of documentation that you have write before{prev_info}"
+                })
+
+        prompt.append({
+                    "role": "user",
+                    "content": part
+                })
+        answer: str = await async_model.get_answer_without_history(prompt=prompt)
+
+        if update_progress is not None:
+            update_progress()
+
+
+        temp_answer = answer.removeprefix("```")
+        if answer == temp_answer:
+            return answer
+
+        answer = temp_answer.removesuffix("```")
+        return answer
+
+
+def gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_bar):
+    splited_data = split_data(full_code_mix, max_symbols)
+    result = None
+
+    sub_task = progress_bar.add_task(f"[green]  generete doc parts", total=len(splited_data))
+    
+    all_result = ""
+    model = GPTModel()
+    for el in splited_data:
+        result = write_docs_by_parts(el, model, global_info, result, language)
+        all_result += result
+        all_result += "\n\n"
+
+        result = result[len(result) - 3000:]
+        progress_bar.update(sub_task, advance=1)
+    
+    progress_bar.remove_task(sub_task)
+
+    return all_result
+
+async def async_gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_bar):
+    splited_data = split_data(full_code_mix, max_symbols)
+    sub_task = progress_bar.add_task(f"[green]  generete doc parts", total=len(splited_data))
+
+    semaphore = asyncio.Semaphore(4)
+    async_gpt_model = AsyncGPTModel()
+
+    tasks = []
+    for el in splited_data:
+        tasks.append(async_write_docs_by_parts(part=el, async_model=async_gpt_model, global_info=global_info, semaphore=semaphore, language=language, update_progress=lambda: progress_bar.update(sub_task, advance=1)))
+
+    gen_parts = await asyncio.gather(*tasks)
+    result = ""
+    for el in gen_parts:
+        result += el
+        result += "\n\n"
+
+    progress_bar.remove_task(sub_task)
+
+    return result

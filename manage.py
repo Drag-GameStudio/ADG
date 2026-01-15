@@ -1,9 +1,11 @@
-from preprocessor.spliter import split_data, write_docs_by_parts
+from preprocessor.spliter import split_data, write_docs_by_parts, async_write_docs_by_parts, gen_doc_parts, async_gen_doc_parts
 from preprocessor.compressor import compress_to_one
 from preprocessor.postprocess import get_introdaction, get_all_html_links
+from engine.models.gpt_model import AsyncGPTModel
 import os
 from preprocessor.code_mix import CodeMix
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeRemainingColumn
+import asyncio
 
 
 class Manager:
@@ -14,7 +16,6 @@ class Manager:
         "global_info": "global_info.md",
         "output_doc": "output_doc.md"
     }
-
 
 
     def __init__(self, project_directory: str, ignore_files: list = [], language: str = "en", progress_bar: Progress = None):
@@ -35,39 +36,29 @@ class Manager:
         cm = CodeMix(self.project_directory, self.ignore_files)
         cm.build_repo_content(self.get_file_path("code_mix"))
 
-    def generate_global_info_file(self, max_symbols=10_000):
+    def generate_global_info_file(self, max_symbols=10_000, use_async: bool = False):
         with open(self.get_file_path("code_mix"), "r", encoding="utf-8") as file:
             data = file.read()
 
         splited_data = split_data(data, max_symbols)
-        result = compress_to_one(splited_data, 2, progress_bar=self.progress_bar)
+        result = compress_to_one(splited_data, 2, progress_bar=self.progress_bar, use_async=use_async)
         with open(self.get_file_path("global_info"), "w", encoding="utf-8") as file:
             file.write(result)
 
-    def generete_doc_parts(self, max_symbols=5_000):
+    def generete_doc_parts(self, max_symbols=5_000, use_async: bool = False):
         with open(self.get_file_path("global_info"), "r", encoding="utf-8") as file:
             global_info = file.read()
 
         with open(self.get_file_path("code_mix"), "r", encoding="utf-8") as file:
             full_code_mix = file.read()
 
-        splited_data = split_data(full_code_mix, max_symbols)
-        result = None
+        if use_async:
+            result = asyncio.run(async_gen_doc_parts(full_code_mix, global_info, max_symbols, self.language, self.progress_bar))
+        else:
+            result = gen_doc_parts(full_code_mix, global_info, max_symbols, self.language, self.progress_bar)
 
-        sub_task = self.progress_bar.add_task(f"[green]  generete doc parts", total=len(splited_data))
-
-        for el in splited_data:
-            result = write_docs_by_parts(el, global_info, result, self.language)
-            with open(self.get_file_path("output_doc"), "a", encoding="utf-8") as file:
-                file.write(result)
-                file.write("\n\n")
-
-            result = result[len(result) - 3000:]
-            self.progress_bar.update(sub_task, advance=1)
-        
-        self.progress_bar.remove_task(sub_task)
-
-
+        with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
+            file.write(result)
 
     def generate_intro(self):
         with open(self.get_file_path("global_info"), "r", encoding="utf-8") as file:
@@ -103,7 +94,7 @@ if __name__ == "__main__":
         BarColumn(),                # Сам прогресс-бар
         TaskProgressColumn(),       # Процент выполнения
     ) as progress:
-        manager = Manager(r"C:\Users\huina\Python Projects\Impotant projects\ShareDataSet", ignore_list, progress_bar=progress, language="en")
+        manager = Manager(r"C:\Users\huina\Python Projects\Impotant projects\AutoDocGenerateGimini", ignore_list, progress_bar=progress, language="en")
 
         chapters = ["generete code mix file ...", "generete global info file ...", "generete doc parts ...", "generete intro and links ..."]
         main_task = progress.add_task("[bold magenta]Общий прогресс", total=len(chapters))
@@ -115,11 +106,11 @@ if __name__ == "__main__":
 
 
         progress.console.print(f"[bold blue]Start: {chapters[1]}")
-        manager.generate_global_info_file()
+        manager.generate_global_info_file(use_async=True, max_symbols=7000)
         progress.update(main_task, advance=1)
 
         progress.console.print(f"[bold blue]Start: {chapters[2]}")
-        manager.generete_doc_parts()
+        manager.generete_doc_parts(use_async=True, max_symbols=5000)
         progress.update(main_task, advance=1)
     
 
