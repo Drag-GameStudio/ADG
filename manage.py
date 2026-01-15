@@ -1,11 +1,13 @@
-from preprocessor.spliter import split_data, write_docs_by_parts, async_write_docs_by_parts, gen_doc_parts, async_gen_doc_parts
+from preprocessor.spliter import split_data, gen_doc_parts, async_gen_doc_parts
 from preprocessor.compressor import compress_to_one
-from preprocessor.postprocess import get_introdaction, get_all_html_links
+from preprocessor.postprocess import get_introdaction, get_all_html_links, get_links_intro
 from engine.models.gpt_model import AsyncGPTModel
 import os
 from preprocessor.code_mix import CodeMix
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeRemainingColumn
 import asyncio
+from factory.base_factory import DocFactory
+from factory.modules.intro import IntroLinks, IntroText
 
 
 class Manager:
@@ -60,23 +62,26 @@ class Manager:
         with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
             file.write(result)
 
-    def generate_intro(self):
+    def factory_generate_doc_intro(self, doc_factory: DocFactory):
         with open(self.get_file_path("global_info"), "r", encoding="utf-8") as file:
             global_info = file.read()
 
         with open(self.get_file_path("output_doc"), "r", encoding="utf-8") as file:
             curr_doc = file.read()
 
-        links = get_all_html_links(curr_doc)
-        intro = get_introdaction(links, global_info, self.language)
+        info = {
+            "language": self.language,
+            "global_data": global_info,
+            "full_data": curr_doc
+        }
+        result = doc_factory.generate_doc(info)
 
-        with open(self.get_file_path("output_doc"), "r", encoding="utf-8") as file:
-            old_data = file.read()
-
-        new_data = f"{intro} \n\n{old_data}"
+        new_data = f"{result} \n\n{curr_doc}"
 
         with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
             file.write(new_data)
+
+        
 
 
 if __name__ == "__main__":
@@ -100,22 +105,27 @@ if __name__ == "__main__":
         main_task = progress.add_task("[bold magenta]Общий прогресс", total=len(chapters))
 
 
-        progress.console.print(f"[bold blue]Start: {chapters[0]}")
-        manager.generate_code_file()
-        progress.update(main_task, advance=1)
+        # progress.console.print(f"[bold blue]Start: {chapters[0]}")
+        # manager.generate_code_file()
+        # progress.update(main_task, advance=1)
 
 
-        progress.console.print(f"[bold blue]Start: {chapters[1]}")
-        manager.generate_global_info_file(use_async=True, max_symbols=7000)
-        progress.update(main_task, advance=1)
+        # progress.console.print(f"[bold blue]Start: {chapters[1]}")
+        # manager.generate_global_info_file(use_async=True, max_symbols=7000)
+        # progress.update(main_task, advance=1)
 
-        progress.console.print(f"[bold blue]Start: {chapters[2]}")
-        manager.generete_doc_parts(use_async=True, max_symbols=5000)
-        progress.update(main_task, advance=1)
+        # progress.console.print(f"[bold blue]Start: {chapters[2]}")
+        # manager.generete_doc_parts(use_async=True, max_symbols=5000)
+        # progress.update(main_task, advance=1)
     
 
         progress.console.print(f"[bold blue]Start: {chapters[3]}")
-        manager.generate_intro()
+        manager.factory_generate_doc_intro(
+            DocFactory(
+                IntroText(),
+                IntroLinks(),
+            )
+        )
         progress.update(main_task, advance=1)
     
 
