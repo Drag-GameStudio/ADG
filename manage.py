@@ -109,7 +109,6 @@ if __name__ == "__main__":
         # manager.generate_code_file()
         # progress.update(main_task, advance=1)
 
-
         # progress.console.print(f"[bold blue]Start: {chapters[1]}")
         # manager.generate_global_info_file(use_async=True, max_symbols=7000)
         # progress.update(main_task, advance=1)
@@ -122,7 +121,7 @@ if __name__ == "__main__":
         progress.console.print(f"[bold blue]Start: {chapters[3]}")
         manager.factory_generate_doc_intro(
             DocFactory(
-                IntroText(),
+                # IntroText(),
                 IntroLinks(),
             )
         )

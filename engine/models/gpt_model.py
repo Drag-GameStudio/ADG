@@ -22,10 +22,12 @@ class AsyncGPTModel(AsyncModel):
             try:
                 chat_completion = await self.client.chat.completions.create(
                     messages=messages,
-                    model=model_name
+                    model=model_name,
+                    # temperature=0.3,
                 )
                 break
             except Exception as e:
+                print(e)
                 self.current_model_index = 0
                 if model_name in self.regen_models_name:
                     self.regen_models_name.remove(model_name)
@@ -55,7 +57,9 @@ class GPTModel(Model):
             try:
                 chat_completion = self.client.chat.completions.create(
                     messages=messages,
-                    model=model_name
+                    model=model_name,
+                    temperature=0.3,
+
                 )
                 break
             except Exception as e:

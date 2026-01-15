@@ -1,5 +1,5 @@
 from engine.models.gpt_model import GPTModel, AsyncGPTModel, Model, AsyncModel
-from engine.config.config import BASE_COMPRESS_TEXT, get_BASE_COMPRESS_TEXT
+from engine.config.config import get_BASE_COMPRESS_TEXT
 import math
 import asyncio
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeRemainingColumn
