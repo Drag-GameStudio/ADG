@@ -8,6 +8,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskPr
 import asyncio
 from factory.base_factory import DocFactory
 from factory.modules.intro import IntroLinks, IntroText
+from ui.progress_base import BaseProgress, LibProgress
 
 
 class Manager:
@@ -20,7 +21,7 @@ class Manager:
     }
 
 
-    def __init__(self, project_directory: str, ignore_files: list = [], language: str = "en", progress_bar: Progress = None):
+    def __init__(self, project_directory: str, ignore_files: list = [], language: str = "en", progress_bar: BaseProgress = BaseProgress()):
         self.project_directory = project_directory
         self.ignore_files = ignore_files
         self.progress_bar = progress_bar
@@ -31,28 +32,33 @@ class Manager:
         if not os.path.isdir(cache_path):
             os.mkdir(cache_path)
 
+    def read_file_by_file_key(self, file_key: str):
+        with open(self.get_file_path(file_key), "r", encoding="utf-8") as file:
+            data = file.read()
+        return data
+
     def get_file_path(self, file_key: str):
         return os.path.join(self.project_directory, self.CACHE_FOLDER_NAME, self.FILE_NAMES.get(file_key))
 
     def generate_code_file(self):
         cm = CodeMix(self.project_directory, self.ignore_files)
         cm.build_repo_content(self.get_file_path("code_mix"))
+        self.progress_bar.update_task()
 
     def generate_global_info_file(self, max_symbols=10_000, use_async: bool = False):
-        with open(self.get_file_path("code_mix"), "r", encoding="utf-8") as file:
-            data = file.read()
+        full_code_mix = self.read_file_by_file_key("code_mix")
 
-        splited_data = split_data(data, max_symbols)
+        splited_data = split_data(full_code_mix, max_symbols)
         result = compress_to_one(splited_data, 2, progress_bar=self.progress_bar, use_async=use_async)
         with open(self.get_file_path("global_info"), "w", encoding="utf-8") as file:
             file.write(result)
 
-    def generete_doc_parts(self, max_symbols=5_000, use_async: bool = False):
-        with open(self.get_file_path("global_info"), "r", encoding="utf-8") as file:
-            global_info = file.read()
+        self.progress_bar.update_task()
+        
 
-        with open(self.get_file_path("code_mix"), "r", encoding="utf-8") as file:
-            full_code_mix = file.read()
+    def generete_doc_parts(self, max_symbols=5_000, use_async: bool = False):
+        global_info = self.read_file_by_file_key("global_info")
+        full_code_mix = self.read_file_by_file_key("code_mix")
 
         if use_async:
             result = asyncio.run(async_gen_doc_parts(full_code_mix, global_info, max_symbols, self.language, self.progress_bar))
@@ -61,13 +67,13 @@ class Manager:
 
         with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
             file.write(result)
+        
+        self.progress_bar.update_task()
+
 
     def factory_generate_doc_intro(self, doc_factory: DocFactory):
-        with open(self.get_file_path("global_info"), "r", encoding="utf-8") as file:
-            global_info = file.read()
-
-        with open(self.get_file_path("output_doc"), "r", encoding="utf-8") as file:
-            curr_doc = file.read()
+        global_info = self.read_file_by_file_key("global_info")
+        curr_doc =  self.read_file_by_file_key("output_doc")
 
         info = {
             "language": self.language,
@@ -80,6 +86,9 @@ class Manager:
 
         with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
             file.write(new_data)
+
+        self.progress_bar.update_task()
+        
 
         
 
@@ -94,38 +103,22 @@ if __name__ == "__main__":
 
 
     with Progress(
-        SpinnerColumn(),            # Анимация загрузки
+        SpinnerColumn(),          
         TextColumn("[progress.description]{task.description}"),
-        BarColumn(),                # Сам прогресс-бар
-        TaskProgressColumn(),       # Процент выполнения
+        BarColumn(),               
+        TaskProgressColumn(),     
     ) as progress:
-        manager = Manager(r"C:\Users\huina\Python Projects\Impotant projects\AutoDocGenerateGimini", ignore_list, progress_bar=progress, language="en")
+        manager = Manager(r"C:\Users\huina\Python Projects\Impotant projects\AutoDocGenerateGimini", ignore_list, progress_bar=LibProgress(progress), language="en")
 
-        chapters = ["generete code mix file ...", "generete global info file ...", "generete doc parts ...", "generete intro and links ..."]
-        main_task = progress.add_task("[bold magenta]Общий прогресс", total=len(chapters))
-
-
-        # progress.console.print(f"[bold blue]Start: {chapters[0]}")
-        # manager.generate_code_file()
-        # progress.update(main_task, advance=1)
-
-        # progress.console.print(f"[bold blue]Start: {chapters[1]}")
-        # manager.generate_global_info_file(use_async=True, max_symbols=7000)
-        # progress.update(main_task, advance=1)
-
-        # progress.console.print(f"[bold blue]Start: {chapters[2]}")
-        # manager.generete_doc_parts(use_async=True, max_symbols=5000)
-        # progress.update(main_task, advance=1)
-    
-
-        progress.console.print(f"[bold blue]Start: {chapters[3]}")
+        manager.generate_code_file()
+        manager.generate_global_info_file(use_async=True, max_symbols=7000)
+        manager.generete_doc_parts(use_async=True, max_symbols=5000)
         manager.factory_generate_doc_intro(
             DocFactory(
-                # IntroText(),
                 IntroLinks(),
+                IntroText(),
             )
         )
-        progress.update(main_task, advance=1)
-    
+
 
 

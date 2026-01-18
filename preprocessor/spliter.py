@@ -2,6 +2,8 @@ from engine.models.gpt_model import GPTModel, AsyncGPTModel, AsyncModel, Model
 from engine.config.config import BASE_PART_COMPLITE_TEXT
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeRemainingColumn
 import asyncio
+from ui.progress_base import BaseProgress
+
 
 def split_data(data: str, max_symbols: int) -> list[str]:
 
@@ -124,11 +126,11 @@ async def async_write_docs_by_parts(part: str, async_model: AsyncModel, global_i
         return answer
 
 
-def gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_bar):
+def gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_bar: BaseProgress):
     splited_data = split_data(full_code_mix, max_symbols)
     result = None
 
-    sub_task = progress_bar.add_task(f"[green]  generete doc parts", total=len(splited_data))
+    progress_bar.create_new_subtask(f"Generete doc parts", total=len(splited_data))
     
     all_result = ""
     model = GPTModel()
@@ -138,22 +140,22 @@ def gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_ba
         all_result += "\n\n"
 
         result = result[len(result) - 3000:]
-        progress_bar.update(sub_task, advance=1)
+        progress_bar.update_task()
     
-    progress_bar.remove_task(sub_task)
+    progress_bar.remove_subtask()
 
     return all_result
 
-async def async_gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_bar):
+async def async_gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_bar: BaseProgress):
     splited_data = split_data(full_code_mix, max_symbols)
-    sub_task = progress_bar.add_task(f"[green]  generete doc parts", total=len(splited_data))
+    progress_bar.create_new_subtask(f"Generete doc parts (async)", len(splited_data))
 
     semaphore = asyncio.Semaphore(4)
     async_gpt_model = AsyncGPTModel()
 
     tasks = []
     for el in splited_data:
-        tasks.append(async_write_docs_by_parts(part=el, async_model=async_gpt_model, global_info=global_info, semaphore=semaphore, language=language, update_progress=lambda: progress_bar.update(sub_task, advance=1)))
+        tasks.append(async_write_docs_by_parts(part=el, async_model=async_gpt_model, global_info=global_info, semaphore=semaphore, language=language, update_progress=lambda: progress_bar.update_task()))
 
     gen_parts = await asyncio.gather(*tasks)
     result = ""
@@ -161,6 +163,7 @@ async def async_gen_doc_parts(full_code_mix, global_info, max_symbols, language,
         result += el
         result += "\n\n"
 
-    progress_bar.remove_task(sub_task)
+    progress_bar.remove_subtask()
+
 
     return result
