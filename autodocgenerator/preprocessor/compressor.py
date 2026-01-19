@@ -1,8 +1,8 @@
-from engine.models.gpt_model import GPTModel, AsyncGPTModel, Model, AsyncModel
-from engine.config.config import get_BASE_COMPRESS_TEXT
+from ..engine.models.gpt_model import GPTModel, AsyncGPTModel, Model, AsyncModel
+from ..engine.config.config import get_BASE_COMPRESS_TEXT
 import math
 import asyncio
-from ui.progress_base import BaseProgress
+from ..ui.progress_base import BaseProgress
 from .settings import ProjectSettings
 
 

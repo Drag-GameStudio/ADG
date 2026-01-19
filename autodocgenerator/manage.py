@@ -1,15 +1,15 @@
-from preprocessor.spliter import split_data, gen_doc_parts, async_gen_doc_parts
-from preprocessor.compressor import compress_to_one
-from preprocessor.postprocess import get_introdaction, get_all_html_links, get_links_intro
-from engine.models.gpt_model import AsyncGPTModel
+from .preprocessor.spliter import split_data, gen_doc_parts, async_gen_doc_parts
+from .preprocessor.compressor import compress_to_one
+from .preprocessor.postprocess import get_introdaction, get_all_html_links, get_links_intro
+from .engine.models.gpt_model import AsyncGPTModel
 import os
-from preprocessor.code_mix import CodeMix
+from .preprocessor.code_mix import CodeMix
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeRemainingColumn
 import asyncio
-from factory.base_factory import DocFactory
-from factory.modules.intro import IntroLinks, IntroText
-from ui.progress_base import BaseProgress, LibProgress
-from preprocessor.settings import ProjectSettings
+from .factory.base_factory import DocFactory
+from .factory.modules.intro import IntroLinks, IntroText
+from .ui.progress_base import BaseProgress, LibProgress
+from .preprocessor.settings import ProjectSettings
 
 
 class Manager:

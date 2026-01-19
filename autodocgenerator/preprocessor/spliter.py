@@ -1,8 +1,7 @@
-from engine.models.gpt_model import GPTModel, AsyncGPTModel, AsyncModel, Model
-from engine.config.config import BASE_PART_COMPLITE_TEXT
-from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeRemainingColumn
+from ..engine.models.gpt_model import GPTModel, AsyncGPTModel, AsyncModel, Model
+from ..engine.config.config import BASE_PART_COMPLITE_TEXT
 import asyncio
-from ui.progress_base import BaseProgress
+from ..ui.progress_base import BaseProgress
 
 
 def split_data(data: str, max_symbols: int) -> list[str]:

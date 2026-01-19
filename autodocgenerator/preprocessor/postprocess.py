@@ -1,5 +1,5 @@
-from engine.models.gpt_model import GPTModel
-from engine.config.config import BASE_INTRODACTION_CREATE_TEXT, BASE_INTRO_CREATE
+from ..engine.models.gpt_model import GPTModel
+from ..engine.config.config import BASE_INTRODACTION_CREATE_TEXT, BASE_INTRO_CREATE
 import re
 import unicodedata
 

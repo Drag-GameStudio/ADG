@@ -1,4 +1,4 @@
-from engine.config.config import BASE_SETTINGS_PROMPT
+from ..engine.config.config import BASE_SETTINGS_PROMPT
 
 class ProjectSettings:
     def __init__(self, project_name: str):

@@ -1,5 +1,5 @@
 from ..base_factory import BaseModule
-from preprocessor.postprocess import get_all_html_links, get_links_intro, get_introdaction
+from ...preprocessor.postprocess import get_all_html_links, get_links_intro, get_introdaction
 
 
 class IntroLinks(BaseModule):
