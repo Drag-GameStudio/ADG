@@ -30,7 +30,7 @@ jobs:
 
     - name: Copy output to README
       run: |
-        cat .auto_doc_cache/output.md > README.md
+        cat .auto_doc_cache/output_doc.md > README.md
 
     - name: Commit and Push changes
       run: |

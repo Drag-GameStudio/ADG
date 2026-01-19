@@ -25,16 +25,16 @@ def gen_doc(project_settings: ProjectSettings, ignore_list: list[str], project_p
         manager = Manager(project_path, project_settings, ignore_list, progress_bar=LibProgress(progress), language="en")
 
         manager.generate_code_file()
-        # manager.generate_global_info_file(use_async=True, max_symbols=5000)
-        # manager.generete_doc_parts(use_async=True, max_symbols=4000)
-        # manager.factory_generate_doc_intro(
-        #     DocFactory(
-        #         IntroLinks(),
-        #         IntroText(),
-        #     )
-        # )
+        manager.generate_global_info_file(use_async=True, max_symbols=5000)
+        manager.generete_doc_parts(use_async=True, max_symbols=4000)
+        manager.factory_generate_doc_intro(
+            DocFactory(
+                IntroLinks(),
+                IntroText(),
+            )
+        )
 
-        # return manager.read_file_by_file_key("output_doc")
+        return manager.read_file_by_file_key("output_doc")
 
 
 
@@ -54,7 +54,6 @@ import os
 
 def print_tree(startpath):
     for root, dirs, files in os.walk(startpath):
-        # Исключаем скрытые папки (например, .git или .auto_doc_cache)
         dirs[:] = [d for d in dirs if not d.startswith('.')]
         
         level = root.replace(startpath, '').count(os.sep)
@@ -64,5 +63,4 @@ def print_tree(startpath):
         for f in files:
             print(f'{subindent}{f}')
 
-# Запуск для текущей папки
 print_tree('.')
