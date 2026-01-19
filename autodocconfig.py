@@ -49,5 +49,5 @@ ignore_list = [
         "*.pyc", "__pycache__", ".git", ".coverage", "htmlcov", "migrations", "*.md", "static", "staticfiles", ".mypy_cache"
     ]
 
-result = gen_doc(project_path="./autodocgenerator", project_settings=project_settings, ignore_list=ignore_list)
+result = gen_doc(project_path=".", project_settings=project_settings, ignore_list=ignore_list)
 print(result[:1000])
