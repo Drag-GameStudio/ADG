@@ -1,4 +1,4 @@
-from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeRemainingColumn
+from rich.progress import Progress
 
 
 class BaseProgress:
@@ -6,13 +6,13 @@ class BaseProgress:
         pass
 
     def create_new_subtask(self, name: str, total_len: int):
-        print("create sub task", name, total_len)
+        ...
 
     def update_task(self):
-        print("upd")
+        ...
 
     def remove_subtask(self):
-        print("rem")
+        ...
 
 class LibProgress(BaseProgress):
     

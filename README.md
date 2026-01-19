@@ -1,404 +1,427 @@
 ## Executive Navigation Tree
+* 📂 **Core Engine**
+  * [Core Logic](#logic-flow)
+  * [Manager Class](#manager-class)
+  * [Base Module](#basemodule)
+  * [Progress Base Module](#progress_base_module)
+  * [Base Progress Class](#baseprogress_class)
+  * [Lib Progress Class](#libprogress_class)
+* ⚙️ **Integration and Utilities**
+  * [Integration](#integration)
+  * [Usage Example](#usage-example)
+  * [Usage Notes](#usage-notes)
+  * [Postprocess](#postprocess)
+  * [Splitter](#spliter)
+* 📄 **Documentation and Settings**
+  * [Documentation](#documentation)
+  * [Settings](#settings)
+  * [Introduction](#get_links_intro)
+  * [Introduction to Global Data](#get_introdaction)
 
-- 📂 Core Engine  
-  - [engine_init](#engine_init)  
-  - [config-module-overview](#config-module-overview)  
-  - [factory](#factory)  
-  - [manager-class](#manager-class)  
+**Auto Doc Generator** – *Project‑Wide Overview*  
+*(Activated by the project name “Auto Doc Generator”)*  
 
-- ⚙️ Documentation Processing  
-  - [get_all_topics](#get_all_topics)  
-  - [get_all_html_links](#get_all_html_links)  
-  - [compressor](#compressor)  
+---  
 
-- 🔧 LLM Interaction  
-  - [gptmodel](#gptmodel)  
-  - [get_links_intro](#get_links_intro)  
-  - [get_introdaction](#get_introdaction)
+## 1. Project Title  
+**Auto Doc Generator**  
 
-**Project Overview – Code‑to‑README Documentation Generator**
+---  
 
----
+## 2. Project Goal  
+The purpose of **Auto Doc Generator** is to **automatically produce high‑quality documentation for any software project**.  
+Developers no longer need to write lengthy READMEs, API references, or architecture overviews by hand; the tool extracts source‑code, feeds it to a large‑language model (LLM), and assembles the model’s responses into a coherent, ready‑to‑publish document.  
 
-### 1. Project Title  
-**DocuSynth – Automated README Generation for Python Repositories**
+Key problems it solves  
 
----
+| Problem | How Auto Doc Generator solves it |
+|---------|----------------------------------|
+| **Time‑consuming manual writing** | Generates the whole documentation in a few minutes. |
+| **Inconsistent style & missing sections** | Centralised prompt templates enforce a uniform tone and guarantee the presence of intro, links, and section headings. |
+| **Keeping docs in sync with code** | The pre‑processor walks the repository, captures every file (except ignored ones), and feeds the latest source to the LLM each run. |
+| **Scalability for large codebases** | A “compression” pipeline groups file fragments, repeatedly summarises them with the LLM, and reduces the whole repository to a single markdown string. |
 
-### 2. Project Goal  
-DocuSynth automatically produces a human‑readable README‑style document for any Python codebase. By traversing the repository, compressing the source tree, and leveraging a language model, it delivers a concise, well‑structured overview that can be used as a project’s main documentation or as a quick reference for new contributors.
+---  
 
----
+## 3. Core Logic & Principles  
 
-### 3. Core Logic & Principles  
+### 3.1 High‑level data flow  
 
-| Layer | Responsibility | Key Techniques |
-|-------|----------------|----------------|
-| **File System Walker** | Enumerates all non‑ignored files, builds an in‑memory representation (`CodeMix`) of the repository hierarchy. | Recursive directory traversal, glob/regex ignore patterns. |
-| **Compression** | Serialises the `CodeMix` tree and stores a lightweight `.json.gz` “global info” file for fast look‑ups. | JSON serialization + Gzip compression. |
-| **Chunking** | Splits the compressed data into token‑size‑constrained chunks that fit within the limits of the target GPT model. | `split_data()` utility, token‑count estimation. |
-| **Document Generation** | For each chunk, a language model generates a short, coherent description. The `DocFactory` stitches these into a single introduction section. | Prompt engineering, iterative prompt‑response, context‑aware summarisation. |
-| **Progress Reporting** | A Rich‑based progress bar (`LibProgress`) visualises the status of each heavy step (walking, compressing, chunking, LLM calls). | `rich.progress.Progress`, custom `BaseProgress` abstraction. |
-| **Asynchronous Support** | Parallelises LLM calls via `async_write_docs_by_parts` to reduce wall‑clock time. | `asyncio`, `await` syntax, concurrent task management. |
+```
+Repository → CodeMix (tree + raw files) → Split into per‑file blocks
+      → Compressor (iterative LLM summarisation) → Single markdown document
+      → Post‑processor (heading extraction, intro generation) → Final output
+```
 
-The high‑level orchestration is performed by the `Manager` façade:
+### 3.2 Main layers  
 
-1. **Collect Code** – `generate_code_file()` walks the file system and serialises a `CodeMix` object.  
-2. **Global Info** – `generate_global_info_file()` compresses the `CodeMix` into a `.json.gz`.  
-3. **Chunking** – `generate_doc_parts()` splits the compressed data into manageable pieces.  
-4. **Intro Generation** – `factory_generate_doc_intro()` delegates to `DocFactory`, which uses `IntroLinks` and `IntroText` helpers to produce the final README‑style text.
+| Layer | Responsibility | Principal modules |
+|-------|----------------|-------------------|
+| **Configuration** | Stores static prompt fragments, environment variables, model identifiers. | `engine/config/config.py` |
+| **Model Layer** | Wraps the LLM (Groq) – provides synchronous (`GPTModel`) and asynchronous (`AsyncGPTModel`) interfaces. | `engine/models/model.py`, `engine/models/gpt_model.py` |
+| **History** | Keeps the conversation context (system prompt + previous Q/A) that is sent to the LLM. | `History` class in `engine/models/model.py` |
+| **Factory / Modules** | Orchestrates several LLM‑generated fragments (intro links, intro paragraph, etc.) into a full documentation string. | `factory/base_factory.py`, `factory/modules/intro.py` |
+| **Pre‑processor** | Walks the project directory, writes a single “code‑mix” file that contains a file‑tree header and the raw source of each file. | `preprocessor/code_mix.py` |
+| **Compressor** | Repeatedly groups a configurable number of text blocks (`compress_power`), asks the LLM to summarise them, and replaces the group with the summary until only one block remains. | `preprocessor/compressor.py` |
+| **Post‑processor** | Parses the final markdown, extracts headings, optionally asks the LLM for section introductions, and builds a table of contents. | `preprocessor/postprocess.py` |
+| **UI / Progress** | Optional visual feedback (plain console or Rich‑based progress bar). | `ui/progress_base.py` |
 
----
+### 3.3 Core algorithms  
 
-### 4. Key Features  
+* **Repository dump (`CodeMix`)** – Recursively walks the directory, respects an `ignore_list`, and writes each file wrapped in `<file path="…">` markers. This deterministic format makes later splitting trivial.  
+* **Iterative compression** – The compressor works like a *divide‑and‑conquer* summariser:  
+  1. Split the list of file blocks into chunks of size `compress_power`.  
+  2. Send each chunk to the LLM with a system prompt that explains the “compress‑to‑one” task.  
+  3. Replace the chunk with the LLM’s answer.  
+  4. Repeat until the list length is 1.  
+  This approach keeps token usage within model limits while still producing a global view of the whole codebase.  
+* **History handling** – Every call to `get_answer()` appends the user message and the model’s reply to the `History` object, guaranteeing context continuity for multi‑turn interactions (e.g., when the factory asks for intro links then for the intro paragraph).  
+* **Factory pattern** – `DocFactory` receives an ordered collection of *module* objects (`IntroLinks`, `IntroText`, …). Each module implements a `run(info: dict) -> str` method that internally calls the model. The factory concatenates the returned strings, producing the final documentation.  
 
-- **Automatic Repository Analysis** – Recursively walks any Python project, respecting custom ignore lists.  
-- **Efficient Storage** – Compresses the entire code tree into a single, lightweight file for quick reuse.  
-- **Token‑Aware Chunking** – Ensures each LLM request stays within model limits, preventing truncation or errors.  
-- **Rich Progress UI** – Real‑time feedback via a terminal progress bar (supports both sync and async modes).  
-- **Synchronous & Asynchronous APIs** – `gen_doc_parts()` for blocking execution, `async_gen_doc_parts()` for concurrent processing.  
-- **Extensible Factories** – `DocFactory` can be swapped or extended to change the style or depth of the generated documentation.  
-- **Language‑agnostic** – Optional target language parameter allows the README to be produced in any language supported by the LLM.  
+---  
 
----
+## 4. Key Features  
 
-### 5. How to Run  
+- **Full‑project code ingestion** – Automatic tree generation and source extraction for every non‑ignored file.  
+- **Sync & async LLM wrappers** – Choose `GPTModel` for simple scripts or `AsyncGPTModel` for high‑throughput pipelines.  
+- **Prompt‑driven, configurable documentation style** – All system prompts live in `engine/config/config.py`; swapping a constant changes the tone for every run.  
+- **Iterative compression** – Handles arbitrarily large repositories while staying inside model token limits.  
+- **Modular documentation factory** – Plug‑in new modules (e.g., “API reference”, “Installation guide”) without touching the core pipeline.  
+- **Progress feedback** – Optional Rich‑based progress bar or a no‑op fallback.  
+- **Environment‑first design** – `.env` file automatically loaded; API keys never hard‑coded.  
+- **Extensible settings object** – `ProjectSettings` lets you add arbitrary metadata (target audience, tech stack, etc.) that the LLM can use when drafting the docs.  
 
-1. **Clone the Repository**  
-   ```bash
-   git clone https://github.com/yourorg/docusynth.git
-   cd docusynth
-   ```
+---  
 
-2. **Create a Virtual Environment**  
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate   # On Windows: .venv\Scripts\activate
-   ```
+## 5. How to Run  
 
-3. **Install Dependencies**  
-   ```bash
-   pip install -r requirements.txt
-   ```
+Below is a **step‑by‑step guide** that works on any platform with Python 3.10+.
 
-4. **Set Up LLM Credentials**  
-   The project uses an OpenAI‑compatible API. Export your key:
-   ```bash
-   export OPENAI_API_KEY="sk-…"
-   ```
+### 5.1 Prerequisites  
 
-5. **Run the Generator (Synchronous)**  
-   ```python
-   from ui.progress_base import LibProgress
-   from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeRemainingColumn
-   from manager import Manager
+1. **Python** (≥ 3.10) installed and available on `PATH`.  
+2. **Git** (optional, only if you clone the repo).  
+3. **Groq API key** – sign up at https://groq.com and obtain a key.  
 
-   # Initialise progress bar
-   progress = Progress(
-       SpinnerColumn(),
-       TextColumn("[progress.description]{task.description}"),
-       BarColumn(),
-       TaskProgressColumn(),
-       TimeRemainingColumn()
-   )
-   lib_progress = LibProgress(progress, total=5)  # adjust total as needed
+### 5.2 Installation  
 
-   # Create manager for a target repository
-   mgr = Manager(
-       project_path="/path/to/your/python/project",
-       ignore_list=["__pycache__", ".git", "tests"],
-       progress=lib_progress,
-       target_language="en"
-   )
+```bash
+# 1️⃣ Clone the repository
+git clone https://github.com/your‑org/auto-doc-generator.git
+cd auto-doc-generator
 
-   # Execute pipeline
-   mgr.generate_code_file()
-   mgr.generate_global_info_file()
-   mgr.generate_doc_parts()
-   mgr.factory_generate_doc_intro()
-   ```
+# 2️⃣ Create a virtual environment (recommended)
+python -m venv .venv
+source .venv/bin/activate   # on Windows: .venv\Scripts\activate
 
-6. **Run the Generator (Asynchronous)**  
-   ```python
-   import asyncio
-   from doc_generator import async_gen_doc_parts
+# 3️⃣ Install required packages
+pip install -r requirements.txt
+```
 
-   async def main():
-       full_code_mix = """..."""          # obtained from Manager
-       global_info = "Project: Example Library. Language: English."
-       max_symbols = 2000
-       language = "en"
+`requirements.txt` typically contains:
 
-       final_doc = await async_gen_doc_parts(
-           full_code_mix,
-           global_info,
-           max_symbols,
-           language,
-           lib_progress
-       )
-       print(final_doc)
+```
+python-dotenv
+groq
+rich               # optional, for the fancy progress bar
+```
 
-   asyncio.run(main())
-   ```
+### 5.3 Configure environment variables  
 
----
+Create a `.env` file in the project root:
 
-### 6. Dependencies  
+```
+API_KEY=YOUR_GROQ_API_KEY
+```
 
-| Library | Purpose | Version |
-|---------|---------|---------|
-| `rich` | Terminal progress bars and UI | `>=13.0` |
-| `tqdm` | Optional fallback progress bar | `>=4.0` |
-| `openai` | LLM client (or any compatible API wrapper) | `>=1.0` |
-| `gzip` | Compression of the `CodeMix` JSON | Standard library |
-| `json` | Serialization of repository metadata | Standard library |
-| `asyncio` | Asynchronous execution | Standard library |
-| `typing` | Type hints | Standard library |
+If you prefer not to use a `.env` file, you can pass the key directly when constructing the model (see the usage example).
 
-> **Note**: The `requirements.txt` file contains the exact pinning used in the project. If you wish to use a different LLM provider, replace the `GPTModel` wrapper with a compatible implementation.
+### 5.4 Run a **synchronous** documentation generation  
 
----
+```bash
+python examples/sync_demo.py
+```
 
-**DocuSynth** delivers a seamless, end‑to‑end solution for turning raw Python code into a polished, LLM‑generated README, making onboarding faster and documentation maintenance effortless.
+`sync_demo.py` contains the exact snippet from the documentation (see the “Strict Usage Example” section). It:
+
+1. Builds a `History` with the system prompt.  
+2. Instantiates `GPTModel`.  
+3. Sends a single question and prints the answer.  
+4. Uses `DocFactory` with `IntroLinks` and `IntroText` to produce a short markdown page.
+
+### 5.5 Run an **asynchronous** documentation generation  
+
+```bash
+python examples/async_demo.py
+```
+
+The script mirrors the synchronous version but uses `AsyncGPTModel` and `await`‑s the call.
+
+### 5.6 Full‑pipeline (code‑mix → compression → post‑process)  
+
+If you want to generate documentation for an entire repository:
+
+```bash
+python -m preprocessor.pipeline \
+    --repo-path /path/to/your/project \
+    --output documentation.md \
+    --compress-power 4          # number of blocks merged per LLM call
+```
+
+The `pipeline` module (provided in `preprocessor/__main__.py`) orchestrates:
+
+1. `CodeMix` → `codemix.txt`  
+2. Split into per‑file blocks  
+3. `compress_to_one` (sync by default; add `--async` for async)  
+4. Optional post‑processing (headings, TOC)  
+5. Write the final markdown to the path you supplied.
+
+### 5.7 Verify the result  
+
+Open the generated file (`documentation.md` or `documentation.txt`) in any markdown viewer or IDE. You should see a table of contents, introductory paragraph, and concise summaries of each major component of the source code.
+
+---  
+
+## 6. Dependencies  
+
+| Category | Package | Minimum version | Purpose |
+|----------|---------|----------------|---------|
+| **Core** | `python-dotenv` | 1.0.0 | Loads `.env` files automatically. |
+|          | `groq` | 0.5.0 | Official client for the Groq LLM API. |
+| **Optional UI** | `rich` | 13.0.0 | Fancy console progress bars (`LibProgress`). |
+| **Testing (if you run the test suite)** | `pytest` | 7.0.0 | Unit‑test runner. |
+| **Type checking** | `mypy` | 1.0.0 | Static type analysis (dev dependency). |
+| **Formatting** | `black` | 23.0.0 | Code formatter (dev dependency). |
+
+All runtime dependencies are listed in `requirements.txt`; dev‑only packages are in `requirements-dev.txt`.
+
+---  
+
+### Quick Recap  
+
+1. **Install** → create a virtual environment → `pip install -r requirements.txt`.  
+2. **Set** `API_KEY` in `.env` (or pass it manually).  
+3. **Run** either the synchronous demo, the asynchronous demo, or the full pipeline command.  
+4. **Read** the generated markdown – you now have up‑to‑date documentation for your project, generated automatically by an LLM.  
+
+Feel free to extend the factory with new modules, tweak the prompts in `engine/config/config.py`, or swap the Groq model identifier (`MODELS_NAME`) for a different LLM that better fits your budget or latency requirements. Happy documenting!
 
  
 
-<a name="engine_init"></a>
-## Engine Initialization
-The `engine` package is the core of the documentation generator, responsible for orchestrating the entire process. This module serves as the entry point for the engine, importing and exposing the necessary components.
+## <a name="overview"></a> Overview
+The provided code snippet is part of a larger system responsible for generating documentation. This section focuses on the `engine/models` module, specifically the `gpt_model.py` and `model.py` files.
 
-```python
-# engine/__init__.py
+## <a name="responsibility"></a> Responsibility
+The `engine/models` module is responsible for handling communication with the LLM (Large Language Model) using the Groq API. The `GPTModel` and `AsyncGPTModel` classes encapsulate the logic for interacting with the LLM, including sending requests and processing responses.
 
-"""
-Engine initialization module.
-"""
+## <a name="interaction"></a> Interaction with Other Components
+The `engine/models` module interacts with other components of the system as follows:
 
-from .config.config import Config
-from .models.gpt_model import GPTModel
-from .models.model import Model
+*   **Config**: The `config.py` file provides configuration settings, such as API keys and model names, which are used by the `GPTModel` and `AsyncGPTModel` classes.
+*   **Factory**: The `factory` module is responsible for combining LLM-generated fragments into a full documentation string. The `GPTModel` and `AsyncGPTModel` classes provide the necessary functionality for the factory to generate documentation.
+*   **History**: The `History` class, defined in `model.py`, stores the conversation context that is sent to the LLM. This context is used to generate answers to user queries.
 
-__all__ = [
-    'Config',
-    'GPTModel',
-    'Model'
-]
-```
+## <a name="key-functions"></a> Key Functions and Classes
+The key functions and classes in the `engine/models` module are:
 
-This module imports the `Config`, `GPTModel`, and `Model` classes from their respective submodules, making them available for use throughout the project. The `__all__` variable specifies the classes that are exported by this module, allowing them to be imported by other parts of the project.
+*   **`GPTModel`**: A synchronous class that interacts with the LLM using the Groq API.
+*   **`AsyncGPTModel`**: An asynchronous class that interacts with the LLM using the Groq API.
+*   **`Model`**: A parent class that provides a basic implementation for interacting with the LLM.
+*   **`AsyncModel`**: A parent class that provides a basic asynchronous implementation for interacting with the LLM.
+*   **`History`**: A class that stores the conversation context sent to the LLM.
 
-The `Config` class is responsible for managing the engine's configuration, while the `GPTModel` and `Model` classes represent the language models used for generating documentation. By importing these classes here, we can easily access and use them throughout the engine.
+## <a name="logic-flow"></a> Logic Flow
+The logic flow of the `engine/models` module is as follows:
 
-<a name="config-module-overview"></a>
-## 📄 Config Module Overview  
+1.  **Initialization**: The `GPTModel` or `AsyncGPTModel` class is initialized with an API key and a `History` object.
+2.  **Generating Answers**: The `generate_answer` method is called with a user query and optional history. The method sends a request to the LLM and processes the response to generate an answer.
+3.  **Error Handling**: If an error occurs during the request, the method will retry with a different model until a successful response is received.
 
-The **`engine/config/config.py`** file centralises all static prompt‑templates and runtime constants used by the AutoDoc pipeline.  
-These strings drive the behaviour of the three processing stages:
+## <a name="assumptions"></a> Assumptions and Inputs
+The `engine/models` module assumes that:
 
-1. **System‑level instruction** – tells the LLM how to analyse each incoming code fragment.  
-2. **Part‑completion instruction** – guides the LLM to produce concise, context‑aware documentation for a single snippet.  
-3. **Intro‑generation instruction** – instructs a specialised “Executive Navigation Tree” creator to prune and organise Markdown links.  
-4. **Project‑overview instruction** – asks the LLM to compose a full project summary (title, goal, core logic, etc.).  
+*   **API Key**: A valid API key is provided for authentication with the Groq API.
+*   **Model Names**: A list of valid model names is provided in the configuration settings.
+*   **User Query**: A user query is provided as input to the `generate_answer` method.
+*   **History**: A `History` object is provided to store the conversation context.
 
-Additionally, the module supplies a small helper **`get_BASE_COMPRESS_TEXT`** that builds a dynamic prompt for summarising very large code blocks, and it loads environment variables required for model selection.
+The `engine/models` module produces the following outputs:
 
----
+*   **Answer**: A generated answer to the user query.
+*   **Error**: An error message if the request to the LLM fails.
 
-<a name="constants-and-templates"></a>
-## 🔑 Constants & Prompt Templates  
+## <a name="side-effects"></a> Side Effects
+The `engine/models` module has the following side effects:
 
-| Name | Type | Purpose |
-|------|------|---------|
-| `BASE_SYSTEM_TEXT` | `str` | Base system prompt. Instructs the model to *explain every function/class*, *preserve accumulated context*, and *never skip details*. |
-| `BASE_PART_COMPLITE_TEXT` | `str` | Prompt for the *part‑completion* stage. Requests a ~2 k‑character documentation piece, anchored titles, and a focus on component responsibilities, interactions, and side‑effects. |
-| `BASE_INTRODACTION_CREATE_TEXT` | `str` | Prompt for the *Executive Navigation Tree* generator. Enforces the “30 % rule”, exact anchor preservation, two‑level hierarchical grouping, and zero‑hallucination output. |
-| `BASE_INTRO_CREATE` | `str` | Prompt for the *project overview* writer. Defines the required sections (title, goal, core logic, features, run‑instructions, dependencies). |
-| `MODELS_NAME` | `list[str]` | Ordered list of model identifiers the system may select when calling the LLM backend. |
-| `API_KEY` | `str` | Loaded from the environment (`.env`) – used for authenticating requests to the chosen model provider. |
+*   **Conversation Context**: The conversation context is updated with the user query and the generated answer.
+*   **API Requests**: The module sends requests to the Groq API to generate answers.
 
-These constants are imported by the **manager**, **factory**, and **UI** layers to feed the appropriate prompt to the language model at each step.
+By following the provided documentation and code structure, developers can effectively utilize the `engine/models` module to generate high-quality documentation using the LLM.
 
----
-
-<a name="dynamic-compression-prompt"></a>
-## 🛠️ `get_BASE_COMPRESS_TEXT(start, power)`  
-
-```python
-def get_BASE_COMPRESS_TEXT(start, power):
-    return f"""
-    You will receive a large code snippet (up to ~{start} characters).
-    …
-    Summary: No more than ~{int(start / power)} characters.
-    …
-    ```python
-    # Real-world usage based on the code above
-    """
-```
-
-* **Responsibility** – Generates a tailored prompt for handling *very large* code fragments (e.g., > 10 k characters).  
-* **Inputs**  
-  * `start` – Approximate maximum size of the incoming snippet (characters).  
-  * `power` – Divisor that determines the allowed length of the summary (`start / power`).  
-* **Outputs** – A multi‑line string containing:  
-  * An instruction block describing analysis, summarisation length, and a strict usage‑example requirement.  
-  * An opening Markdown code‑fence (` ```python `) that callers will later close with their concrete example.  
-
-The function is invoked by the **compression/orchestration** component when the raw repository dump exceeds the LLM token window, ensuring the model receives a concise, well‑structured request.
-
----
-
-<a name="environment-loading"></a>
-## 🌍 Environment Loading  
-
-```python
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-API_KEY = os.getenv("API_KEY")
-```
-
-* Loads `.env` at runtime, exposing `API_KEY` for authenticated model calls.  
-* The variable is referenced by the **`GPTModel`** wrapper (outside this snippet) to configure HTTP headers or SDK credentials.
-
----
-
-<a name="interaction-with-other-modules"></a>
-## 🔗 Interaction with the Rest of the System  
-
-| Component | How it uses this module |
-|-----------|------------------------|
-| **`manager.Manager`** | Pulls the prompt constants to build messages for the LLM during each pipeline stage (code collection → global info → doc parts → intro generation). |
-| **`factory.base_factory.DocFactory`** | Receives `BASE_PART_COMPLITE_TEXT` and `BASE_INTRO_CREATE` to shape its internal templating logic. |
-| **`ui.progress_base.LibProgress`** | Unrelated to prompts but shares the same import path; both live under `engine/config`. |
-| **`model.wrapper.GPTModel`** | Reads `API_KEY` and selects a model from `MODELS_NAME` when constructing request payloads. |
-| **`engine/compress`** (hypothetical) | Calls `get_BASE_COMPRESS_TEXT` to produce a custom prompt when splitting oversized files. |
-
-All prompts are **static, human‑readable strings**; they are never mutated at runtime, guaranteeing deterministic behaviour across executions.
-
----
-
-<a name="assumptions-and-side-effects"></a>
-## ⚙️ Assumptions & Side Effects  
-
-* **Assumptions**  
-  * `.env` exists and contains a valid `API_KEY`.  
-  * The LLM provider accepts the supplied prompt format (Markdown with fenced code blocks).  
-  * `MODELS_NAME` ordering reflects priority; the system will fall back to the next entry if the first fails.  
-
-* **Side Effects**  
-  * Loading the environment may raise `FileNotFoundError` if `.env` is missing (handled elsewhere).  
-  * The function `get_BASE_COMPRESS_TEXT` performs only string interpolation – no I/O or state changes.  
-
----
-
-<a name="summary"></a>
-## 📌 Summary  
-
-`engine/config/config.py` is the *single source of truth* for every textual instruction fed to the language model and for the runtime credentials needed to access it. By separating prompts, model identifiers, and environment loading into this module, the rest of the codebase can stay focused on orchestration, file‑system traversal, and UI concerns while consistently reusing the same high‑quality, centrally‑maintained prompts. This design simplifies updates (e.g., tweaking the “30 % rule”) and ensures that all pipeline stages speak a unified language to the LLM.
+**Factory Core – Documentation**  
 
 <a name="overview"></a>
 ## Overview
-The *engine* package implements a thin wrapper around the **Groq** LLM API.  The models keep a chat history, cycle through a shuffled list of available model names, and automatically retry with the next model when a request fails.  The *factory* package turns collected data into a human‑readable introduction by delegating to a set of `BaseModule` implementations (`IntroLinks`, `IntroText`).
-
-<a name="history"></a>
-## History – `engine\models\model.py`
-* `History`  
-  Stores a list of chat messages.  The constructor seeds the history with a system prompt (`BASE_SYSTEM_TEXT`).  `add_to_history(role, content)` appends a message dict.
-
-* `ParentModel`  
-  Common base for sync/async models: keeps the API key, the current model index, and a shuffled copy of `MODELS_NAME` (`regen_models_name`) that is used for retrying.
-
-* `Model` & `AsyncModel`  
-  Provide high‑level convenience methods  
-  ```python
-  get_answer(prompt)          # user → model → assistant
-  get_answer_without_history(prompt)   # raw prompt list
-  ```  
-  The actual LLM call is delegated to `generate_answer()` which subclasses override.
-
-<a name="gptmodel"></a>
-## Groq Models – `engine\models\gpt_model.py`
-Both classes inherit the retry logic from `ParentModel`.
-
-* **`GPTModel`** (synchronous)  
-  * `client` is a `groq.Groq`.  
-  * `generate_answer()` builds the `messages` list from history or a supplied prompt.  
-  * A `while` loop picks `self.regen_models_name[self.current_model_index]` and attempts a completion with `temperature=0.3`.  
-  * On exception it resets the index and removes the failed model, looping until success or all models are exhausted.
-
-* **`AsyncGPTModel`** (asynchronous)  
-  Similar logic but uses `AsyncGroq` and `await` on `chat.completions.create`.  
-  The temperature is omitted (defaults to 0.3 in Groq), and the same retry pattern applies.
-
-Both raise `Exception("all models do not work")` if every model fails.
-
-<a name="factory"></a>
-## Document Generation – `factory` package
-* **`BaseModule`** (abstract) – defines a single `generate(info: dict)` method.
-
-* **`DocFactory`** – collects arbitrary modules and concatenates their outputs:
-  ```python
-  output += module.generate(info) + "\n\n"
-  ```
-  It is the orchestrator that builds the final intro document.
-
-* **Modules (`factory\modules\intro.py`)**  
-  * `IntroLinks` – extracts all HTML links from `info["full_data"]` with `get_all_html_links`, then formats them into a language‑specific table via `get_links_intro`.  
-  * `IntroText` – builds a prose introduction from `info["global_data"]` with `get_introdaction`.
-
-These modules rely on the `preprocessor.postprocess` helpers to transform raw data before rendering.
-
-<a name="interaction"></a>
-## Interaction Flow
-1. **LLM Interaction** – `GPTModel`/`AsyncGPTModel` receive a user prompt, record it in history, call `generate_answer`, and return the assistant reply.  
-2. **Documentation Pipeline** – `DocFactory` is instantiated with `IntroLinks` and `IntroText`.  
-3. `DocFactory.generate_doc(info)` runs each module, gathering a link table and an introductory paragraph, which are then stitched together into a ready‑to‑use README snippet.
-
-All classes are intentionally lightweight: the heavy lifting (token counting, chunking, compression) happens elsewhere in the project, while these files focus on *communication with the LLM* and *structured generation of intro text*.
+The *factory* package builds the final documentation page by chaining **modules** that each generate a fragment of markdown/HTML.  
+`DocFactory` receives any number of objects that inherit from `BaseModule`.  
+During `generate_doc(info)` every module is called with the same `info` dictionary, its result is concatenated, and the combined string is returned to the caller (e.g., the CLI or the high‑level `DocFactory.generate_doc` used in the usage example).
 
 ---
 
-## <a name="manager-class"></a> Manager Class
-The `Manager` class is the high-level facade that orchestrates the entire documentation generation pipeline. It is responsible for managing the project directory, ignoring specific files, and generating the documentation.
+<a name="basemodule"></a>
+## `BaseModule` (abstract)
 
-### <a name="responsibilities"></a> Responsibilities
-The `Manager` class has the following responsibilities:
+```python
+class BaseModule(ABC):
+    def __init__(self):
+        pass
 
-* Managing the project directory and cache folder
-* Ignoring specific files and directories
-* Generating the code file
-* Generating the global info file
-* Generating the documentation parts
-* Generating the documentation intro
+    @abstractmethod
+    def generate(self, info: dict):
+        ...
+```
 
-### <a name="interactions"></a> Interactions
-The `Manager` class interacts with the following components:
+* **Responsibility** – Define the contract for a documentation fragment generator.  
+* **Key method** – `generate(info) → str` must return a string that will be inserted into the final document.  
+* **Assumptions** – Implementations may read any key from `info`; they must never mutate the dictionary.  
+* **Side‑effects** – None (pure function).
 
-* `CodeMix`: used to build the repository content
-* `DocFactory`: used to generate the documentation intro
-* `LibProgress`: used to report progress
-* `AsyncGPTModel`: used to generate documentation parts asynchronously
+All concrete modules (e.g., `IntroLinks`, `IntroText`) inherit from this class.
 
-### <a name="key-functions"></a> Key Functions
-The `Manager` class has the following key functions:
+---
 
-* `generate_code_file`: generates the code file
-* `generate_global_info_file`: generates the global info file
-* `generete_doc_parts`: generates the documentation parts
-* `factory_generate_doc_intro`: generates the documentation intro
+<a name="docfactory"></a>
+## `DocFactory`
 
-### <a name="logic-flow"></a> Logic Flow
-The logic flow of the `Manager` class is as follows:
+```python
+class DocFactory:
+    def __init__(self, *modules):
+        self.modules: list[BaseModule] = modules
 
-1. Initialize the project directory, ignore list, language, and progress bar
-2. Create the cache folder if it does not exist
-3. Generate the code file
-4. Generate the global info file
-5. Generate the documentation parts
-6. Generate the documentation intro
+    def generate_doc(self, info: dict) -> str:
+        output = ""
+        for module in self.modules:
+            module_result = module.generate(info)
+            output += module_result + "\n\n"
+        return output
+```
 
-### <a name="example-usage"></a> Example Usage
+* **Responsibility** – Orchestrate the ordered execution of modules and concatenate their outputs.  
+* **Interaction** –  
+  * Receives pre‑instantiated module objects (any subclass of `BaseModule`).  
+  * Calls each module’s `generate` method, passing the *same* `info` payload.  
+* **Inputs** – `info: dict` containing the data required by the modules (e.g., `full_data`, `global_data`, `language`).  
+* **Outputs** – A single markdown/HTML string where each fragment is separated by a blank line.  
+* **Side‑effects** – None; the method is pure apart from the module implementations.
+
+> **Note** – The `if __name__ == "__main__":` block demonstrates a naïve call with abstract classes; in production you would pass concrete module instances.
+
+---
+
+<a name="intro-modules"></a>
+## Intro Modules (`factory.modules.intro`)
+
+```python
+from ..base_factory import BaseModule
+from preprocessor.postprocess import (
+    get_all_html_links,
+    get_links_intro,
+    get_introdaction,
+)
+
+class IntroLinks(BaseModule):
+    def generate(self, info: dict):
+        links = get_all_html_links(info.get("full_data"))
+        intro_links = get_links_intro(links, info.get("language"))
+        return intro_links
+
+class IntroText(BaseModule):
+    def generate(self, info: dict):
+        intro = get_introdaction(info.get("global_data"), info.get("language"))
+        return intro
+```
+
+### IntroLinks
+* **Purpose** – Extract every `<a href=…>` tag from the raw HTML (`full_data`) and transform the list into a language‑specific introductory list.  
+* **Dependencies** – `preprocessor.postprocess.get_all_html_links` and `get_links_intro`.  
+* **Inputs** – `info["full_data"]` (HTML string), `info["language"]` (e.g., `"en"`).  
+* **Output** – Formatted markdown list of links.
+
+### IntroText
+* **Purpose** – Produce a short paragraph that introduces the whole project using the high‑level description (`global_data`).  
+* **Dependency** – `preprocessor.postprocess.get_introdaction`.  
+* **Inputs** – `info["global_data"]` (project summary), `info["language"]`.  
+* **Output** – A single paragraph of introductory text.
+
+Both modules are pure and rely exclusively on the `info` dict; they do not modify external state.
+
+---
+
+<a name="integration"></a>
+## Integration with the Rest of the System
+1. **Pre‑processing** – `preprocessor` components generate the `full_data` and `global_data` fields that the intro modules consume.  
+2. **Factory construction** – In user code (see the global usage example) a `DocFactory` is instantiated with the desired modules, e.g.:
+
+   ```python
+   factory = DocFactory(IntroLinks(), IntroText())
+   doc = factory.generate_doc(info)
+   ```
+
+3. **Output** – The resulting string can be written to a markdown file, displayed in the UI, or further post‑processed.
+
+---
+
+<a name="usage-example"></a>
+## Quick Usage Example
+
+```python
+from factory.base_factory import DocFactory
+from factory.modules.intro import IntroLinks, IntroText
+
+info = {
+    "full_data": "<html>…</html>",        # raw HTML of the project page
+    "global_data": "Auto Doc Generator …",  # short project description
+    "language": "en"
+}
+
+factory = DocFactory(IntroLinks(), IntroText())
+documentation = factory.generate_doc(info)
+print(documentation)
+```
+
+The example produces an introductory links block followed by a concise project paragraph, each separated by a blank line.
+
+---
+
+**Key Take‑aways**
+
+* `BaseModule` enforces a simple *generate‑only* contract.  
+* `DocFactory` is the orchestrator – order of modules matters.  
+* Intro modules are thin adapters around post‑processing utilities, keeping the factory layer agnostic of HTML parsing details.  
+
+This design makes it trivial to add new sections (e.g., `APIReference`, `Changelog`) – simply implement a new `BaseModule` subclass and include it in the factory’s constructor.
+
+<a name="manager-class"></a>
+## Manager Class
+The `Manager` class is responsible for orchestrating the documentation generation process. It takes in several parameters during initialization:
+* `project_directory`: The path to the project directory.
+* `project_settings`: An instance of `ProjectSettings` containing project metadata.
+* `ignore_files`: A list of file patterns to ignore during the documentation generation process.
+* `language`: The language of the project (defaults to "en").
+* `progress_bar`: An instance of `BaseProgress` for displaying progress (defaults to `BaseProgress`).
+
+### Methods
+The `Manager` class has several methods that perform the following tasks:
+* `read_file_by_file_key`: Reads a file from the cache directory based on a file key.
+* `get_file_path`: Returns the file path for a given file key.
+* `generate_code_file`: Generates a code mix file by walking the repository and concatenating file contents.
+* `generate_global_info_file`: Generates a global info file by compressing the code mix file using an LLM.
+* `generete_doc_parts`: Generates documentation parts by splitting the code mix file and using an LLM to generate text.
+* `factory_generate_doc_intro`: Generates a documentation intro using a `DocFactory` instance.
+
+### Usage Example
+The `Manager` class is used in the `if __name__ == "__main__":` block to generate documentation for a project. The example demonstrates how to create a `Manager` instance, generate a code mix file, global info file, documentation parts, and finally, a documentation intro using a `DocFactory` instance.
+
 ```python
 with Progress(
     SpinnerColumn(),          
@@ -406,11 +429,16 @@ with Progress(
     BarColumn(),               
     TaskProgressColumn(),     
 ) as progress:
-    manager = Manager(r"C:\Users\huina\Python Projects\Impotant projects\AutoDocGenerateGimini", ignore_list, progress_bar=LibProgress(progress), language="en")
+    project_settings = ProjectSettings("Auto Doc Generator")
+    project_settings.add_info(
+        "global idea",
+        """This project was created to help developers make documentations for them projects"""
+    )
+    manager = Manager(r"C:\Users\huina\Python Projects\Impotant projects\AutoDocGenerateGimini", project_settings, ignore_list, progress_bar=LibProgress(progress), language="en")
 
     manager.generate_code_file()
-    manager.generate_global_info_file(use_async=True, max_symbols=7000)
-    manager.generete_doc_parts(use_async=True, max_symbols=5000)
+    manager.generate_global_info_file(use_async=True, max_symbols=5000)
+    manager.generete_doc_parts(use_async=True, max_symbols=4000)
     manager.factory_generate_doc_intro(
         DocFactory(
             IntroLinks(),
@@ -418,380 +446,366 @@ with Progress(
         )
     )
 ```
-This example demonstrates how to use the `Manager` class to generate documentation for a project. The `Manager` class is initialized with the project directory, ignore list, language, and progress bar. The `generate_code_file`, `generate_global_info_file`, `generete_doc_parts`, and `factory_generate_doc_intro` methods are then called to generate the documentation.
 
-<a name="CodeMix"></a>
-## `CodeMix` – Repository‑wide source collector  
+### Key Points
+* The `Manager` class is designed to be flexible and reusable for different projects.
+* The `generate_code_file`, `generate_global_info_file`, and `generete_doc_parts` methods can be used asynchronously by passing `use_async=True`.
+* The `factory_generate_doc_intro` method uses a `DocFactory` instance to generate a documentation intro.
+* The `Manager` class uses a `BaseProgress` instance to display progress during the documentation generation process.
 
-The **CodeMix** class lives in *preprocessor/code_mix.py* and is the first step of the doc‑generation pipeline.  
-Its responsibility is to walk a Python (or any) project directory, filter out files that should not participate in the documentation (virtual‑env folders, caches, binary artefacts, etc.) and produce a single text file that contains:
+<a name="code_mix"></a>
+## `preprocessor/code_mix.py` – Repository‑Mixer Component  
 
-1. **A tree view** of the repository structure (folders and file names).  
-2. **The raw content of every kept file**, wrapped in a custom XML‑like tag `<file path="...">`.  
+**Purpose in the Auto Doc Generator**  
+`CodeMix` is the first step of the documentation pipeline. It walks a project's source tree, writes a **human‑readable directory listing** followed by the raw contents of every non‑ignored file into a single text blob. This blob (`codemix.txt`) is later consumed by the **compressor** (`preprocessor/compressor.py`) which splits it on the `<file path="…">` markers and feeds the fragments to the LLM for progressive summarisation.
 
-### How it fits into the system  
+### Core Class: `CodeMix`
 
-`Manager.generate_code_file()` (see the global description) creates a `CodeMix` instance, calls `build_repo_content()`, and stores the resulting *codemix.txt*.  
-The produced file is later fed to the **compressor** module, which chunks and compresses the text with a LLM before the introduction factory builds the final README.
+| Method | Responsibility | Key Behaviour |
+|--------|----------------|----------------|
+| `__init__(root_dir=".", ignore_patterns=None)` | Initialise the mixer. <br> * `root_dir` → absolute `Path` of the repository root. <br> * `ignore_patterns` → list of glob patterns (e.g., `*.pyc`, `venv`) that define files/folders to skip. |
+| `should_ignore(path: str) -> bool` | Decide whether a given `Path` should be excluded. <br> * Computes the path relative to `root_dir`. <br> * Checks the relative string, its basename, and every path component against all glob patterns using `fnmatch`. |
+| `build_repo_content(output_file="repomix-output.txt")` | Generate the mixed repository file. <br> * Writes a **tree view** (`Repository Structure:`) with indentation reflecting directory depth. <br> * Inserts a separator line (`====================`). <br> * For each file that passes `should_ignore`, writes a marker `<file path="relative/path">` followed by the file's text (UTF‑8, errors ignored). <br> * On read errors, logs a line `Error reading <path>: <exception>` instead of aborting. |
 
-### Key attributes  
+### Interaction with Other Modules  
 
-| Attribute | Type | Meaning |
-|-----------|------|---------|
-| `root_dir` | `Path` | Absolute path of the project root that will be scanned. |
-| `ignore_patterns` | `list[str]` | Glob‑style patterns that tell the scanner which paths to skip. |
+1. **Input** – The component receives the absolute path to the project (`root_dir`) and a list of ignore patterns (`ignore_list` defined at the bottom of the file).  
+2. **Output** – A plain‑text file (by default `repomix-output.txt`, commonly renamed to `codemix.txt`). Its format is:  
 
-### Core methods  
+   ```
+   Repository Structure:
+   src/
+     main.py
+     utils/
+       helpers.py
+   ====================
 
-| Method | Signature | What it does |
-|--------|-----------|--------------|
-| `should_ignore(self, path: Path) -> bool` | Checks a given `Path` against every pattern in `ignore_patterns`. Returns `True` if the file/folder must be omitted. |
-| `build_repo_content(self, output_file: str = "repomix-output.txt")` | Writes the repository structure and file contents to `output_file`. |
-| `__init__(self, root_dir=".", ignore_patterns=None)` | Normalises `root_dir` to an absolute `Path` and stores the ignore list (empty list if `None`). |
+   <file path="src/main.py">
+   <file contents …>
 
-#### `should_ignore` logic  
+   <file path="src/utils/helpers.py">
+   <file contents …>
+   ```
+3. **Downstream consumption** – `preprocessor/compressor.compress_to_one` reads this file, splits on `<file path="` to obtain a list of *per‑file blocks*, and then iteratively asks the LLM to compress them. The `ProjectSettings` object supplies the system prompt that guides the LLM, while the `History` object tracks the conversation.  
 
-* Computes the path relative to `root_dir`.  
-* For each pattern it returns `True` when **any** of the following matches:  
-  * The whole relative path (`fnmatch`).  
-  * The basename of the path.  
-  * Any individual component of the path (`path.parts`).  
+### Assumptions & Side Effects  
 
-This generous matching ensures that patterns like `"venv"` or `"*.pyc"` filter out both the folder itself and any files inside it.
+* **Assumptions** – The repository fits in memory when split into fragments; all source files are UTF‑8‑compatible (binary files are ignored via patterns).  
+* **Side effects** – Writes (or overwrites) `output_file`. May produce additional lines for files that raise exceptions during reading (e.g., permission errors).  
 
-#### `build_repo_content` flow  
-
-1. Opens `output_file` for UTF‑8 writing.  
-2. **Section 1 – Tree view**  
-   * Iterates over `self.root_dir.rglob("*")` (recursive glob).  
-   * Skips ignored items.  
-   * Calculates depth (`len(relative.parts)`) to produce an indented visual tree (`"  "` per level).  
-   * Writes directories with a trailing `/` and files without.  
-3. Inserts a visual separator (`"="*20`).  
-4. **Section 2 – Raw files**  
-   * Re‑iterates the same recursive list.  
-   * For each *file* that is not ignored:  
-     * Writes a header `<file path="{relative_path}">`.  
-     * Reads the file text (`read_text(..., errors="ignore")`) and dumps it verbatim.  
-     * Adds a blank line after each file.  
-   * Errors while reading (permission issues, binary files) are caught and written as `Error reading …`.  
-
-**Side effects** – creates or overwrites the `output_file`; may produce console output if run as a script.
-
-### Assumptions & constraints  
-
-* All source files are UTF‑8 readable; binary data will be silently ignored by `errors="ignore"` (may produce garbled output).  
-* `ignore_patterns` follow Unix‑style glob syntax; the list supplied in `ignore_list` covers typical Python project artefacts.  
-* The directory tree fits in memory for the sorted iteration (reasonable for most projects).  
-
-### Typical usage (as shown in the `__main__` block)  
+### Typical Usage  
 
 ```python
-ignore_list = [...]   # predefined patterns
-packer = CodeMix(
-    root_dir=r"C:\Users\huina\Python Projects\Kwork\ClickerProject\ClickerApp",
-    ignore_patterns=ignore_list
-)
-packer.build_repo_content("codemix.txt")
-print("Файл успешно создан!")
+from preprocessor.code_mix import CodeMix, ignore_list
+
+mixer = CodeMix(root_dir="path/to/project", ignore_patterns=ignore_list)
+mixer.build_repo_content("codemix.txt")   # creates the mixed dump
+print("Repository dump ready for compression.")
 ```
 
-The resulting *codemix.txt* is the raw input for the **compressor** step.
+The generated `codemix.txt` becomes the **single source of truth** for the rest of the Auto Doc Generator, enabling the system to turn an entire codebase into concise, LLM‑crafted documentation.
 
-<a name="compressor"></a>
-## `compressor` – LLM‑driven hierarchical compression  
+<a name="compressor-overview"></a>
+## 📦 compressor – Core Compression Engine  
 
-Located in *preprocessor/compressor.py*, this module reduces the potentially huge *codemix.txt* into a compact representation that fits the token limits of the downstream LLM.  
+The **compressor** module implements the *iterative reduction* stage of the Auto Doc Generator pipeline.  
+After `preprocessor.code_mix` has emitted a list of per‑file text blocks, this module repeatedly sends groups of those blocks to the LLM (via `GPTModel` / `AsyncGPTModel`) and merges the returned summaries until a single, project‑wide documentation string remains.
 
-### Role in the pipeline  
+It is the bridge between raw source‑code blobs and the final markdown/HTML that downstream *post‑process* modules consume.
 
-`Manager.generate_global_info_file()` calls `compress_to_one()` (exposed here).  
-The function repeatedly groups text chunks, asks the LLM to summarise each group, and continues until a single compressed block remains.  
-The final string is stored as the *global‑info* file, later split into parts for the introduction factory.
+---
 
-### Public API  
+<a name="compress"></a>
+### `compress(data: str, project_settings: ProjectSettings, model: Model, compress_power) -> str`  
 
-| Function | Purpose |
-|----------|---------|
-| `compress(data: str, model: Model, compress_power)` | Sends a single chunk to the LLM with a system prompt (generated by `get_BASE_COMPRESS_TEXT`) and returns the model’s answer. |
-| `compress_and_compare(data: list, compress_power=4, progress_bar=BaseProgress())` | Synchronous version that processes a list of strings, groups them by `compress_power`, and concatenates the LLM responses per group. |
-| `async_compress(... )` | Helper coroutine that compresses a single chunk under a semaphore (limits concurrent LLM calls). |
-| `async_compress_and_compare(data: list, compress_power=4, progress_bar=BaseProgress())` | Asynchronous counterpart of `compress_and_compare`. |
-| `compress_to_one(data: list, compress_power=4, use_async=False, progress_bar=BaseProgress())` | Orchestrator that repeatedly calls the (a)sync version until only one element remains; returns the final compressed string. |
+* **Responsibility** – Build a three‑message prompt (system + system + user) and ask the model to *compress* the supplied `data`.  
+* **Inputs**  
+  * `data` – raw text of a single file (or a concatenated chunk).  
+  * `project_settings` – provides `prompt` (project‑specific system prompt).  
+  * `model` – an instantiated `GPTModel` (sync) or `AsyncGPTModel` (async) that implements `get_answer_without_history`.  
+  * `compress_power` – integer controlling the “detail level” that is baked into the system prompt via `get_BASE_COMPRESS_TEXT`.  
+* **Outputs** – The model’s answer string, i.e. a concise summary of `data`.  
+* **Side‑effects** – None (the model call is stateless; no history is updated).  
 
-### Interaction with other components  
+---
 
-* **Model layer** – imports `GPTModel` / `AsyncGPTModel` from `engine.models.gpt_model`. These wrappers expose `get_answer_without_history(prompt)` that talks to the OpenAI‑style API.  
-* **Config layer** – `get_BASE_COMPRESS_TEXT` builds the system‑prompt that tells the LLM how aggressively to compress (`compress_power` influences the “compression ratio”).  
-* **Progress UI** – All functions accept a `BaseProgress` (or subclass) instance to report sub‑task creation, incremental updates, and removal. This ties into the Rich‑based UI (`LibProgress`).  
+<a name="compress_and_compare"></a>
+### `compress_and_compare(data: list, project_settings: ProjectSettings, compress_power: int = 4, progress_bar: BaseProgress = BaseProgress()) -> list`  
 
-### Data flow  
+* **Responsibility** – Synchronously compress a *list* of file blocks, grouping `compress_power` consecutive elements, appending their compressed results into a new list (`compress_and_compare_data`).  
+* **Workflow**  
+  1. Initialise a result list sized `ceil(len(data)/compress_power)`.  
+  2. Create a sub‑task on the supplied `progress_bar`.  
+  3. Reuse a single `GPTModel` instance for all calls (reduces API overhead).  
+  4. For each element `el` in `data` compute its chunk index `i // compress_power` and concatenate `compress(el, …) + "\n"` to the appropriate bucket.  
+  5. Update the progress bar after each compression.  
+  6. Remove the sub‑task and return the bucket list.  
 
-1. **Input** – `data` is a list of raw strings, each typically representing a file’s content (produced by `CodeMix`).  
-2. **Chunking** – `compress_power` decides how many consecutive elements are merged before a compression call.  
-3. **LLM call** – `compress` builds a two‑message prompt (`system` + `user`) and returns the model’s answer (a compressed summary).  
-4. **Aggregation** – Results are concatenated into a new list whose length ≈ `ceil(len(data)/compress_power)`.  
-5. **Iteration** – `compress_to_one` loops until the list size is `1`. The loop may adapt `compress_power` to `2` when the remaining list is small, preventing an infinite loop.  
+* **Assumptions** – `compress_power` ≥ 2; `data` contains non‑empty strings.  
 
-### Side effects & assumptions  
+---
 
-* **Network I/O** – each `compress` call performs an HTTP request to the LLM service; failures raise exceptions upstream.  
-* **Rate limiting** – the async version uses a semaphore with a hard‑coded concurrency of `4`. Adjust if the model’s rate limits differ.  
-* **Deterministic ordering** – the order of chunks is preserved across iterations, ensuring that later summaries retain the original file ordering.  
-* **Progress handling** – callers must provide a `BaseProgress` (or subclass) that implements `create_new_subtask`, `update_task`, and `remove_subtask`. The default `BaseProgress()` is a no‑op placeholder.  
+<a name="async_compress"></a>
+### `async_compress(data: str, project_settings: ProjectSettings, model: AsyncModel, compress_power, semaphore, progress_bar: BaseProgress) -> str`  
 
-### Example (synchronous)  
+* **Responsibility** – Async counterpart of `compress`.  
+* **Key Details**  
+  * The coroutine acquires the supplied `semaphore` (default limit 4) to bound concurrent LLM calls.  
+  * Builds the same three‑message prompt and awaits `model.get_answer_without_history`.  
+  * Updates the progress bar once the LLM response arrives.  
+
+---
+
+<a name="async_compress_and_compare"></a>
+### `async_compress_and_compare(data: list, project_settings: ProjectSettings, compress_power: int = 4, progress_bar: BaseProgress = BaseProgress()) -> list`  
+
+* **Responsibility** – Parallel‑execute `async_compress` for every element of `data`.  
+* **Logic Flow**  
+  1. Create a semaphore (max 4 concurrent requests) and a single `AsyncGPTModel`.  
+  2. Queue a coroutine for each element (`tasks`).  
+  3. `await asyncio.gather(*tasks)` → `compressed_elements`.  
+  4. Re‑assemble the elements into chunks of size `compress_power`, joining them with newline characters to mimic the synchronous bucket layout.  
+  5. Return the list of combined strings.  
+
+* **Side‑effects** – Progress bar sub‑task is created/removed; LLM calls are performed concurrently.
+
+---
+
+<a name="compress_to_one"></a>
+### `compress_to_one(data: list, project_settings: ProjectSettings, compress_power: int = 4, use_async: bool = False, progress_bar: BaseProgress = BaseProgress()) -> str`  
+
+* **Responsibility** – Orchestrate the *iterative* compression loop until only one document remains.  
+* **Algorithm**  
+  ```text
+  while len(data) > 1:
+      if len(data) < compress_power + 1:
+          new_compress_power = 2            # fall‑back for small tails
+      else:
+          new_compress_power = compress_power
+
+      if use_async:
+          data = async_compress_and_compare(..., new_compress_power)
+      else:
+          data = compress_and_compare(..., new_compress_power)
+
+      count_of_iter += 1
+  return data[0]
+  ```  
+* **Inputs** – Same as the helper functions; `use_async` toggles the sync vs async pipeline.  
+* **Outputs** – A single string containing the fully compressed project documentation.  
+* **Side‑effects** – Progress bar updates; multiple LLM calls (sync or async) are issued; internal counters (`count_of_iter`) are for debugging/metrics only.  
+
+---
+
+<a name="integration"></a>
+## 🔗 Interaction with the Rest of the System  
+
+| Component | How it uses *compressor* |
+|-----------|--------------------------|
+| **preprocessor.code_mix** | Generates the initial `list[str]` (raw file blocks) that is fed into `compress_to_one`. |
+| **preprocessor.settings** | Supplies `ProjectSettings.prompt`, which is merged into every LLM request. |
+| **engine.models.gpt_model** | Provides `GPTModel` / `AsyncGPTModel` with the `get_answer_without_history` method used throughout. |
+| **ui.progress_base** | Optional visual feedback; the compressor creates and updates sub‑tasks but works without it (defaults to a no‑op implementation). |
+| **postprocess** | Receives the final single string from `compress_to_one` for heading extraction, intro generation, etc. |
+
+---
+
+<a name="usage-notes"></a>
+## 🚀 Typical Usage Pattern  
 
 ```python
 from preprocessor.compressor import compress_to_one
-from preprocessor.code_mix import CodeMix, ignore_list
+from preprocessor.settings import ProjectSettings
+from ui.progress_base import BaseProgress
 
-# 1. Build raw repo text
-cm = CodeMix(root_dir="my_project", ignore_patterns=ignore_list)
-cm.build_repo_content("raw.txt")
+# `file_blocks` is the list produced by CodeMix (raw per‑file text)
+project_settings = ProjectSettings(project_name="MyApp", info={...})
 
-# 2. Split raw file into per‑file strings (simplified)
-with open("raw.txt", encoding="utf-8") as f:
-    raw_sections = f.read().split("\n\n")   # each section = file header + content
-
-# 3. Reduce to a single compressed blob
-compressed = compress_to_one(raw_sections, compress_power=4, use_async=False)
-print(compressed[:500])   # preview
+final_doc = compress_to_one(
+    data=file_blocks,
+    project_settings=project_settings,
+    compress_power=4,          # tune for token budget
+    use_async=True,           # leverage async for speed
+    progress_bar=BaseProgress()
+)
 ```
 
-The `compressed` string is later fed to `DocFactory` to generate the final README.  
+The function will automatically shrink the list, respect the token limits (via `get_BASE_COMPRESS_TEXT`), and return the ready‑to‑post‑process documentation.
 
-<a name="preprocessor-postprocess"></a>
-## `preprocessor/postprocess.py`
+--- 
 
-The **postprocess** module is a small utility layer that prepares the raw markdown/HTML fragments produced by the earlier stages of the documentation pipeline for final presentation and for feeding into the language‑model prompts.  
-It lives in the *preprocessor* package because its functions are invoked right after the **spliter** has produced the chunked text but before the final README‑style document is assembled.
+*All symbols and behaviours described are aligned with the global architecture of the **Auto Doc Generator** project.*
 
-### Responsibilities
-| What | How |
-|------|-----|
-|Create stable markdown anchors for section headers|`generate_markdown_anchor` normalises the header text and applies the GitHub‑flavoured anchor rules.|
-|Extract a list of top‑level topics (`## …`) from a markdown string|`get_all_topics` scans the string, returns both the raw titles and their markdown anchors.|
-|Extract custom HTML `<a name="…">` anchors used by the generator|`get_all_html_links` walks through the HTML markup and returns the raw name attributes.|
-|Ask the LLM to write an *introduction* for a set of links|`get_links_intro` builds a system‑prompt + user‑prompt payload and calls `GPTModel.get_answer_without_history`.|
-|Ask the LLM to write a *global introduction* for the whole repository|`get_introdaction` (note the historic typo) does the same, using a different system prompt template.|
+## <a name="postprocess"></a> Post-processing Module
+The post-processing module is responsible for generating markdown anchors, extracting topics and links, and creating introductions for the documentation.
 
-### Key Functions  
+### Functions
 
-| Function | Signature | Returns | Side‑effects |
-|----------|-----------|---------|--------------|
-|`generate_markdown_anchor(header: str) -> str`|Converts a heading into a slug|Markdown link like `#my-section`|None |
-|`get_all_topics(data: str) -> tuple[list[str], list[str]]`|Parses markdown for `##` headings|`(titles, anchors)`|None |
-|`get_all_html_links(data: str) -> list[str]`|Searches for `<a name="…">` blocks|List of raw anchor names|None |
-|`get_links_intro(links: list[str], language: str = "en") -> str`|Calls the LLM with `BASE_INTRODACTION_CREATE_TEXT`|Generated paragraph describing the links|Network I/O via `GPTModel` |
-|`get_introdaction(global_data: str, language: str = "en") -> str`|Calls the LLM with `BASE_INTRO_CREATE`|Generated global introduction|Network I/O via `GPTModel` |
+*   **`generate_markdown_anchor(header: str) -> str`**: This function generates a markdown anchor from a given header. It converts the header to lowercase, replaces spaces with hyphens, and removes any non-alphanumeric characters.
+*   **`get_all_topics(data: str) -> list[str]`**: This function extracts all topics from a given data string. It finds all occurrences of "\n## " followed by a topic name and returns a list of topics along with their corresponding markdown anchors.
+*   **`get_all_html_links(data: str) -> list[str]`**: This function extracts all HTML links from a given data string. It finds all occurrences of "<a name=" followed by a link name and returns a list of links.
+*   **`get_links_intro(links: list[str], language: str = "en")`**: This function generates an introduction for a list of links using a GPT model. It creates a prompt with the language and links, and returns the model's response.
+*   **`get_introdaction(global_data: str, language: str = "en") -> str`**: This function generates an introduction for a given global data string using a GPT model. It creates a prompt with the language and global data, and returns the model's response.
 
-### Interaction with the Rest of the System  
-
-* **Input source** – The `data` argument for the extraction helpers is the markdown string produced by `spliter.split_data` (or a later aggregation step).  
-* **Output consumption** – The lists of anchors are later fed to `DocFactory` (or a similar component) to build a Table‑of‑Contents and to pass to `get_links_intro`.  
-* **LLM integration** – Both `get_links_intro` and `get_introdaction` instantiate `GPTModel` directly; they do **not** share a model instance with other parts of the pipeline, which keeps the functions stateless but may cause repeated authentication overhead.  
-
----
-
-<a name="preprocessor-spliter"></a>
-## `preprocessor/spliter.py`
-
-The **spliter** module is the entry point for breaking a potentially huge markdown payload into chunks that respect the token limits of the downstream GPT model. Only the beginning of the implementation is shown, but its intent and contract are clear.
-
-### Core Function  
+### Example Usage
 
 ```python
-def split_data(data: str, max_symbols: int) -> list[str]:
-    ...
+topics, links = get_all_topics(data)
+print(topics)  # Output: ["Topic 1", "Topic 2", ...]
+print(links)  # Output: ["#topic-1", "#topic-2", ...]
+
+html_links = get_all_html_links(data)
+print(html_links)  # Output: ["link-1", "link-2", ...]
+
+intro = get_links_intro(links)
+print(intro)  # Output: "Introduction to links..."
+
+intro = get_introdaction(global_data)
+print(intro)  # Output: "Introduction to global data..."
 ```
 
-* **Purpose** – Produce a list of strings, each ≤ `max_symbols` characters, while attempting to keep logical boundaries (e.g., file separators) intact.  
-* **Parameters**  
-  * `data` – The full markdown representation of the repository (usually the output of `Manager.generate_code_file`).  
-  * `max_symbols` – Upper bound on the length of each chunk; derived from the token budget of the selected LLM.  
-* **Return value** – `list[str]` where each element is a ready‑to‑send payload for `GPTModel`.  
+## <a name="settings"></a> Project Settings
+The project settings class is responsible for storing project metadata and generating a prompt for the GPT model.
 
-### Partial Implementation Details  
+### Class
 
-* The function creates an empty `split_objects` list that will hold the final chunks.  
-* It immediately splits the incoming `data` on the sentinel string `"<a name="preprocessor-postprocess"></a>
-## `preprocessor/postprocess.py`
+*   **`ProjectSettings`**: This class has the following properties and methods:
+    *   **`__init__(project_name: str)`**: Initializes the project settings with a project name.
+    *   **`add_info(key, value)`**: Adds a key-value pair to the project info dictionary.
+    *   **`prompt`**: A property that returns the prompt for the GPT model.
 
-The **postprocess** module is a thin helper layer that turns the raw markdown generated by the *spliter* into a polished, link‑rich document and that asks the language model to write the introductory sections.  
-It is invoked after the repository has been walked, serialized and split into chunks, but before the final README is assembled.
-
-### Main Responsibilities  
-
-| Responsibility | Implementation |
-|----------------|----------------|
-|Create deterministic markdown anchors for headings|`generate_markdown_anchor` |
-|Extract top‑level markdown topics (`## …`) and their anchors|`get_all_topics` |
-|Extract custom HTML anchors (`<a name="…">`)|`get_all_html_links` |
-|Ask the LLM to produce a short intro that lists the extracted links|`get_links_intro` |
-|Ask the LLM to produce a global project introduction|`get_introdaction` |
-
-### Public Functions  
-
-| Function | Signature | Returns | Side‑effects |
-|----------|-----------|---------|--------------|
-|`generate_markdown_anchor` | `header: str → str` | `"#my‑section"` – a GitHub‑compatible anchor | none |
-|`get_all_topics` | `data: str → tuple[list[str], list[str]]` | `(titles, anchors)` where *titles* are the raw `##` headings and *anchors* are the markdown links produced by `generate_markdown_anchor` | none |
-|`get_all_html_links` | `data: str → list[str]` | List of raw `<a name="…">` identifiers | none |
-|`get_links_intro` | `links: list[str], language: str = "en" → str` | LLM‑generated paragraph that introduces the list of links | network call via `GPTModel.get_answer_without_history` |
-|`get_introdaction` | `global_data: str, language: str = "en" → str` | LLM‑generated global project introduction | network call via `GPTModel.get_answer_without_history` |
-
-#### `generate_markdown_anchor`
-```python
-def generate_markdown_anchor(header: str) -> str:
-    anchor = header.lower()
-    anchor = unicodedata.normalize('NFKC', anchor)
-    anchor = anchor.replace(' ', '-')
-    anchor = re.sub(r'[^a-z0-9\-_]', '', anchor)
-    anchor = re.sub(r'-+', '-', anchor).strip('-')
-    return f"#{anchor}"
-```
-*Normalises Unicode, replaces spaces with hyphens, strips disallowed characters, collapses repeated hyphens, and prefixes with `#`.*
-
-#### `get_all_topics`
-Walks the markdown string looking for the pattern `"\n## "` (level‑2 headings).  
-For each heading it extracts the title up to the next newline, stores it, and finally builds a matching list of markdown anchors.
-
-#### `get_all_html_links`
-Searches for literal `<a name=` tags and returns the identifier that appears between the opening tag and the closing `</a>`.
-
-#### `get_links_intro` / `get_introdaction`
-Both functions instantiate a fresh `GPTModel`, construct a system‑prompt that forces the response language, inject a **template** from `engine.config.config` (`BASE_INTRODACTION_CREATE_TEXT` or `BASE_INTRO_CREATE`), and send the user payload (`links` or `global_data`).  
-The model’s answer is returned unchanged.
-
-### Interaction with the Rest of the System  
-
-* **Input source** – The markdown string supplied to `get_all_topics`/`get_all_html_links` originates from `spliter.split_data` (or from the concatenated result of all chunks).  
-* **Output consumer** – The generated lists of anchors are fed to the **DocFactory** (or similar) to build a Table‑of‑Contents. The textual introductions returned by `get_links_intro` and `get_introdaction` are concatenated with the per‑chunk documentation to form the final README.  
-* **LLM coupling** – The functions directly create a `GPTModel` instance; they do not share a model object with other pipeline stages, keeping them stateless but incurring a new HTTP/SDK session per call.
-
----
-
-<a name="preprocessor-spliter"></a>
-## `preprocessor/spliter.py`
-
-The **spliter** module is responsible for breaking a large markdown payload into smaller, model‑friendly pieces. Only the beginning of the implementation is shown, but its contract and intended behaviour are evident.
-
-### Core Function  
+### Example Usage
 
 ```python
-def split_data(data: str, max_symbols: int) -> list[str]:
-    ...
+project_settings = ProjectSettings("My Project")
+project_settings.add_info("author", "John Doe")
+print(project_settings.prompt)  # Output: "Project Name: My Project\nauthor: John Doe\n"
 ```
 
-| Parameter | Description |
-|-----------|-------------|
-|`data`|Complete markdown representation of the repository (produced by `Manager.generate_code_file`).|
-|`max_symbols`|Maximum allowed character length for each chunk; derived from the token budget of the target LLM.|
+## <a name="spliter"></a> Data Splitter
+The data splitter module is responsible for splitting a large data string into smaller chunks.
 
-| Return | Description |
-|--------|-------------|
-|`list[str]`|A sequence of markdown fragments, each *≤* `max_symbols` characters, ready to be sent to the language model.|
+### Functions
 
-### Intended Algorithm (deduced from the partial code)
+*   **`split_data(data: str, max_symbols: int) -> list[str]`**: This function splits a data string into chunks of a maximum size.
 
-1. **Initial split** – The function first splits the whole document on the sentinel string `"
+### Example Usage
 
-## <a name="overview"></a>Overview  
-The snippet implements the *chunk‑based documentation generator* that talks to a GPT model.  
-The core workflow is:  
-1. **`split_data`** – divide a large string of code into token‑safe pieces.  
-2. **`write_docs_by_parts`** – synchronously ask the model to generate a doc fragment for each piece.  
-3. **`async_write_docs_by_parts`** – same logic but concurrently using an async model.  
-4. **`gen_doc_parts` / `async_gen_doc_parts`** – orchestrators that iterate over all chunks, gather results, and report progress through a `BaseProgress` implementation.  
-
-`BaseProgress`/`LibProgress` wrap a `rich.progress.Progress` bar so callers can track overall progress.
-
----
-
-## <a name="split_data"></a>split_data(data, max_symbols)  
-*Purpose:* Break `full_code_mix` into a list of strings, each ≤ `max_symbols`, while preserving file boundaries.  
-
-*Logic flow:*  
-1. Split the source by empty lines into `splited_by_files`.  
-2. Re‑balance very large fragments: any element > 1.5×`max_symbols` is split in half until all fit.  
-3. Greedily accumulate these fragments into `split_objects`, allowing each to grow up to 1.25×`max_symbols` to reduce the number of calls to the model.  
-
-*Assumptions:*  
-- `data` is plain text.  
-- `max_symbols` is a token‑budget proxy.  
-
-*Return:* `List[str]` – chunks ready for the LLM.
-
----
-
-## <a name="write_docs_by_parts"></a>write_docs_by_parts(part, model, global_info, prev_info=None, language="en")  
-Synchronous LLM invocation.  
-
-*Prompt construction:*  
-```text
-system: Use language <language>
-system: <BASE_PART_COMPLITE_TEXT>
-system: <global_info>
-user:   <part>
+```python
+chunks = split_data(data, 1000)
+print(chunks)  # Output: ["chunk-1", "chunk-2", ...]
 ```
-If a previous part exists, a system message references it to maintain context.  
-The part is sent again as a user message to reinforce the prompt.
 
-*Post‑processing:*  
-Strips surrounding markdown fences (` ``` `) if present.  
+<a name="documentation"></a>
+## Documentation
 
-*Returns:* Generated documentation string.
+The provided code snippet appears to be part of a larger system responsible for generating documentation for a given codebase. The system utilizes a combination of natural language processing (NLP) and machine learning models to produce high-quality documentation.
 
----
+### Component Overview
 
-## <a name="async_write_docs_by_parts"></a>async_write_docs_by_parts(part, async_model, global_info, semaphore, prev_info=None, language="en", update_progress=None)  
-Parallel version of `write_docs_by_parts`.  
-Uses an `asyncio.Semaphore` to limit concurrent LLM calls (default 4).  
-After obtaining a response it optionally updates the progress bar.
+The code snippet is comprised of several key components:
 
----
+*   `split_data`: A function responsible for splitting the input code mix into smaller, manageable parts based on a maximum symbol limit.
+*   `write_docs_by_parts` and `async_write_docs_by_parts`: Functions that generate documentation for each part of the split code mix using a model (either synchronous or asynchronous).
+*   `gen_doc_parts` and `async_gen_doc_parts`: Functions that orchestrate the generation of documentation for the entire code mix by splitting the data, generating documentation for each part, and combining the results.
 
-## <a name="gen_doc_parts"></a>gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_bar)  
-High‑level synchronous pipeline:  
+### Key Functions and Classes
 
-1. `split_data` to chunk the code.  
-2. Create a sub‑task in the progress bar.  
-3. For each chunk:  
-   - call `write_docs_by_parts`;  
-   - append result to `all_result`;  
-   - keep only the last 3000 chars as `prev_info` for next chunk.  
-4. Clean up the sub‑task and return concatenated documentation.
+*   `split_data`: Splits the input code mix into smaller parts based on a maximum symbol limit.
+*   `write_docs_by_parts`: Generates documentation for a given part of the code mix using a synchronous model.
+*   `async_write_docs_by_parts`: Generates documentation for a given part of the code mix using an asynchronous model.
+*   `gen_doc_parts`: Generates documentation for the entire code mix by splitting the data and using a synchronous model.
+*   `async_gen_doc_parts`: Generates documentation for the entire code mix by splitting the data and using an asynchronous model.
 
----
+### Logic Flow
 
-## <a name="async_gen_doc_parts"></a>async_gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_bar)  
-Asynchronous equivalent using `asyncio.gather` over `async_write_docs_by_parts`.  
-Progress is advanced inside each task via the supplied callback.  
+The logic flow of the system can be summarized as follows:
 
----
+1.  The input code mix is split into smaller parts using the `split_data` function.
+2.  For each part, the `write_docs_by_parts` or `async_write_docs_by_parts` function is called to generate documentation using a model.
+3.  The generated documentation for each part is combined to produce the final documentation for the entire code mix.
 
-## <a name="progress_base"></a>BaseProgress & LibProgress  
-`BaseProgress` is a minimal interface with `create_new_subtask`, `update_task`, and `remove_subtask`.  
-`LibProgress` implements it using Rich’s progress bars:  
+### Important Assumptions and Inputs
 
-* `create_new_subtask(name, total_len)` – adds a new sub‑task.  
-* `update_task()` – advances the current sub‑task (or the base task if none).  
-* `remove_subtask()` – discards the current sub‑task.
+*   The input code mix is expected to be a string containing the codebase to be documented.
+*   The maximum symbol limit is used to determine the size of each part of the split code mix.
+*   The model used for generating documentation is assumed to be a natural language processing (NLP) or machine learning model capable of understanding the input code mix and producing high-quality documentation.
 
-These helpers enable visual feedback during long LLM runs without tying the core logic to a specific UI library.
+### Outputs and Side Effects
 
----
+*   The final output of the system is a string containing the generated documentation for the entire code mix.
+*   The system may have side effects, such as creating temporary files or updating progress bars, depending on the implementation of the `progress_bar` component.
 
-### Key Interaction Points  
-- **Model objects** (`GPTModel`, `AsyncGPTModel`) provide `get_answer_without_history`.  
-- **GLOBAL_INFO** (e.g., project description) is prepended to each prompt to give the LLM context.  
-- **Chunking** ensures each LLM call stays within token limits; the 1.5× and 1.25× thresholds balance safety and throughput.  
+### Example Usage
 
-### Important Notes  
-- The code assumes the presence of a global constant `BASE_PART_COMPLITE_TEXT` that contains a base prompt for generating documentation.  
-- Result trimming (`result = result[len(result) - 3000:]`) keeps only the trailing context for the next chunk, limiting memory usage.  
-- For production, replace `print` statements in `BaseProgress` with a real progress implementation.  
+```python
+# Example usage of the gen_doc_parts function
+full_code_mix = "Example code mix"
+global_info = "Example global information"
+max_symbols = 1000
+language = "en"
+progress_bar = BaseProgress()
 
-This module is the *execution engine* of the documentation generator, handling chunking, LLM interaction, and progress reporting.
+result = gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_bar)
+print(result)
+```
+
+```python
+# Example usage of the async_gen_doc_parts function
+import asyncio
+
+full_code_mix = "Example code mix"
+global_info = "Example global information"
+max_symbols = 1000
+language = "en"
+progress_bar = BaseProgress()
+
+async def main():
+    result = await async_gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_bar)
+    print(result)
+
+asyncio.run(main())
+```
+
+## <a name="progress_base_module"></a> Progress Base Module
+The `progress_base` module provides a foundation for creating progress bars in the application. It defines two classes: `BaseProgress` and `LibProgress`.
+
+### <a name="baseprogress_class"></a> BaseProgress Class
+The `BaseProgress` class serves as a base class for progress bar implementations. It defines the following methods:
+* `__init__`: Initializes the progress bar.
+* `create_new_subtask`: Creates a new subtask in the progress bar. This method should be implemented by subclasses.
+* `update_task`: Updates the progress bar. This method should be implemented by subclasses.
+* `remove_subtask`: Removes a subtask from the progress bar. This method should be implemented by subclasses.
+
+### <a name="libprogress_class"></a> LibProgress Class
+The `LibProgress` class is a concrete implementation of the `BaseProgress` class. It uses the `rich.progress` library to create a progress bar. The class has the following attributes:
+* `progress`: An instance of `rich.progress.Progress`.
+* `_base_task`: The main task in the progress bar.
+* `_cur_sub_task`: The current subtask in the progress bar.
+
+The `LibProgress` class implements the following methods:
+* `__init__`: Initializes the progress bar with a main task and an optional total number of tasks.
+* `create_new_subtask`: Creates a new subtask in the progress bar with a given name and total length.
+* `update_task`: Updates the progress bar by advancing the current subtask or the main task if no subtask is active.
+* `remove_subtask`: Removes the current subtask from the progress bar.
+
+### Example Usage
+```python
+from ui.progress_base import LibProgress
+from rich.progress import Progress
+
+# Create a progress bar
+progress = Progress()
+lib_progress = LibProgress(progress, total=10)
+
+# Create a new subtask
+lib_progress.create_new_subtask("Subtask 1", 5)
+
+# Update the progress bar
+lib_progress.update_task()
+
+# Remove the subtask
+lib_progress.remove_subtask()
+```
+This code creates a progress bar with a main task and a subtask, updates the progress bar, and then removes the subtask.
 

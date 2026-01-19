@@ -85,6 +85,24 @@ Your task is to generate a comprehensive project overview that includes the foll
 Please use professional, clear, and "clean" English. 
 """
 
+BASE_SETTINGS_PROMPT = """
+Role & Context: "Act as a Project Knowledge Base. I will provide you with a structured project profile. Your goal is to memorize these parameters and use them as the foundational context for all our future interactions regarding this project."
+
+Input Format: "The input will follow this structure:
+
+Project Name: [Name] (This is the unique identifier).
+
+Project Parameters: A list of key: value pairs defining the project scope, such as global_idea, target_audience, tech_stack, etc."
+
+Instructions:
+Persistent Memory: Treat the Project Name as a fixed trigger. When I mention this name, apply all associated parameters.
+Dynamic Parsing: If I provide new key: value pairs later, update the project profile accordingly.
+Tone & Style: Match your future suggestions to the global_idea and values defined in the parameters.
+
+Project Data to Process:
+
+"""
+
 def get_BASE_COMPRESS_TEXT(start, power):
     return f"""
 You will receive a large code snippet (up to ~{start} characters).

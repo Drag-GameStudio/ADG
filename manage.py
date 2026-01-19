@@ -9,6 +9,7 @@ import asyncio
 from factory.base_factory import DocFactory
 from factory.modules.intro import IntroLinks, IntroText
 from ui.progress_base import BaseProgress, LibProgress
+from preprocessor.settings import ProjectSettings
 
 
 class Manager:
@@ -21,11 +22,12 @@ class Manager:
     }
 
 
-    def __init__(self, project_directory: str, ignore_files: list = [], language: str = "en", progress_bar: BaseProgress = BaseProgress()):
+    def __init__(self, project_directory: str, project_settings: ProjectSettings, ignore_files: list = [], language: str = "en", progress_bar: BaseProgress = BaseProgress()):
         self.project_directory = project_directory
         self.ignore_files = ignore_files
         self.progress_bar = progress_bar
         self.language = language
+        self.project_settings = project_settings
 
         cache_path = os.path.join(self.project_directory, self.CACHE_FOLDER_NAME)
 
@@ -49,7 +51,7 @@ class Manager:
         full_code_mix = self.read_file_by_file_key("code_mix")
 
         splited_data = split_data(full_code_mix, max_symbols)
-        result = compress_to_one(splited_data, 2, progress_bar=self.progress_bar, use_async=use_async)
+        result = compress_to_one(splited_data, self.project_settings, 2, progress_bar=self.progress_bar, use_async=use_async)
         with open(self.get_file_path("global_info"), "w", encoding="utf-8") as file:
             file.write(result)
 
@@ -108,11 +110,16 @@ if __name__ == "__main__":
         BarColumn(),               
         TaskProgressColumn(),     
     ) as progress:
-        manager = Manager(r"C:\Users\huina\Python Projects\Impotant projects\AutoDocGenerateGimini", ignore_list, progress_bar=LibProgress(progress), language="en")
+        project_settings = ProjectSettings("Auto Doc Generator")
+        project_settings.add_info(
+            "global idea",
+            """This project was created to help developers make documentations for them projects"""
+        )
+        manager = Manager(r"C:\Users\huina\Python Projects\Impotant projects\AutoDocGenerateGimini", project_settings, ignore_list, progress_bar=LibProgress(progress), language="en")
 
         manager.generate_code_file()
-        manager.generate_global_info_file(use_async=True, max_symbols=7000)
-        manager.generete_doc_parts(use_async=True, max_symbols=5000)
+        manager.generate_global_info_file(use_async=True, max_symbols=5000)
+        manager.generete_doc_parts(use_async=True, max_symbols=4000)
         manager.factory_generate_doc_intro(
             DocFactory(
                 IntroLinks(),
