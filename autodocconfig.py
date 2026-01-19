@@ -22,7 +22,7 @@ def gen_doc(project_settings: ProjectSettings, ignore_list: list[str], project_p
     ) as progress:
 
         
-        manager = Manager(project_path, project_settings, ignore_list, rogress_bar=LibProgress(progress), language="en")
+        manager = Manager(project_path, project_settings, ignore_list, progress_bar=LibProgress(progress), language="en")
 
         manager.generate_code_file()
         manager.generate_global_info_file(use_async=True, max_symbols=5000)
