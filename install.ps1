@@ -24,4 +24,4 @@ language: "en"
 '@
 $configContent | Out-File -FilePath autodocconfig.yml -Encoding utf8
 
-Write-Host "✅ Done! .github/workflows/autodoc.yml has been created." -ForegroundColor Green
+Write-Host "✅ Done! .github/workflows/autodoc.yml has been created. autodocconfig.yml has been created." -ForegroundColor Green
