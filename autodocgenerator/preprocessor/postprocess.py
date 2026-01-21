@@ -112,7 +112,7 @@ def generete_custom_discription(splited_data: str, model: Model, custom_descript
         ]
 
         result = model.get_answer_without_history(prompt=prompt)
-        if result.find("!noinfo") == -1 or result.find("!noinfo") > 30:
+        if (result.find("!noinfo") == -1 and result.find("No information found") == -1) or result.find("!noinfo") > 30:
             break
         result = ""
     return result

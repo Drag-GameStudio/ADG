@@ -97,6 +97,40 @@ def compress_to_one(data: list, model: Model, project_settings: ProjectSettings,
 
 
 
+def generate_discribtions_for_code(data: list, model: Model, project_settings: ProjectSettings, progress_bar: BaseProgress = BaseProgress()) -> list:
+    describtions = []
+    progress_bar.create_new_subtask("Generate describtions for code files", len(data))
+    for code in data:
+        prompt = [
+            {
+                "role": "system",
+                "content": """### Instructions:
+1. Identify Main Components: Determine what classes, functions, or modules are meant to be used by an external developer.
+2. Description: Explain the purpose of each main component (e.g., "What is the Manager class for?").
+3. Parameters & Types: Detail every parameter required for initialization and method calls, including their expected data types and default values.
+4. Usage Example: Provide a COMPLETE, "copy-pasteable" code example showing:
+   - Proper initialization.
+   - Calling key methods.
+   - Handling expected outputs or errors.
+
+### Strict Rules:
+- Base your guide ONLY on the provided code. 
+- If the code is incomplete or a certain class/method is missing, do not hallucinate its logic—simply state that information is unavailable.
+- Use Markdown for code blocks and bold text for parameter names.
+- If no usable logic is found in the code, respond with an empty string ("")."""
+            },
+            {
+                "role": "user",
+                "content": f"CONTEXT: {code}"
+            }
+        ]
+        answer = model.get_answer_without_history(prompt=prompt)
+        describtions.append(answer)
+        progress_bar.update_task()
+    
+    progress_bar.remove_subtask()
+    return describtions
+
 
 
 

@@ -1,5 +1,5 @@
 from .preprocessor.spliter import split_data, gen_doc_parts, async_gen_doc_parts
-from .preprocessor.compressor import compress_to_one
+from .preprocessor.compressor import compress_to_one, generate_discribtions_for_code
 from .preprocessor.postprocess import get_introdaction, get_all_html_links, get_links_intro
 from .engine.models.gpt_model import AsyncGPTModel, GPTModel
 from .engine.models.model import Model, AsyncModel
@@ -72,17 +72,16 @@ class Manager:
         full_code_mix = self.read_file_by_file_key("code_mix")
 
         if use_async:
-            result = asyncio.run(async_gen_doc_parts(full_code_mix, global_info, max_symbols, self.language, self.progress_bar))
+            result = asyncio.run(async_gen_doc_parts(full_code_mix, global_info, max_symbols, self.async_model, self.language, self.progress_bar))
         else:
-            result = gen_doc_parts(full_code_mix, global_info, max_symbols, self.language, self.progress_bar)
+            result = gen_doc_parts(full_code_mix, global_info, max_symbols, self.sync_model, self.language, self.progress_bar)
 
         with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
             file.write(result)
         
         self.progress_bar.update_task()
 
-
-    def factory_generate_doc_intro(self, doc_factory: DocFactory):
+    def factory_generate_doc(self, doc_factory: DocFactory):
         global_info = self.read_file_by_file_key("global_info")
         curr_doc = self.read_file_by_file_key("output_doc")
         code_mix = self.read_file_by_file_key("code_mix")
@@ -138,12 +137,17 @@ if __name__ == "__main__":
         # manager.generate_code_file()
         # manager.generate_global_info_file(use_async=True, max_symbols=5000)
         # manager.generete_doc_parts(use_async=True, max_symbols=4000)
-        manager.factory_generate_doc_intro(
+        # manager.factory_generate_doc(
+        #     DocFactory(
+        #         CustomModule("how to use Manager class what parameters i need to give. give full example of usege"),
+        #         CustomModule("how to use Module and create your own module. give full example of usege ")
+        #     )
+        # )
+        
+        manager.factory_generate_doc(
             DocFactory(
-                # IntroLinks(),
-                # IntroText(),
-                CustomModule("how to use Manager class what parameters i need to give. give full example of usege"),
-                CustomModule("how to use Module and create your own module. give full example of usege ")
+                IntroLinks(),
+                IntroText(),
             )
         )
 

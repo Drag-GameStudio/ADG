@@ -49,10 +49,10 @@ def write_docs_by_parts(part: str, model: Model, global_info: str, prev_info: st
                 "role": "system",
                 "content": BASE_PART_COMPLITE_TEXT
             },
-            {
-                "role": "system",
-                "content": global_info
-            },
+            # {
+            #     "role": "system",
+            #     "content": global_info
+            # },
             {
                 "role": "user",
                 "content": part
@@ -91,10 +91,10 @@ async def async_write_docs_by_parts(part: str, async_model: AsyncModel, global_i
                 "role": "system",
                 "content": BASE_PART_COMPLITE_TEXT
             },
-            {
-                "role": "system",
-                "content": global_info
-            },
+            # {
+                # "role": "system",
+                # "content": global_info
+            # },
             {
                 "role": "user",
                 "content": part
