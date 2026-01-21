@@ -28,9 +28,7 @@ class AsyncGPTModel(AsyncModel):
                 break
             except Exception as e:
                 print(e)
-                self.current_model_index = 0
-                if model_name in self.regen_models_name:
-                    self.regen_models_name.remove(model_name)
+                self.current_model_index = 0 if self.current_model_index + 1 >= len(self.regen_models_name) else self.current_model_index + 1
                     
 
         if chat_completion is None:

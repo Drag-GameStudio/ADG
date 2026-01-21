@@ -26,10 +26,9 @@ def compress(data: str, project_settings: ProjectSettings, model: Model, compres
     return answer
 
 
-def compress_and_compare(data: list, project_settings: ProjectSettings, compress_power: int = 4, progress_bar: BaseProgress = BaseProgress()) -> list:
+def compress_and_compare(data: list, model: Model, project_settings: ProjectSettings, compress_power: int = 4, progress_bar: BaseProgress = BaseProgress()) -> list:
     compress_and_compare_data = ["" for i in range(math.ceil(len(data) / compress_power))]
     progress_bar.create_new_subtask(f"Compare all files", len(data))
-    model = GPTModel()
     for i, el in enumerate(data):
         curr_index = i // compress_power
         compress_and_compare_data[curr_index] += compress(el, project_settings, model, compress_power) + "\n"
@@ -60,9 +59,8 @@ async def async_compress(data: str,  project_settings: ProjectSettings, model: A
         progress_bar.update_task()
         return answer
 
-async def async_compress_and_compare(data: list, project_settings: ProjectSettings, compress_power: int = 4, progress_bar: BaseProgress = BaseProgress()) -> list:
+async def async_compress_and_compare(data: list, model: AsyncModel, project_settings: ProjectSettings, compress_power: int = 4, progress_bar: BaseProgress = BaseProgress()) -> list:
     semaphore = asyncio.Semaphore(4)
-    model = AsyncGPTModel()
     tasks = []
     progress_bar.create_new_subtask(f"Compare all files (async)", len(data))
 
@@ -81,7 +79,7 @@ async def async_compress_and_compare(data: list, project_settings: ProjectSettin
         
     return final_data
 
-def compress_to_one(data: list, project_settings: ProjectSettings, compress_power: int = 4, use_async: bool = False, progress_bar: BaseProgress = BaseProgress()):
+def compress_to_one(data: list, model: Model, project_settings: ProjectSettings, compress_power: int = 4, use_async: bool = False, progress_bar: BaseProgress = BaseProgress()):
     count_of_iter = 0
     while len(data) > 1:
         new_compress_power = compress_power
@@ -89,15 +87,49 @@ def compress_to_one(data: list, project_settings: ProjectSettings, compress_powe
             new_compress_power = 2
         
         if use_async:
-            data = asyncio.run(async_compress_and_compare(data, project_settings, new_compress_power, progress_bar=progress_bar))
+            data = asyncio.run(async_compress_and_compare(data, model, project_settings, new_compress_power, progress_bar=progress_bar))
         else:
-            data = compress_and_compare(data, project_settings, new_compress_power, progress_bar=progress_bar)
+            data = compress_and_compare(data, model, project_settings, new_compress_power, progress_bar=progress_bar)
         count_of_iter += 1
 
 
     return data[0]
 
 
+
+def generate_discribtions_for_code(data: list, model: Model, project_settings: ProjectSettings, progress_bar: BaseProgress = BaseProgress()) -> list:
+    describtions = []
+    progress_bar.create_new_subtask("Generate describtions for code files", len(data))
+    for code in data:
+        prompt = [
+            {
+                "role": "system",
+                "content": """### Instructions:
+1. Identify Main Components: Determine what classes, functions, or modules are meant to be used by an external developer.
+2. Description: Explain the purpose of each main component (e.g., "What is the Manager class for?").
+3. Parameters & Types: Detail every parameter required for initialization and method calls, including their expected data types and default values.
+4. Usage Example: Provide a COMPLETE, "copy-pasteable" code example showing:
+   - Proper initialization.
+   - Calling key methods.
+   - Handling expected outputs or errors.
+
+### Strict Rules:
+- Base your guide ONLY on the provided code. 
+- If the code is incomplete or a certain class/method is missing, do not hallucinate its logic—simply state that information is unavailable.
+- Use Markdown for code blocks and bold text for parameter names.
+- If no usable logic is found in the code, respond with an empty string ("")."""
+            },
+            {
+                "role": "user",
+                "content": f"CONTEXT: {code}"
+            }
+        ]
+        answer = model.get_answer_without_history(prompt=prompt)
+        describtions.append(answer)
+        progress_bar.update_task()
+    
+    progress_bar.remove_subtask()
+    return describtions
 
 
 
