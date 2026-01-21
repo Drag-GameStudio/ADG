@@ -131,4 +131,4 @@ from dotenv import load_dotenv
 load_dotenv() 
 API_KEY = os.getenv("API_KEY")
 
-MODELS_NAME = ["meta-llama/llama-4-scout-17b-16e-instruct", "moonshotai/kimi-k2-instruct", "openai/gpt-oss-120b",  "llama-3.3-70b-versatile",  "openai/gpt-oss-safeguard-20b"]
+MODELS_NAME = ["openai/gpt-oss-120b",  "llama-3.3-70b-versatile",  "openai/gpt-oss-safeguard-20b"]

@@ -26,10 +26,9 @@ def compress(data: str, project_settings: ProjectSettings, model: Model, compres
     return answer
 
 
-def compress_and_compare(data: list, project_settings: ProjectSettings, compress_power: int = 4, progress_bar: BaseProgress = BaseProgress()) -> list:
+def compress_and_compare(data: list, model: Model, project_settings: ProjectSettings, compress_power: int = 4, progress_bar: BaseProgress = BaseProgress()) -> list:
     compress_and_compare_data = ["" for i in range(math.ceil(len(data) / compress_power))]
     progress_bar.create_new_subtask(f"Compare all files", len(data))
-    model = GPTModel()
     for i, el in enumerate(data):
         curr_index = i // compress_power
         compress_and_compare_data[curr_index] += compress(el, project_settings, model, compress_power) + "\n"
@@ -60,9 +59,8 @@ async def async_compress(data: str,  project_settings: ProjectSettings, model: A
         progress_bar.update_task()
         return answer
 
-async def async_compress_and_compare(data: list, project_settings: ProjectSettings, compress_power: int = 4, progress_bar: BaseProgress = BaseProgress()) -> list:
+async def async_compress_and_compare(data: list, model: AsyncModel, project_settings: ProjectSettings, compress_power: int = 4, progress_bar: BaseProgress = BaseProgress()) -> list:
     semaphore = asyncio.Semaphore(4)
-    model = AsyncGPTModel()
     tasks = []
     progress_bar.create_new_subtask(f"Compare all files (async)", len(data))
 
@@ -81,7 +79,7 @@ async def async_compress_and_compare(data: list, project_settings: ProjectSettin
         
     return final_data
 
-def compress_to_one(data: list, project_settings: ProjectSettings, compress_power: int = 4, use_async: bool = False, progress_bar: BaseProgress = BaseProgress()):
+def compress_to_one(data: list, model: Model, project_settings: ProjectSettings, compress_power: int = 4, use_async: bool = False, progress_bar: BaseProgress = BaseProgress()):
     count_of_iter = 0
     while len(data) > 1:
         new_compress_power = compress_power
@@ -89,9 +87,9 @@ def compress_to_one(data: list, project_settings: ProjectSettings, compress_powe
             new_compress_power = 2
         
         if use_async:
-            data = asyncio.run(async_compress_and_compare(data, project_settings, new_compress_power, progress_bar=progress_bar))
+            data = asyncio.run(async_compress_and_compare(data, model, project_settings, new_compress_power, progress_bar=progress_bar))
         else:
-            data = compress_and_compare(data, project_settings, new_compress_power, progress_bar=progress_bar)
+            data = compress_and_compare(data, model, project_settings, new_compress_power, progress_bar=progress_bar)
         count_of_iter += 1
 
 

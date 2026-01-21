@@ -125,14 +125,13 @@ async def async_write_docs_by_parts(part: str, async_model: AsyncModel, global_i
         return answer
 
 
-def gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_bar: BaseProgress):
+def gen_doc_parts(full_code_mix, global_info, max_symbols, model: Model, language, progress_bar: BaseProgress):
     splited_data = split_data(full_code_mix, max_symbols)
     result = None
 
     progress_bar.create_new_subtask(f"Generete doc parts", total=len(splited_data))
     
     all_result = ""
-    model = GPTModel()
     for el in splited_data:
         result = write_docs_by_parts(el, model, global_info, result, language)
         all_result += result
@@ -145,16 +144,15 @@ def gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_ba
 
     return all_result
 
-async def async_gen_doc_parts(full_code_mix, global_info, max_symbols, language, progress_bar: BaseProgress):
+async def async_gen_doc_parts(full_code_mix, global_info, max_symbols, model: AsyncModel, language, progress_bar: BaseProgress):
     splited_data = split_data(full_code_mix, max_symbols)
     progress_bar.create_new_subtask(f"Generete doc parts (async)", len(splited_data))
 
     semaphore = asyncio.Semaphore(4)
-    async_gpt_model = AsyncGPTModel()
 
     tasks = []
     for el in splited_data:
-        tasks.append(async_write_docs_by_parts(part=el, async_model=async_gpt_model, global_info=global_info, semaphore=semaphore, language=language, update_progress=lambda: progress_bar.update_task()))
+        tasks.append(async_write_docs_by_parts(part=el, async_model=model, global_info=global_info, semaphore=semaphore, language=language, update_progress=lambda: progress_bar.update_task()))
 
     gen_parts = await asyncio.gather(*tasks)
     result = ""

@@ -1,13 +1,15 @@
 from .preprocessor.spliter import split_data, gen_doc_parts, async_gen_doc_parts
 from .preprocessor.compressor import compress_to_one
 from .preprocessor.postprocess import get_introdaction, get_all_html_links, get_links_intro
-from .engine.models.gpt_model import AsyncGPTModel
+from .engine.models.gpt_model import AsyncGPTModel, GPTModel
+from .engine.models.model import Model, AsyncModel
 import os
 from .preprocessor.code_mix import CodeMix
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeRemainingColumn
 import asyncio
 from .factory.base_factory import DocFactory
 from .factory.modules.intro import IntroLinks, IntroText
+from .factory.modules.general_modules import CustomModule
 from .ui.progress_base import BaseProgress, LibProgress
 from .preprocessor.settings import ProjectSettings
 
@@ -22,12 +24,18 @@ class Manager:
     }
 
 
-    def __init__(self, project_directory: str, project_settings: ProjectSettings, ignore_files: list = [], language: str = "en", progress_bar: BaseProgress = BaseProgress()):
+    def __init__(self, project_directory: str, project_settings: ProjectSettings,
+                 sync_model: Model = None, async_model: AsyncModel = None,
+                  ignore_files: list = [], language: str = "en", 
+                  progress_bar: BaseProgress = BaseProgress()):
         self.project_directory = project_directory
         self.ignore_files = ignore_files
         self.progress_bar = progress_bar
         self.language = language
         self.project_settings = project_settings
+
+        self.sync_model = sync_model
+        self.async_model = async_model
 
         cache_path = os.path.join(self.project_directory, self.CACHE_FOLDER_NAME)
 
@@ -51,7 +59,8 @@ class Manager:
         full_code_mix = self.read_file_by_file_key("code_mix")
 
         splited_data = split_data(full_code_mix, max_symbols)
-        result = compress_to_one(splited_data, self.project_settings, 2, progress_bar=self.progress_bar, use_async=use_async)
+        curr_model = self.async_model if use_async else self.sync_model
+        result = compress_to_one(splited_data, curr_model, self.project_settings, 2, progress_bar=self.progress_bar, use_async=use_async)
         with open(self.get_file_path("global_info"), "w", encoding="utf-8") as file:
             file.write(result)
 
@@ -75,14 +84,16 @@ class Manager:
 
     def factory_generate_doc_intro(self, doc_factory: DocFactory):
         global_info = self.read_file_by_file_key("global_info")
-        curr_doc =  self.read_file_by_file_key("output_doc")
+        curr_doc = self.read_file_by_file_key("output_doc")
+        code_mix = self.read_file_by_file_key("code_mix")
 
         info = {
             "language": self.language,
             "global_data": global_info,
-            "full_data": curr_doc
+            "full_data": curr_doc,
+            "code_mix": code_mix
         }
-        result = doc_factory.generate_doc(info)
+        result = doc_factory.generate_doc(info, self.sync_model, self.progress_bar)
 
         new_data = f"{result} \n\n{curr_doc}"
 
@@ -93,7 +104,7 @@ class Manager:
         
 
         
-
+from .engine.config.config import API_KEY
 
 if __name__ == "__main__":
     ignore_list = [
@@ -102,7 +113,8 @@ if __name__ == "__main__":
         "*.pyc", "__pycache__", ".git", ".coverage", "htmlcov", "migrations", "*.md", "static", "staticfiles", ".mypy_cache"
     ]
 
-
+    sync_model = GPTModel(API_KEY)
+    async_model = AsyncGPTModel(API_KEY)
 
     with Progress(
         SpinnerColumn(),          
@@ -115,15 +127,23 @@ if __name__ == "__main__":
             "global idea",
             """This project was created to help developers make documentations for them projects"""
         )
-        manager = Manager(r"C:\Users\huina\Python Projects\Impotant projects\AutoDocGenerateGimini", project_settings, ignore_list, progress_bar=LibProgress(progress), language="en")
+        manager = Manager(r"C:\Users\sinic\OneDrive\Документы\GitHub\ADG", 
+                        project_settings,
+                        sync_model=sync_model,
+                        async_model=async_model,
+                        ignore_files=ignore_list, 
+                        progress_bar=LibProgress(progress), 
+                        language="en")
 
-        manager.generate_code_file()
-        manager.generate_global_info_file(use_async=True, max_symbols=5000)
-        manager.generete_doc_parts(use_async=True, max_symbols=4000)
+        # manager.generate_code_file()
+        # manager.generate_global_info_file(use_async=True, max_symbols=5000)
+        # manager.generete_doc_parts(use_async=True, max_symbols=4000)
         manager.factory_generate_doc_intro(
             DocFactory(
-                IntroLinks(),
-                IntroText(),
+                # IntroLinks(),
+                # IntroText(),
+                CustomModule("how to use Manager class what parameters i need to give. give full example of usege"),
+                CustomModule("how to use Module and create your own module. give full example of usege ")
             )
         )
 
