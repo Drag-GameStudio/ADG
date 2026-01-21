@@ -1,0 +1,10 @@
+project_name: "Auto Doc Generator"  
+language: "en"
+
+project_additional_info:
+  global idea: "This project was created to help developers make documentations for them projects"
+
+custom_descriptions:
+  - "how to use Manager class what parameters i need to give. give full example of usage"
+  - "give me examples of usage for DocFactory with different modules"
+  - "explain how to write autodocconfig.yml file what options are available"
