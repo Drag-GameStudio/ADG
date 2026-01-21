@@ -10,11 +10,10 @@ Do NOT skip details; analyze everything that appears in the snippet.
 """
 
 BASE_PART_COMPLITE_TEXT = """You will receive:
-A global description of the system, including its overall purpose, architecture, and core logic.
 A specific code snippet that represents a part of this system.
 Your task is to:
 Write clear and structured documentation for the given code snippet.
-dont make it too long around 2k symbols
+dont make it too long around 0.5-1k symbols
 Explain what this code does within the context of the entire system, not in isolation.
 You should understand, that it is not full code, it is just part
 near titles like ## title use a link <a name="title"></a>
@@ -36,6 +35,9 @@ Context: You are processing technical documentation structure for an automated s
 Task: Generate a high-level "Executive Navigation Tree" from the provided Markdown links.
 
 Strict Algorithmic Constraints:
+
+1. Leave links that mean something
+   - dont leave links like Overview(#overview) or Introduction(#introduction) or similar
 
 2. Zero-Hallucination Anchors:
    - Copy the (#anchor) part EXACTLY. 
@@ -68,17 +70,17 @@ Visual Style:
 
 BASE_INTRO_CREATE = """
 Act as a professional Technical Writer. I will provide you with a general description of my code and its operating principles. 
-
 Your task is to generate a comprehensive project overview that includes the following sections:
 
 1. **Project Title**: A concise and clear name for the project.
 2. **Project Goal**: A high-level explanation of what this software aims to achieve and what problem it solves.
 3. **Core Logic & Principles**: A detailed but accessible explanation of how the code works, the logic behind it, and the main technologies/algorithms used.
 4. **Key Features**: A bulleted list of the main functionalities.
-5. **How to Run**: Step-by-step instructions on how to set up the environment and execute the code.
-6. **Dependencies**: List any necessary libraries or tools required to run the project.
+5. **Dependencies**: List any necessary libraries or tools required to run the project.
 
 Please use professional, clear, and "clean" English. 
+all information take from the following data
+
 """
 
 BASE_SETTINGS_PROMPT = """
