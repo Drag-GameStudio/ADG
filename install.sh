@@ -17,4 +17,9 @@ jobs:
       GROCK_API_KEY: \${{ secrets.GROCK_API_KEY }}
 EOF
 
+cat <<EOF > autodocconfig.yml
+project_name: "Your Project Name"
+language: "en"
+EOF
+
 echo "✅ Done! .github/workflows/autodoc.yml has been created."

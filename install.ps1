@@ -18,4 +18,10 @@ jobs:
 # Сохраняем в файл
 $content | Out-File -FilePath .github/workflows/autodoc.yml -Encoding utf8
 
+$configContent = @'
+project_name: "Your Project Name"
+language: "en"
+'@
+$configContent | Out-File -FilePath autodocconfig.yml -Encoding utf8
+
 Write-Host "✅ Done! .github/workflows/autodoc.yml has been created." -ForegroundColor Green
