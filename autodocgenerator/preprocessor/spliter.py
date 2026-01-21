@@ -129,7 +129,7 @@ def gen_doc_parts(full_code_mix, global_info, max_symbols, model: Model, languag
     splited_data = split_data(full_code_mix, max_symbols)
     result = None
 
-    progress_bar.create_new_subtask(f"Generete doc parts", total=len(splited_data))
+    progress_bar.create_new_subtask(f"Generete doc parts", total_len=len(splited_data))
     
     all_result = ""
     for el in splited_data:
