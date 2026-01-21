@@ -91,7 +91,7 @@ def generete_custom_discription(splited_data: str, model: Model, custom_descript
             },
             {
                 "role": "system",
-                "content": f"Act as a precise Technical Analyst. You will be provided with specific code or documentation. Your task is to describe or extract information based ONLY on the provided context."
+                "content": f"Act as a precise Technical Analyst. You will be provided with specific code or documentation. Your task is to describe or extract information based ONLY on the provided context. And make title and link <a name='your_title'> </a> format"
             },
             {
                 "role": "system",
