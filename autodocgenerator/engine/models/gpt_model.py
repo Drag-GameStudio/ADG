@@ -56,14 +56,12 @@ class GPTModel(Model):
                 chat_completion = self.client.chat.completions.create(
                     messages=messages,
                     model=model_name,
-                    temperature=0.3,
 
                 )
                 break
             except Exception as e:
-                self.current_model_index = 0
-                if model_name in self.regen_models_name:
-                    self.regen_models_name.remove(model_name)
+                print(e)
+                self.current_model_index = 0 if self.current_model_index + 1 >= len(self.regen_models_name) else self.current_model_index + 1
 
         if chat_completion is None:
             raise Exception("all models do not work")
