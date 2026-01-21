@@ -55,27 +55,6 @@
 
  
 
-## Executive Navigation Tree
-- 📂 **Core Engine**
-  - [engine-models-overview](#)
-  - [basefactory](#)
-  - [generalmodules](#)
-- 🛠️ **Model Management**
-  - [sync-model](#)
-  - [async-model](#)
-  - [gptmodel](#)
-  - [asyncgptmodel](#)
-- ⚙️ **Document Generation**
-  - [write_docs_by_parts](#)
-  - [async_write_docs_by_parts](#)
-  - [gen_doc_parts](#)
-  - [async_gen_doc_parts](#)
-- 🔗 **Integration**
-  - [integration](#)
-
- 
-
-
 
 <a name='Using_Manager_Class'></a>
 **How to use the `Manager` class**
