@@ -1,49 +1,81 @@
 ## Executive Navigation Tree
+- 📂 Core Engine
+  - [Engine Models Overview](#engine-models-overview)
+  - [Parentmodel](#parentmodel)
+  - [Sync Model](#sync-model)
+  - [Async Model](#async-model)
+  - [Gptmodel](#gptmodel)
+  - [Asyncgptmodel](#asyncgptmodel)
+
+- 📂 Documentation Generation
+  - [Docfactory Examples](#DocFactory_examples)
+  - [Autodocconfig](#autodocconfig)
+  - [Autodocgenerator Init](#autodocgenerator_init)
+  - [Write Docs By Parts](#write_docs_by_parts)
+  - [Async Write Docs By Parts](#async_write_docs_by_parts)
+  - [Gen Doc Parts](#gen_doc_parts)
+  - [Async Gen Doc Parts](#async_gen_doc_parts)
+  - [Generate Descriptions](#generate_descriptions)
+  - [Postprocess-Module](#postprocess-module)
+  - [Spliter-Module](#spliter-module)
+  - [Split Data](#split_data)
+
+- 📂 Compression Utilities
+  - [Compressor](#compressor)
+  - [Compress](#compress)
+  - [Compress And Compare](#compress_and_compare)
+  - [Async Compress](#async_compress)
+  - [Compress To One](#compress_to_one)
+
+- 📂 Progress & Interaction
+  - [Baseprogress](#baseprogress)
+  - [Libprogress](#libprogress)
+  - [Interaction](#interaction)
+
+- 📂 Extensibility & Integration
+  - [Integration](#integration)
+  - [Extensibility](#extensibility)
+  - [Extending](#extending)
+  - [Basefactory](#basefactory)
+  - [Generalmodules](#generalmodules)
+  - [Codemix](#codemix)
+
+- 📂 Manager Utilities
+  - [Using Manager Class](#Using_Manager_Class)
+
+- 📂 Testing & Assumptions
+  - [Testing](#testing)
+  - [Assumptions](#assumptions)
+
+- 📂 Overview & Intro
+  - [Intro](#intro)
+  - [Overview](#overview)
+  - [Example](#example)
+  - [History](#history)
+
+ 
+
+## Executive Navigation Tree
 - 📂 **Core Engine**
   - [engine-models-overview](#)
+  - [basefactory](#)
+  - [generalmodules](#)
+- 🛠️ **Model Management**
   - [sync-model](#)
   - [async-model](#)
   - [gptmodel](#)
   - [asyncgptmodel](#)
-
-- ⚙️ **Runner & Execution**
-  - [autodocgenerator.auto_runner.config_reader](#)
-  - [autodocgenerator.auto_runner.run_file](#)
-  - [async_write_docs_by_parts](#)
-  - [async_gen_doc_parts](#)
-
-- 🗂️ **Documentation Generation**
-  - [compress_to_one](#)
-  - [generate_descriptions](#)
-  - [postprocess-module](#)
+- ⚙️ **Document Generation**
   - [write_docs_by_parts](#)
+  - [async_write_docs_by_parts](#)
   - [gen_doc_parts](#)
-
-- 🛠️ **Utilities**
-  - [settings-module](#)
-
-I’m happy to put together a polished project overview for you, but I’ll need a bit more information about the code you’d like documented.
-
-Could you please share:
-
-1. **A brief description of the project** – what it does, the problem it solves, and its primary purpose.  
-2. **Key components or modules** – names of the main files/classes/functions and a short note on what each one handles.  
-3. **Core technologies/algorithms** – any frameworks, libraries, or specific algorithms that are central to the implementation.  
-4. **Typical usage** – an example of how a user runs the program (command‑line arguments, API calls, etc.).  
-5. **Any special setup steps** – environment variables, configuration files, external services, etc.
-
-Once I have those details, I can generate the full overview with the sections you requested:
-
-- Project Title  
-- Project Goal  
-- Core Logic & Principles  
-- Key Features  
-- How to Run  
-- Dependencies  
-
-Feel free to paste the relevant source files or a concise summary, and I’ll get started right away! 🚀
+  - [async_gen_doc_parts](#)
+- 🔗 **Integration**
+  - [integration](#)
 
  
+
+
 
 <a name='Using_Manager_Class'></a>
 **How to use the `Manager` class**

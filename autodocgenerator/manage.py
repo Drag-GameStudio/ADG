@@ -147,7 +147,7 @@ if __name__ == "__main__":
         manager.factory_generate_doc(
             DocFactory(
                 IntroLinks(),
-                IntroText(),
+                # IntroText(),
             )
         )
 

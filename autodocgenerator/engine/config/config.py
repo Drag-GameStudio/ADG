@@ -36,10 +36,6 @@ Context: You are processing technical documentation structure for an automated s
 Task: Generate a high-level "Executive Navigation Tree" from the provided Markdown links.
 
 Strict Algorithmic Constraints:
-1. Selection Logic (The 30% Rule):
-   - Analyze the entire input list.
-   - Discard ~70% of the noise: repetitive "Overview/Summary" sections, utility scripts (utils.js), minor config files, and FAQs.
-   - Retain only the TOP 30% most critical architectural components (Core Logic, Service Entry Points, Auth Modules, Database Schemas).
 
 2. Zero-Hallucination Anchors:
    - Copy the (#anchor) part EXACTLY. 

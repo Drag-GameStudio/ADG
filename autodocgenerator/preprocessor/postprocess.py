@@ -38,7 +38,10 @@ def get_all_html_links(data: str) -> list[str]:
             break
 
         curr_shift_index = data.find("</a>", curr_index + 3)
-        links.append(data[curr_index + 9:curr_shift_index - 2])
+        curr_result = data[curr_index + 9:curr_shift_index - 2]
+        if len(curr_result) > 25:
+            continue
+        links.append("#" + curr_result)
 
     return links
 

@@ -6,6 +6,7 @@ from ...preprocessor.postprocess import get_all_html_links, get_links_intro, get
 class IntroLinks(BaseModule):
     def generate(self, info: dict, model: Model):
         links = get_all_html_links(info.get("full_data"))
+        print(links)
         intro_links = get_links_intro(links, model, info.get("language"))
 
         return intro_links
