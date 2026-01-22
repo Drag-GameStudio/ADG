@@ -24,7 +24,7 @@ jobs:
         run: pip install autodocgenerator
 
       - name: Run doc gen
-        run: python -m autodocgenerator.auto_runner.run_file
+        run: python -m -u autodocgenerator.auto_runner.run_file
         env:
           API_KEY: ${{ secrets.GROCK_API_KEY }} 
 
