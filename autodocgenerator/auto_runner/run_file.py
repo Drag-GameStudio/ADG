@@ -11,11 +11,12 @@ from autodocgenerator.engine.config.config import API_KEY
 def gen_doc(project_settings: ProjectSettings, ignore_list: list[str], project_path: str, doc_factory: DocFactory, intro_factory: DocFactory):
     
 
-    with Progress(
-        SpinnerColumn(),          
+    with Progress(         
         TextColumn("[progress.description]{task.description}"),
         BarColumn(),               
-        TaskProgressColumn(),     
+        TaskProgressColumn(),
+        auto_refresh=not,
+        refresh_per_second=0.5     
     ) as progress:
 
         sync_model = GPTModel(API_KEY)
