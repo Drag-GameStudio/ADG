@@ -1,6 +1,6 @@
 [project]
 name = "autodocgenerator"
-version = "0.6.4"
+version = "0.6.5"
 description = "This Project helps you to create docs for your projects"
 authors = [
     {name = "dima-on", email = "sinica911@gmail.com"}
