@@ -15,7 +15,7 @@ def gen_doc(project_settings: ProjectSettings, ignore_list: list[str], project_p
         TextColumn("[progress.description]{task.description}"),
         BarColumn(),               
         TaskProgressColumn(),
-        auto_refresh=not,
+        auto_refresh=False,
         refresh_per_second=0.5     
     ) as progress:
 
