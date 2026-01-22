@@ -28,6 +28,8 @@ jobs:
         env:
           API_KEY: ${{ secrets.GROCK_API_KEY }} 
           PYTHONUNBUFFERED: "1"
+          FORCE_COLOR: "1"        # Принудительно включаем цвета Rich
+          TERM: "xterm-256color"  # Эмулируем продвинутый терминал
 
       - name: Copy output to README
         run: cat .auto_doc_cache/output_doc.md > README.md
