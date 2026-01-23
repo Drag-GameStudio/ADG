@@ -18,8 +18,7 @@ jobs:
 EOF
 
 cat <<EOF > autodocconfig.yml
-project_name: "Your Project Name"
+project_name: "$(basename "$PWD")"
 language: "en"
 EOF
-
 echo "✅ Done! .github/workflows/autodoc.yml has been created."

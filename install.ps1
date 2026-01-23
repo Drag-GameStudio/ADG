@@ -18,10 +18,14 @@ jobs:
 # Сохраняем в файл
 $content | Out-File -FilePath .github/workflows/autodoc.yml -Encoding utf8
 
-$configContent = @'
-project_name: "Your Project Name"
+# Получаем название текущей папки
+$currentFolderName = (Get-Item .).Name
+
+# Формируем строку с использованием переменной
+$configContent = @"
+project_name: "$currentFolderName"
 language: "en"
-'@
+"@
 $configContent | Out-File -FilePath autodocconfig.yml -Encoding utf8
 
 Write-Host "✅ Done! .github/workflows/autodoc.yml has been created. autodocconfig.yml has been created." -ForegroundColor Green
