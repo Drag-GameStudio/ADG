@@ -13,7 +13,7 @@ BASE_PART_COMPLITE_TEXT = """You will receive:
 A specific code snippet that represents a part of this system.
 Your task is to:
 Write clear and structured documentation for the given code snippet.
-dont make it too long around 0.5-1k symbols
+dont make it too long around 0.3-0.7k symbols.
 Explain what this code does within the context of the entire system, not in isolation.
 You should understand, that it is not full code, it is just part
 near titles like ## title use a link <a name="title"></a>
