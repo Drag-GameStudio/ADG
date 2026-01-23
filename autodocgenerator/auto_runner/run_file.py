@@ -10,7 +10,7 @@ from autodocgenerator.engine.config.config import API_KEY
 
 def gen_doc(project_settings: ProjectSettings, ignore_list: list[str], project_path: str, doc_factory: DocFactory, intro_factory: DocFactory):
     
-    sync_model = GPTModel(API_KEY)
+    sync_model = GPTModel(API_KEY, use_random=False)
     async_model = AsyncGPTModel(API_KEY)
     
     manager = Manager(

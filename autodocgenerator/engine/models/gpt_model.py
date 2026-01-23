@@ -3,8 +3,8 @@ from groq import Groq, AsyncGroq
 from ..exceptions import ModelExhaustedException
 
 class AsyncGPTModel(AsyncModel):
-    def __init__(self, api_key=API_KEY, history = History()):
-        super().__init__(api_key, history)
+    def __init__(self, api_key=API_KEY, history = History(), use_random: bool = True):
+        super().__init__(api_key, history, use_random)
         self.client = AsyncGroq(api_key=self.api_key)
 
     async def generate_answer(self, with_history: bool = True, prompt: str = None) -> str:
@@ -36,8 +36,8 @@ class AsyncGPTModel(AsyncModel):
         return chat_completion.choices[0].message.content
 
 class GPTModel(Model):
-    def __init__(self, api_key=API_KEY, history = History()):
-        super().__init__(api_key, history)
+    def __init__(self, api_key=API_KEY, history = History(), use_random: bool = True):
+        super().__init__(api_key, history, use_random)
         self.client = Groq(api_key=self.api_key)
 
     def generate_answer(self, with_history: bool = True, prompt: str = None) -> str:

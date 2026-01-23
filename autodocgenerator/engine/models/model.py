@@ -15,13 +15,14 @@ class History:
 
 
 class ParentModel():
-    def __init__(self, api_key=API_KEY, history: History = History()):
+    def __init__(self, api_key=API_KEY, history: History = History(), use_random: bool = True):
         self.history = history
         self.api_key = api_key
 
         self.current_model_index = 0
         models_copy = MODELS_NAME.copy()
-        random.shuffle(models_copy)
+        if use_random:
+            random.shuffle(models_copy)
         self.regen_models_name = models_copy
 
 
