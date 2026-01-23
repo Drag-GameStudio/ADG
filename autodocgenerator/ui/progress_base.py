@@ -47,8 +47,8 @@ class ConsoleTask:
         print(f"Starting task: {self.name} with total length {self.total_len}")
 
     def progress(self):
-        percent = (self.current_len / self.total_len) * 100
         self.current_len += 1
+        percent = (self.current_len / self.total_len) * 100
         print(f"Task: {self.name} Progress: {percent:.1f}%")
 
     
