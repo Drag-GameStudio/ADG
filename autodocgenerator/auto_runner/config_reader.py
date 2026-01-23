@@ -46,7 +46,7 @@ class Config:
         docFactory = DocFactory(*self.custom_modules)
         return docFactory, DocFactory(
             IntroLinks(),
-            IntroText(),
+            # IntroText(),
         )
 
 def read_config(file_data: str) -> Config:

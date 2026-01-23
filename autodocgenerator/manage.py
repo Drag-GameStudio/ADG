@@ -58,11 +58,11 @@ class Manager:
     def generate_global_info_file(self, max_symbols=10_000, use_async: bool = False):
         full_code_mix = self.read_file_by_file_key("code_mix")
 
-        splited_data = split_data(full_code_mix, max_symbols)
-        curr_model = self.async_model if use_async else self.sync_model
-        result = compress_to_one(splited_data, curr_model, self.project_settings, 2, progress_bar=self.progress_bar, use_async=use_async)
+        # splited_data = split_data(full_code_mix, max_symbols)
+        # curr_model = self.async_model if use_async else self.sync_model
+        # result = compress_to_one(splited_data, curr_model, self.project_settings, 2, progress_bar=self.progress_bar, use_async=use_async)
         with open(self.get_file_path("global_info"), "w", encoding="utf-8") as file:
-            file.write(result)
+            file.write("ss")
 
         self.progress_bar.update_task()
         

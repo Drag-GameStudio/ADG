@@ -17,6 +17,7 @@ dont make it too long around 0.3-0.7k symbols.
 Explain what this code does within the context of the entire system, not in isolation.
 You should understand, that it is not full code, it is just part
 near titles like ## title use a link <a name="title"></a>
+all title must be conctetial and include special info about part
 
 Describe:
 the responsibility of this component,
