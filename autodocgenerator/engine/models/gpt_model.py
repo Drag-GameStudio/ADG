@@ -1,7 +1,6 @@
 from .model import Model, AsyncModel, API_KEY, History
 from groq import Groq, AsyncGroq
-from ..config.config import MODELS_NAME
-
+from ..exceptions import ModelExhaustedException
 
 class AsyncGPTModel(AsyncModel):
     def __init__(self, api_key=API_KEY, history = History()):
@@ -18,12 +17,14 @@ class AsyncGPTModel(AsyncModel):
         chat_completion = None
         
         while True:
+            if len(self.regen_models_name) <= 0:
+                raise ModelExhaustedException("No models available for use.")
+            
             model_name = self.regen_models_name[self.current_model_index]
             try:
                 chat_completion = await self.client.chat.completions.create(
                     messages=messages,
                     model=model_name,
-                    # temperature=0.3,
                 )
                 break
             except Exception as e:
@@ -31,8 +32,6 @@ class AsyncGPTModel(AsyncModel):
                 self.current_model_index = 0 if self.current_model_index + 1 >= len(self.regen_models_name) else self.current_model_index + 1
                     
 
-        if chat_completion is None:
-            raise Exception("all models do not work")
 
         return chat_completion.choices[0].message.content
 
@@ -51,6 +50,9 @@ class GPTModel(Model):
         chat_completion = None
 
         while True:
+            if len(self.regen_models_name) <= 0:
+                raise ModelExhaustedException("No models available for use.")
+            
             model_name = self.regen_models_name[self.current_model_index]
             try:
                 chat_completion = self.client.chat.completions.create(
@@ -63,7 +65,5 @@ class GPTModel(Model):
                 print(e)
                 self.current_model_index = 0 if self.current_model_index + 1 >= len(self.regen_models_name) else self.current_model_index + 1
 
-        if chat_completion is None:
-            raise Exception("all models do not work")
 
         return chat_completion.choices[0].message.content

@@ -128,5 +128,7 @@ from dotenv import load_dotenv
 
 load_dotenv() 
 API_KEY = os.getenv("API_KEY")
+if API_KEY is None:
+    raise Exception("API_KEY is not set in environment variables.")
 
 MODELS_NAME = ["openai/gpt-oss-120b",  "llama-3.3-70b-versatile",  "openai/gpt-oss-safeguard-20b"]
