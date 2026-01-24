@@ -7,7 +7,7 @@ from autodocgenerator.preprocessor.settings import ProjectSettings
 from .config_reader import Config, read_config
 from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel
 from autodocgenerator.engine.config.config import API_KEY
-from autodocgenerator.ui.logging import BaseLogger, InfoLog, ErrorLog, WarningLog
+from autodocgenerator.ui.logging import BaseLogger, InfoLog, ErrorLog, WarningLog, FileLoggerTemplate
 
 def gen_doc(project_settings: ProjectSettings, ignore_list: list[str], project_path: str, doc_factory: DocFactory, intro_factory: DocFactory):
     
@@ -36,6 +36,7 @@ if __name__ == "__main__":
         config_data = file.read()
     config: Config = read_config(config_data)
 
+    BaseLogger().set_logger(FileLoggerTemplate("test_logs.log", log_level=0))
 
     project_settings = config.get_project_settings()
     doc_factory, intro_factory = config.get_doc_factory()
