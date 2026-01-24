@@ -6,6 +6,8 @@ from ..ui.progress_base import BaseProgress
 from .settings import ProjectSettings
 
 
+
+
 def compress(data: str, project_settings: ProjectSettings, model: Model, compress_power) -> str:
     prompt = [
         {
