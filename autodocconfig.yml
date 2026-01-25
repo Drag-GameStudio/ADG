@@ -2,7 +2,7 @@ project_name: "Auto Doc Generator"
 language: "en"
 project_settings:
   save_logs: true 
-  log_level: 1
+  log_level: 2
 
 project_additional_info:
   global idea: "This project was created to help developers make documentations for them projects"

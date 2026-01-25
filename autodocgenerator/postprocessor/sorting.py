@@ -28,7 +28,7 @@ def get_order(model: Model, chanks: dict[str, str]):
             "content": f"""Sort the following titles semantically (group related topics together). 
                         Return ONLY a comma-separated list of the sorted titles. 
                         Do not include any introductory text, explanations, or concluding remarks.
-
+                        You can delete somthing strange like #[^>]* or empty
                         Titles:
                         {list(chanks.keys())}
             """
@@ -42,6 +42,7 @@ def get_order(model: Model, chanks: dict[str, str]):
     for el in result:
         try:
             order_output += f"{chanks[el]} \n"
+            logger.log(InfoLog(f"Add to {chanks[el]}", level=2))
         except:
             logger.log(ErrorLog(f"Chank hasnt been existed {el}"))
     return order_output
