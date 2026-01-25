@@ -11,8 +11,9 @@ from .factory.base_factory import DocFactory
 from .factory.modules.intro import IntroLinks, IntroText
 from .factory.modules.general_modules import CustomModule
 from .ui.progress_base import BaseProgress, LibProgress
-from .ui.logging import BaseLogger, BaseLoggerTemplate, InfoLog, ErrorLog, WarningLog
+from .ui.logging import BaseLogger, BaseLoggerTemplate, InfoLog, ErrorLog, WarningLog, FileLoggerTemplate
 from .preprocessor.settings import ProjectSettings
+from .auto_runner.config_reader import ProjectConfigSettings
 
 
 class Manager:
@@ -27,18 +28,20 @@ class Manager:
 
 
     def __init__(self, project_directory: str, project_settings: ProjectSettings,
-                 sync_model: Model = None, async_model: AsyncModel = None, ignore_files: list = [], 
-                 language: str = "en", progress_bar: BaseProgress = BaseProgress()):
+                 pcs: ProjectConfigSettings, sync_model: Model = None, async_model: AsyncModel = None, 
+                 ignore_files: list = [], language: str = "en", progress_bar: BaseProgress = BaseProgress()):
         self.project_directory = project_directory
         self.ignore_files = ignore_files
         self.progress_bar = progress_bar
         self.language = language
         self.project_settings = project_settings
+        self.pcs = pcs
 
         self.sync_model = sync_model
         self.async_model = async_model
 
         self.logger = BaseLogger()
+        self.logger.set_logger(FileLoggerTemplate(self.get_file_path("logs"), log_level=self.pcs.log_level))
 
         cache_path = os.path.join(self.project_directory, self.CACHE_FOLDER_NAME)
 
@@ -124,59 +127,8 @@ class Manager:
             file.write(new_data)
 
         self.progress_bar.update_task()
+
+    def clear_cache(self):
+        if not self.pcs.save_logs:
+            os.remove(self.get_file_path("logs"))
         
-
-        
-from .engine.config.config import API_KEY
-
-if __name__ == "__main__":
-    ignore_list = [
-        "*.pyo", "*.pyd", "*.pdb", "*.pkl", "*.log", "*.sqlite3", "*.db", "data",
-        "venv", "env", ".venv", ".env", ".vscode", ".idea", "*.iml", ".gitignore", ".ruff_cache", ".auto_doc_cache",
-        "*.pyc", "__pycache__", ".git", ".coverage", "htmlcov", "migrations", "*.md", "static", "staticfiles", ".mypy_cache"
-    ]
-
-    async_model = AsyncGPTModel(API_KEY)
-    sync_model = GPTModel(API_KEY)
-
-    BaseLogger().set_logger(BaseLoggerTemplate())
-
-
-    # with Progress(
-    #     SpinnerColumn(),          
-    #     TextColumn("[progress.description]{task.description}"),
-    #     BarColumn(),               
-    #     TaskProgressColumn(),     
-    # ) as progress:
-    #     project_settings = ProjectSettings("Auto Doc Generator")
-    #     project_settings.add_info(
-    #         "global idea",
-    #         """This project was created to help developers make documentations for them projects"""
-    #     )
-    #     manager = Manager(r"C:\Users\sinic\OneDrive\Документы\GitHub\ADG", 
-    #                     project_settings,
-    #                     sync_model=sync_model,
-    #                     async_model=async_model,
-    #                     ignore_files=ignore_list, 
-    #                     progress_bar=LibProgress(progress), 
-    #                     language="en")
-
-    #     # manager.generate_code_file()
-    #     # manager.generate_global_info_file(use_async=True, max_symbols=5000)
-    #     # manager.generete_doc_parts(use_async=True, max_symbols=4000)
-    #     # manager.factory_generate_doc(
-    #     #     DocFactory(
-    #     #         CustomModule("how to use Manager class what parameters i need to give. give full example of usege"),
-    #     #         CustomModule("how to use Module and create your own module. give full example of usege ")
-    #     #     )
-    #     # )
-        
-    #     manager.factory_generate_doc(
-    #         DocFactory(
-    #             IntroLinks(),
-    #             # IntroText(),
-    #         )
-    #     )
-
-
-

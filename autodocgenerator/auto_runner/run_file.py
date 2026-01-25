@@ -18,14 +18,14 @@ def gen_doc(project_settings: ProjectSettings, pcs: ProjectConfigSettings, ignor
     
     manager = Manager(
         project_path, 
-        project_settings, 
+        project_settings,
+        pcs, 
         sync_model=sync_model,
         async_model=async_model,
         ignore_files=ignore_list, 
         progress_bar=ConsoleGtiHubProgress(), 
         language="en")
 
-    BaseLogger().set_logger(FileLoggerTemplate(manager.get_file_path("logs"), log_level=pcs.log_level))
 
     manager.generate_code_file()
     manager.generate_global_info_file(use_async=False, max_symbols=8000)
@@ -33,8 +33,7 @@ def gen_doc(project_settings: ProjectSettings, pcs: ProjectConfigSettings, ignor
     manager.factory_generate_doc(doc_factory)
     manager.factory_generate_doc(intro_factory)
 
-    if not pcs.save_logs:
-        os.remove(manager.get_file_path("logs"))
+    manager.clear_cache()
 
     return manager.read_file_by_file_key("output_doc")
 
