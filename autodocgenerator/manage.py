@@ -22,7 +22,7 @@ class Manager:
     FILE_NAMES = {
         "code_mix": "code_mix.txt",
         "global_info": "global_info.md",
-        "logs": "report.log",
+        "logs": "report.txt",
         "output_doc": "output_doc.md"
     }
 
