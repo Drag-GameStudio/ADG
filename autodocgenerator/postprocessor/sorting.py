@@ -39,7 +39,11 @@ def get_order(model: Model, chanks: dict[str, str]):
     logger.log(InfoLog(f"End ordering result list {list(result)}"))
 
     order_output = ""
+    print("tressafafasfasfasfsafas")
+    print(result)
+    print(len(result))
     for el in result:
+        print(el)
         order_output += f"{chanks.get(el)} \n"
         logger.log(InfoLog(f"Add to {chanks.get(el)}", level=2))
         
