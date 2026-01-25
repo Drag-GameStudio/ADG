@@ -2,14 +2,16 @@ from ..engine.models.gpt_model import GPTModel, AsyncGPTModel, AsyncModel, Model
 from ..engine.config.config import BASE_PART_COMPLITE_TEXT
 import asyncio
 from ..ui.progress_base import BaseProgress
+from ..ui.logging import BaseLogger, InfoLog, ErrorLog, WarningLog
 
 
 def split_data(data: str, max_symbols: int) -> list[str]:
 
     split_objects = []
-
     splited_by_files = data.split("</file>")
     
+    logger = BaseLogger()
+    logger.log(InfoLog("Starting data splitting..."))
 
     while True:
         have_to_change = False
@@ -21,9 +23,6 @@ def split_data(data: str, max_symbols: int) -> list[str]:
 
         if have_to_change == False:
             break
-
-            
-
 
     curr_index = 0
     for el in splited_by_files:
@@ -37,9 +36,13 @@ def split_data(data: str, max_symbols: int) -> list[str]:
 
         split_objects[curr_index] += "\n" + el
 
+    logger.log(InfoLog(f"Data split into {len(split_objects)} parts based on max symbols {max_symbols}."))
+
     return split_objects
 
 def write_docs_by_parts(part: str, model: Model, global_info: str, prev_info: str = None, language: str = "en"):
+    logger = BaseLogger()
+    logger.log(InfoLog("Generating documentation for a part..."))
     prompt = [
             {
                 "role": "system",
@@ -72,6 +75,8 @@ def write_docs_by_parts(part: str, model: Model, global_info: str, prev_info: st
     
     answer: str = model.get_answer_without_history(prompt=prompt)
     temp_answer = answer.removeprefix("```")
+    logger.log(InfoLog("Documentation for part generated. total length: " + str(len(answer))))
+    logger.log(InfoLog(f"Part Documentation: {answer}", level=2))
     if answer == temp_answer:
         return answer
 
@@ -79,7 +84,8 @@ def write_docs_by_parts(part: str, model: Model, global_info: str, prev_info: st
     return answer
 
 async def async_write_docs_by_parts(part: str, async_model: AsyncModel, global_info: str, semaphore, prev_info: str = None, language: str = "en", update_progress = None):
-
+    logger = BaseLogger()
+    logger.log(InfoLog("Generating documentation for a part (async)..."))
     async with semaphore:
 
         prompt = [
@@ -116,7 +122,8 @@ async def async_write_docs_by_parts(part: str, async_model: AsyncModel, global_i
         if update_progress is not None:
             update_progress()
 
-
+        logger.log(InfoLog("Documentation for part generated. total length: " + str(len(answer))))
+        logger.log(InfoLog(f"Part Documentation: {answer}", level=2))
         temp_answer = answer.removeprefix("```")
         if answer == temp_answer:
             return answer
@@ -128,6 +135,8 @@ async def async_write_docs_by_parts(part: str, async_model: AsyncModel, global_i
 def gen_doc_parts(full_code_mix, global_info, max_symbols, model: Model, language, progress_bar: BaseProgress):
     splited_data = split_data(full_code_mix, max_symbols)
     result = None
+    logger = BaseLogger()
+    logger.log(InfoLog("Starting documentation generation by parts..."))
 
     progress_bar.create_new_subtask(f"Generete doc parts", total_len=len(splited_data))
     
@@ -141,14 +150,18 @@ def gen_doc_parts(full_code_mix, global_info, max_symbols, model: Model, languag
         progress_bar.update_task()
     
     progress_bar.remove_subtask()
-
+    logger.log(InfoLog(f"""Documentation generation by parts completed.\n
+                       Total documentation length: {len(all_result)}"""))
+    logger.log(InfoLog(f"Documentation: {all_result}", level=2))
     return all_result
 
 async def async_gen_doc_parts(full_code_mix, global_info, max_symbols, model: AsyncModel, language, progress_bar: BaseProgress):
     splited_data = split_data(full_code_mix, max_symbols)
     progress_bar.create_new_subtask(f"Generete doc parts (async)", len(splited_data))
-
+    
     semaphore = asyncio.Semaphore(4)
+    logger = BaseLogger()
+    logger.log(InfoLog("Starting asynchronous documentation generation by parts..."))
 
     tasks = []
     for el in splited_data:
@@ -161,6 +174,8 @@ async def async_gen_doc_parts(full_code_mix, global_info, max_symbols, model: As
         result += "\n\n"
 
     progress_bar.remove_subtask()
-
+    logger.log(InfoLog(f"""Asynchronous documentation generation by parts completed.\n
+                       Total documentation length: {len(result)}"""))
+    logger.log(InfoLog(f"Documentation: {result}", level=2))
 
     return result

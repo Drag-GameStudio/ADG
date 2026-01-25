@@ -11,7 +11,9 @@ from .factory.base_factory import DocFactory
 from .factory.modules.intro import IntroLinks, IntroText
 from .factory.modules.general_modules import CustomModule
 from .ui.progress_base import BaseProgress, LibProgress
+from .ui.logging import BaseLogger, BaseLoggerTemplate, InfoLog, ErrorLog, WarningLog, FileLoggerTemplate
 from .preprocessor.settings import ProjectSettings
+from .auto_runner.config_reader import ProjectConfigSettings
 
 
 class Manager:
@@ -20,22 +22,26 @@ class Manager:
     FILE_NAMES = {
         "code_mix": "code_mix.txt",
         "global_info": "global_info.md",
+        "logs": "report.log",
         "output_doc": "output_doc.md"
     }
 
 
     def __init__(self, project_directory: str, project_settings: ProjectSettings,
-                 sync_model: Model = None, async_model: AsyncModel = None,
-                  ignore_files: list = [], language: str = "en", 
-                  progress_bar: BaseProgress = BaseProgress()):
+                 pcs: ProjectConfigSettings, sync_model: Model = None, async_model: AsyncModel = None, 
+                 ignore_files: list = [], language: str = "en", progress_bar: BaseProgress = BaseProgress()):
         self.project_directory = project_directory
         self.ignore_files = ignore_files
         self.progress_bar = progress_bar
         self.language = language
         self.project_settings = project_settings
+        self.pcs = pcs
 
         self.sync_model = sync_model
         self.async_model = async_model
+
+        self.logger = BaseLogger()
+        self.logger.set_logger(FileLoggerTemplate(self.get_file_path("logs"), log_level=self.pcs.log_level))
 
         cache_path = os.path.join(self.project_directory, self.CACHE_FOLDER_NAME)
 
@@ -51,8 +57,11 @@ class Manager:
         return os.path.join(self.project_directory, self.CACHE_FOLDER_NAME, self.FILE_NAMES.get(file_key))
 
     def generate_code_file(self):
+        self.logger.log(InfoLog("Starting code mix generation..."))
         cm = CodeMix(self.project_directory, self.ignore_files)
         cm.build_repo_content(self.get_file_path("code_mix"))
+
+        self.logger.log(InfoLog("Code mix generation completed."))
         self.progress_bar.update_task()
 
     def generate_global_info_file(self, max_symbols=10_000, use_async: bool = False):
@@ -68,13 +77,23 @@ class Manager:
         
 
     def generete_doc_parts(self, max_symbols=5_000, use_async: bool = False):
+
+
         global_info = self.read_file_by_file_key("global_info")
         full_code_mix = self.read_file_by_file_key("code_mix")
 
         if use_async:
-            result = asyncio.run(async_gen_doc_parts(full_code_mix, global_info, max_symbols, self.async_model, self.language, self.progress_bar))
+            self.logger.log(InfoLog("Starting asynchronous documentation generation by parts..."))
+            result = asyncio.run(async_gen_doc_parts(full_code_mix, global_info, 
+                                                     max_symbols, self.async_model, 
+                                                     self.language, self.progress_bar))
         else:
-            result = gen_doc_parts(full_code_mix, global_info, max_symbols, self.sync_model, self.language, self.progress_bar)
+            self.logger.log(InfoLog("Starting synchronous documentation generation by parts..."))
+            result = gen_doc_parts(full_code_mix, global_info, 
+                                   max_symbols, self.sync_model, 
+                                   self.language, self.progress_bar)
+            
+        self.logger.log(InfoLog("Documentation generation by parts completed."))
 
         with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
             file.write(result)
@@ -92,7 +111,15 @@ class Manager:
             "full_data": curr_doc,
             "code_mix": code_mix
         }
+
+        self.logger.log(InfoLog(f"""Starting factory documentation generation \n
+                                {" ".join([type(module).__name__ for module in doc_factory.modules])} \n
+                                Input params: {" ".join([f"{key}: {len(value)} chars" for key, value in info.items()])}
+                                """))
+
         result = doc_factory.generate_doc(info, self.sync_model, self.progress_bar)
+
+        self.logger.log(InfoLog("Factory documentation generation completed."))
 
         new_data = f"{result} \n\n{curr_doc}"
 
@@ -100,56 +127,8 @@ class Manager:
             file.write(new_data)
 
         self.progress_bar.update_task()
+
+    def clear_cache(self):
+        if not self.pcs.save_logs:
+            os.remove(self.get_file_path("logs"))
         
-
-        
-from .engine.config.config import API_KEY
-
-if __name__ == "__main__":
-    ignore_list = [
-        "*.pyo", "*.pyd", "*.pdb", "*.pkl", "*.log", "*.sqlite3", "*.db", "data",
-        "venv", "env", ".venv", ".env", ".vscode", ".idea", "*.iml", ".gitignore", ".ruff_cache", ".auto_doc_cache",
-        "*.pyc", "__pycache__", ".git", ".coverage", "htmlcov", "migrations", "*.md", "static", "staticfiles", ".mypy_cache"
-    ]
-
-    sync_model = GPTModel(API_KEY)
-    async_model = AsyncGPTModel(API_KEY)
-
-    with Progress(
-        SpinnerColumn(),          
-        TextColumn("[progress.description]{task.description}"),
-        BarColumn(),               
-        TaskProgressColumn(),     
-    ) as progress:
-        project_settings = ProjectSettings("Auto Doc Generator")
-        project_settings.add_info(
-            "global idea",
-            """This project was created to help developers make documentations for them projects"""
-        )
-        manager = Manager(r"C:\Users\sinic\OneDrive\Документы\GitHub\ADG", 
-                        project_settings,
-                        sync_model=sync_model,
-                        async_model=async_model,
-                        ignore_files=ignore_list, 
-                        progress_bar=LibProgress(progress), 
-                        language="en")
-
-        # manager.generate_code_file()
-        # manager.generate_global_info_file(use_async=True, max_symbols=5000)
-        # manager.generete_doc_parts(use_async=True, max_symbols=4000)
-        # manager.factory_generate_doc(
-        #     DocFactory(
-        #         CustomModule("how to use Manager class what parameters i need to give. give full example of usege"),
-        #         CustomModule("how to use Module and create your own module. give full example of usege ")
-        #     )
-        # )
-        
-        manager.factory_generate_doc(
-            DocFactory(
-                IntroLinks(),
-                # IntroText(),
-            )
-        )
-
-
-

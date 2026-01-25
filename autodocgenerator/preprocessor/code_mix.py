@@ -1,11 +1,13 @@
 import os
 from pathlib import Path
 import fnmatch
+from ..ui.logging import InfoLog, BaseLogger
 
 class CodeMix:
     def __init__(self, root_dir=".", ignore_patterns=None):
         self.root_dir = Path(root_dir).resolve()
         self.ignore_patterns = ignore_patterns or []
+        self.logger = BaseLogger()
 
     def should_ignore(self, path: str) -> bool:
         relative_path = path.relative_to(self.root_dir)
@@ -23,6 +25,7 @@ class CodeMix:
             out.write("Repository Structure:\n")
             for path in sorted(self.root_dir.rglob("*")):
                 if self.should_ignore(path):
+                    self.logger.log(InfoLog(f"Ignored: {path}", level=1))
                     continue
                 depth = len(path.relative_to(self.root_dir).parts)
                 indent = "  " * (depth - 1)

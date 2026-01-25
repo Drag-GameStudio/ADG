@@ -34,9 +34,14 @@ jobs:
       - name: Copy output to README
         run: cat .auto_doc_cache/output_doc.md > README.md
 
+      - name: Copy logs to a new file
+        continue-on-error: true
+        run: |
+          cat .auto_doc_cache/report.log > agd_report.log || echo "Logs not found"
+
       - name: Commit and Push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
+          git add .
           git diff --quiet && git diff --staged --quiet || (git commit -m "auto: update README.md" && git push)

@@ -3,6 +3,8 @@ from ..engine.models.model import Model
 from ..engine.config.config import BASE_INTRODACTION_CREATE_TEXT, BASE_INTRO_CREATE
 import re
 import unicodedata
+from ..ui.logging import InfoLog, BaseLogger
+
 
 def generate_markdown_anchor(header: str) -> str:
     anchor = header.lower()
@@ -32,6 +34,10 @@ def get_all_topics(data: str) -> list[str]:
 def get_all_html_links(data: str) -> list[str]:
     links = []
     curr_shift_index = 0
+
+    logger = BaseLogger()
+    logger.log(InfoLog("Extracting HTML links from documentation..."))
+
     while True:
         curr_index = data.find("<a name=", curr_shift_index)
         if curr_index == -1:
@@ -42,10 +48,14 @@ def get_all_html_links(data: str) -> list[str]:
         if len(curr_result) > 25:
             continue
         links.append("#" + curr_result)
-
+    
+    logger.log(InfoLog(f"Extracted {len(links)} HTML links from documentation."))
+    logger.log(InfoLog(f"Links: {links}", level=1))
     return links
 
 def get_links_intro(links: list[str], model: Model, language: str = "en"):
+    logger = BaseLogger()
+
     prompt = [
         {
             "role": "system",
@@ -60,7 +70,10 @@ def get_links_intro(links: list[str], model: Model, language: str = "en"):
             "content": str(links)
         }
     ]
+    logger.log(InfoLog("Generating introduction with links..."))
     intro_links = model.get_answer_without_history(prompt=prompt)
+    logger.log(InfoLog("Introduction with links generated."))
+    logger.log(InfoLog(f"Introduction Links: {intro_links}", level=1))
     return intro_links
 
 def get_introdaction(global_data: str, model: Model, language: str = "en") -> str:
