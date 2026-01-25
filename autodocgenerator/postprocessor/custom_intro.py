@@ -1,53 +1,24 @@
 from ..engine.models.gpt_model import GPTModel
 from ..engine.models.model import Model 
 from ..engine.config.config import BASE_INTRODACTION_CREATE_TEXT, BASE_INTRO_CREATE
-import re
-import unicodedata
 from ..ui.logging import InfoLog, BaseLogger
+import re
 
 
-def generate_markdown_anchor(header: str) -> str:
-    anchor = header.lower()
-    anchor = unicodedata.normalize('NFKC', anchor)
-    anchor = anchor.replace(' ', '-')
-    anchor = re.sub(r'[^a-z0-9\-_]', '', anchor)
-
-    anchor = re.sub(r'-+', '-', anchor)
-    anchor = anchor.strip('-')
-    
-    return f"#{anchor}"
-
-def get_all_topics(data: str) -> list[str]:
-    topics = []
-    curr_shift_index = 0
-    while True:
-        curr_index = data.find("\n## ", curr_shift_index)
-        if curr_index == -1:
-            break
-        
-        curr_shift_index = data.find("\n", curr_index + 3)
-        topics.append(data[curr_index + 4:curr_shift_index])
-
-    links = [generate_markdown_anchor(el) for el in topics]
-    return topics, links 
 
 def get_all_html_links(data: str) -> list[str]:
     links = []
-    curr_shift_index = 0
-
+    
     logger = BaseLogger()
     logger.log(InfoLog("Extracting HTML links from documentation..."))
 
-    while True:
-        curr_index = data.find("<a name=", curr_shift_index)
-        if curr_index == -1:
-            break
+    pattern = r'<a name=["\']?(.*?)["\']?></a>'
+    
+    for match in re.finditer(pattern, data):
+        anchor_name = match.group(1)
+        
+        links.append("#" + anchor_name)
 
-        curr_shift_index = data.find("</a>", curr_index + 3)
-        curr_result = data[curr_index + 9:curr_shift_index - 2]
-        if len(curr_result) > 25:
-            continue
-        links.append("#" + curr_result)
     
     logger.log(InfoLog(f"Extracted {len(links)} HTML links from documentation."))
     logger.log(InfoLog(f"Links: {links}", level=1))

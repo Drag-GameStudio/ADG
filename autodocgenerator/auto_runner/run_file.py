@@ -29,8 +29,8 @@ def gen_doc(project_settings: ProjectSettings, pcs: ProjectConfigSettings, ignor
 
     manager.generate_code_file()
     manager.generate_global_info_file(use_async=False, max_symbols=8000)
-    manager.generete_doc_parts(use_async=False, max_symbols=5000)
-    manager.factory_generate_doc(doc_factory)
+    manager.generete_doc_parts(use_async=False, max_symbols=8000)
+    # manager.factory_generate_doc(doc_factory)
     manager.factory_generate_doc(intro_factory)
 
     manager.clear_cache()

@@ -1,6 +1,6 @@
 from .preprocessor.spliter import split_data, gen_doc_parts, async_gen_doc_parts
 from .preprocessor.compressor import compress_to_one, generate_discribtions_for_code
-from .preprocessor.postprocess import get_introdaction, get_all_html_links, get_links_intro
+from .postprocessor.custom_intro import get_introdaction, get_all_html_links, get_links_intro
 from .engine.models.gpt_model import AsyncGPTModel, GPTModel
 from .engine.models.model import Model, AsyncModel
 import os
