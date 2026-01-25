@@ -40,11 +40,9 @@ def get_order(model: Model, chanks: dict[str, str]):
 
     order_output = ""
     for el in result:
-        try:
-            order_output += f"{chanks[el]} \n"
-            logger.log(InfoLog(f"Add to {chanks[el]}", level=2))
-        except:
-            logger.log(ErrorLog(f"Chank hasnt been existed {el}"))
+        order_output += f"{chanks.get(el)} \n"
+        logger.log(InfoLog(f"Add to {chanks.get(el)}", level=2))
+        
     return order_output
 
 
