@@ -1,6 +1,6 @@
 from .preprocessor.spliter import split_data, gen_doc_parts, async_gen_doc_parts
 from .preprocessor.compressor import compress_to_one, generate_discribtions_for_code
-from .preprocessor.postprocess import get_introdaction, get_all_html_links, get_links_intro
+from .postprocessor.custom_intro import get_introdaction, get_all_html_links, get_links_intro
 from .engine.models.gpt_model import AsyncGPTModel, GPTModel
 from .engine.models.model import Model, AsyncModel
 import os
@@ -14,6 +14,7 @@ from .ui.progress_base import BaseProgress, LibProgress
 from .ui.logging import BaseLogger, BaseLoggerTemplate, InfoLog, ErrorLog, WarningLog, FileLoggerTemplate
 from .preprocessor.settings import ProjectSettings
 from .auto_runner.config_reader import ProjectConfigSettings
+from .postprocessor.sorting import get_order, split_text_by_anchors
 
 
 class Manager:
@@ -74,7 +75,6 @@ class Manager:
             file.write("ss")
 
         self.progress_bar.update_task()
-        
 
     def generete_doc_parts(self, max_symbols=5_000, use_async: bool = False):
 
@@ -127,6 +127,14 @@ class Manager:
             file.write(new_data)
 
         self.progress_bar.update_task()
+
+    def order_doc(self):
+        curr_doc = self.read_file_by_file_key("output_doc")
+        result = split_text_by_anchors(curr_doc)
+        result = get_order(self.sync_model, result)
+
+        with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
+            file.write(result)
 
     def clear_cache(self):
         if not self.pcs.save_logs:

@@ -9,25 +9,28 @@ You should understand, that it is not full code, it is just part
 Do NOT skip details; analyze everything that appears in the snippet.
 """
 
-BASE_PART_COMPLITE_TEXT = """You will receive:
-A specific code snippet that represents a part of this system.
-Your task is to:
-Write clear and structured documentation for the given code snippet.
-dont make it too long around 0.3-0.7k symbols.
-Explain what this code does within the context of the entire system, not in isolation.
-You should understand, that it is not full code, it is just part
-near titles like ## title use a link <a name="title"></a>
-all title must be conctetial and include special info about part
+BASE_PART_COMPLITE_TEXT = """Revised Documentation Prompt
+Role: You are a senior technical writer. Input: You will receive a specific code snippet representing a fragment of a larger system.
+Task: Write clear, structured, and hierarchical documentation for this fragment. Length: 0.3–0.7k characters (keep it tight).
 
-Describe:
-the responsibility of this component,
-how it interacts with other parts of the system,
-key functions, classes, and logic flows,
-important assumptions, inputs, outputs, and side effects.
-Use the global system description as the primary context to ensure correctness and consistency.
-Do NOT restate the global description — focus only on documenting the current code fragment.
-Write documentation that is suitable for developers who are new to this codebase.
-Keep the documentation concise, precise, and technically accurate."""
+Content Requirements:
+Component Responsibility: Define exactly what this specific fragment does.
+Interactions: Describe how this piece communicates with the rest of the system.
+Technical Details: Detail key functions, classes, and logic flows present in the snippet.
+Data Flow: Outline inputs, outputs, side effects, and logic assumptions.
+
+Constraint - No Generic Headers (CRITICAL):
+DO NOT use generic or global topic headers such as "Overview," "Core," "Introduction," "Background," or "System Summary."
+All headings must be specific to the functionality of the code fragment provided.
+
+Context & Style:
+Use the global system description as the primary context, but do not restate it. Focus exclusively on the fragment.
+Write for developers who are new to the codebase.
+Maintain high technical accuracy and a concise, professional tone.
+
+Formatting:
+Use Markdown for structure.
+Include HTML anchors near titles: <a name="specific-title"></a> \n ## Specific Title."""
 
 BASE_INTRODACTION_CREATE_TEXT = """
 Role: Senior Technical Solutions Architect.
@@ -37,9 +40,6 @@ Task: Generate a high-level "Executive Navigation Tree" from the provided Markdo
 
 Strict Algorithmic Constraints:
 
-1. Leave links that mean something
-   - dont leave links like [Overview](#overview) or [Introduction](#introduction) or similar
-
 2. Zero-Hallucination Anchors:
    - Copy the (#anchor) part EXACTLY. 
    - DO NOT "clean", "fix", or "translate" anchors. If the input is [Text](#long-random-anchor-123), the output MUST be [Text](#long-random-anchor-123).
@@ -48,6 +48,7 @@ Strict Algorithmic Constraints:
    - Organize items into a 2-level hierarchical tree.
    - Group by functional domain (e.g., 📂 Identity & Access, ⚙️ Payment Gateway, 📄 Core Engine).
    - Use nested bullet points.
+   - do not change the order
 
 4. Execution Mode:
    - If the user provides a list, process it IMMEDIATELY.

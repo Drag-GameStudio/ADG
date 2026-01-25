@@ -1,6 +1,6 @@
 from ..base_factory import BaseModule
 from ...engine.models.model import Model
-from ...preprocessor.postprocess import generete_custom_discription
+from ...postprocessor.custom_intro import generete_custom_discription
 from ...preprocessor.spliter import split_data
 
 class CustomModule(BaseModule):
