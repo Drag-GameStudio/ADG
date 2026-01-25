@@ -37,7 +37,7 @@ jobs:
       - name: Copy logs to a new file
         continue-on-error: true
         run: |
-          cat .auto_doc_cache/report.log > agd_report.log || echo "Logs not found"
+          cat .auto_doc_cache/report.txt > agd_report.txt || echo "Logs not found"
 
       - name: Commit and Push changes
         run: |
