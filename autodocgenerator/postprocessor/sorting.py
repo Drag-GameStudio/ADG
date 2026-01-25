@@ -1,8 +1,7 @@
 import re
 from .custom_intro import get_all_html_links
 from ..engine.models.model import Model
-from ..engine.models.gpt_model import GPTModel
-from ..engine.config.config import API_KEY
+from ..ui.logging import BaseLogger, InfoLog, WarningLog, ErrorLog
 
 def split_text_by_anchors(text):
     pattern = r'(?=<a name=[^>]*></a>)'
@@ -17,6 +16,12 @@ def split_text_by_anchors(text):
 
 
 def get_order(model: Model, chanks: dict[str, str]):
+    logger = BaseLogger()
+    logger.log(InfoLog("Start ordering"))
+    logger.log(InfoLog(f"chanks name: {list(chanks.keys())}", level=1))
+    logger.log(InfoLog(f"chanks: {chanks}", level=2))
+
+
     prompt = [
         {
             "role": "user",
@@ -31,15 +36,15 @@ def get_order(model: Model, chanks: dict[str, str]):
     ]
     result = model.get_answer_without_history(prompt)
     result = map(lambda x: x.strip(),result.split(","))
+    logger.log(InfoLog(f"End ordering result list {list(result)}"))
 
     order_output = ""
     for el in result:
-        order_output += f"{chanks[el]} \n"
+        try:
+            order_output += f"{chanks[el]} \n"
+        except:
+            logger.log(ErrorLog(f"Chank hasnt been existed {el}"))
     return order_output
 
-with open(r"C:\Users\huina\Python Projects\Impotant projects\AutoDocGenerateGimini\.auto_doc_cache\output_doc.md", "r", encoding="utf-8") as file:
-    content  = file.read()
 
-result = split_text_by_anchors(content)
-sync_model = GPTModel(API_KEY, use_random=False)
-print(get_order(sync_model, result))
+

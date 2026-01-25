@@ -40,9 +40,6 @@ Task: Generate a high-level "Executive Navigation Tree" from the provided Markdo
 
 Strict Algorithmic Constraints:
 
-1. Leave links that mean something
-   - dont leave links like [Overview](#overview) or [Introduction](#introduction) or similar
-
 2. Zero-Hallucination Anchors:
    - Copy the (#anchor) part EXACTLY. 
    - DO NOT "clean", "fix", or "translate" anchors. If the input is [Text](#long-random-anchor-123), the output MUST be [Text](#long-random-anchor-123).
@@ -51,6 +48,7 @@ Strict Algorithmic Constraints:
    - Organize items into a 2-level hierarchical tree.
    - Group by functional domain (e.g., 📂 Identity & Access, ⚙️ Payment Gateway, 📄 Core Engine).
    - Use nested bullet points.
+   - do not change the order
 
 4. Execution Mode:
    - If the user provides a list, process it IMMEDIATELY.

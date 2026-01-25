@@ -90,7 +90,8 @@ def generete_custom_discription(splited_data: str, model: Model, custom_descript
                 2. If the requested information is not explicitly mentioned in the Context, or if you don't know the answer based on the provided data, respond with an empty string ("") or simply say "No information found". 
                 3. DO NOT use external knowledge or invent any logic that is not present in the text.
                 4. Do not provide any introductory or concluding remarks. If there is no info, output must be empty.
-                5. If you dont have any info about it return just !noinfo"""
+                5. If you dont have any info about it return just !noinfo
+                6. Every response must start with the relevant source link from the Context placed inside an empty HTML anchor tag (e.g., <a href="URL"></a>), followed immediately by the answer."""
             },
             {
                 "role": "user",
