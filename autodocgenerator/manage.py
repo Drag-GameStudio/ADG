@@ -21,7 +21,7 @@ class Manager:
     FILE_NAMES = {
         "code_mix": "code_mix.txt",
         "global_info": "global_info.md",
-        "logs": "generation_logs.txt",
+        "logs": "report.log",
         "output_doc": "output_doc.md"
     }
 
@@ -115,7 +115,7 @@ class Manager:
                                 """))
 
         result = doc_factory.generate_doc(info, self.sync_model, self.progress_bar)
-        
+
         self.logger.log(InfoLog("Factory documentation generation completed."))
 
         new_data = f"{result} \n\n{curr_doc}"

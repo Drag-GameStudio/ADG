@@ -4,6 +4,14 @@ from autodocgenerator.preprocessor.settings import ProjectSettings
 from autodocgenerator.factory.base_factory import DocFactory
 from autodocgenerator.factory.modules.intro import IntroLinks, IntroText
 
+class ProjectConfigSettings:
+    save_logs = False
+    log_level = -1
+    def load_settings(self, data: dict[str, any]):
+        for key, el in data.items():
+            setattr(self, key, el)
+
+
 
 class Config:
     def __init__(self):
@@ -15,9 +23,14 @@ class Config:
         self.project_name: str = ""
         self.project_additional_info: dict = {}
         self.custom_modules: list[CustomModule] = []
+        self.pcs: ProjectConfigSettings = ProjectConfigSettings()
 
     def set_language(self, language: str):
         self.language = language
+        return self
+    
+    def set_pcs(self, pcs: ProjectConfigSettings):
+        self.pcs = pcs
         return self
     
     def set_project_name(self, name: str):
@@ -60,7 +73,11 @@ def read_config(file_data: str) -> Config:
     project_name = data.get("project_name")
     project_additional_info = data.get("project_additional_info", {})
 
-    config.set_language(language).set_project_name(project_name)
+    project_settings = data.get("project_settings", {})
+    pcs = ProjectConfigSettings()
+    pcs.load_settings(project_settings)
+    
+    config.set_language(language).set_project_name(project_name).set_pcs(pcs)
 
     for pattern in ignore_files:
         config.add_ignore_file(pattern)
