@@ -42,7 +42,7 @@ Strict Algorithmic Constraints:
 
 2. Zero-Hallucination Anchors:
    - Copy the (#anchor) part EXACTLY. 
-   - DO NOT "clean", "fix", or "translate" anchors. If the input is [Text](#long-random-anchor-123), the output MUST be [Text](#long-random-anchor-123).
+   - DO NOT "clean", "fix", or "translate" anchors. If the input is [Text](#long-random-anchor-123), the output MUST be [Text](#long-random-anchor-123) Text you can create from meanning of link.
 
 3. Structural Grouping:
    - Organize items into a 2-level hierarchical tree.
@@ -54,7 +54,6 @@ Strict Algorithmic Constraints:
    - If the user provides a list, process it IMMEDIATELY.
    - DO NOT explain your reasoning.
    - DO NOT ask for confirmation.
-   - If the input is empty or unclear, only then ask for the list in [Text](#anchor) format.
 
 5. Emergency Fallback Logic:
    - IF the input doesn't strictly follow the [Text](#anchor) format, DO NOT complain or ask for links.
