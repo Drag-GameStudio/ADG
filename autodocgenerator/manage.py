@@ -120,6 +120,6 @@ class Manager:
             file.write(result)
 
     def clear_cache(self):
-        if not self.pcs.save_logs:
+        if not self.config.pcs.save_logs:
             os.remove(self.get_file_path("logs"))
         
