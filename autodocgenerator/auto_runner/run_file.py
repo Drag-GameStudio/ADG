@@ -22,7 +22,7 @@ def gen_doc(project_path: str, config: Config, custom_modules):
 
 
     manager.generate_code_file()
-    manager.generete_doc_parts(max_symbols=6000)
+    manager.generete_doc_parts(max_symbols=7000)
     manager.factory_generate_doc(DocFactory(*custom_modules))
     manager.order_doc()
     manager.factory_generate_doc(DocFactory(IntroLinks()))
