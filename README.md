@@ -1,49 +1,51 @@
 ## Executive Navigation Tree
-- 📂 Configuration
-  - [autodocconfig.yml](#)
-  - [project-config-settings](#)
-  - [global-generator-config](#)
-  - [config-module-constants](#)
-  - [configuration-loading](#)
-  - [projectsettings-prompt-builder](#)
-- ⚙️ Execution Runner
-  - [autodocgenerator/auto_runner/run_file.py](#)
-- 🤖 Model Generation
-  - [gptmodel-synchronous-generation](#)
-  - [asynchronousgptmodel-async-generation](#)
-  - [model-exhausted-exception](#)
-  - [parentmodel-state-management](#)
-- 📄 Intro & Description
-  - [intro-links](#)
-  - [intro-text](#)
-  - [html-link-extraction](#)
-  - […](#)
-  - [global-intro-generation](#)
-  - [link‑based‑intro-generation](#)
-  - [custom‑description‑generation](#)
-  - [URL](#)
-  - [code‑description‑generator](#)
-- 🧩 Ordering & Compression
-  - [semantic‑ordering‑logic](#)
-  - [compress-text-factory](#)
-  - [compress-function-workflow](#)
-  - [async‑compression-pipeline](#)
-  - [sync‑compare-pipeline](#)
-- 📚 Documentation Pipelines
-  - [document-generation-pipeline](#)
-  - [doc-generation‑pipeline](#)
-  - [docfactory-module-orchestration](#)
-  - [sync-part-documentation](#)
-  - [async-part-documentation](#)
-- ⚡ Runtime & Utilities
-  - [runtime-interactions](#)
-  - [history-helper](#)
-  - [data-splitting-logic](#)
-- 🪵 Logging & Progress
-  - [logger-singleton-behavior](#)
-  - [log-message-hierarchy](#)
-  - [file-logger-template](#)
-  - [progress-implementations](#)
+
+- 📂 Configuration  
+  - [#autodocconfig.yml](#autodocconfig.yml)  
+  - [#project-config-settings](#project-config-settings)  
+  - [#global-generator-config](#global-generator-config)  
+  - [#config-module-constants](#config-module-constants)  
+  - [#configuration-loading](#configuration-loading)  
+  - [#projectsettings-prompt-builder](#projectsettings-prompt-builder)  
+
+- ⚙️ Model & Generation  
+  - [#gptmodel-synchronous-generation](#gptmodel-synchronous-generation)  
+  - [#asynchronousgptmodel-async-generation](#asynchronousgptmodel-async-generation)  
+  - [#model-exhausted-exception](#model-exhausted-exception)  
+  - [#parentmodel-state-management](#parentmodel-state-management)  
+
+- 📄 Intro & Description  
+  - [#intro-links](#intro-links)  
+  - [#intro-text](#intro-text)  
+  - [#html-link-extraction](#html-link-extraction)  
+  - [#global-intro-generation](#global-intro-generation)  
+  - [#link‑based‑intro-generation](#link‑based‑intro-generation)  
+  - [#custom‑description‑generation](#custom‑description‑generation)  
+  - [#code‑description‑generator](#code‑description‑generator)  
+  - [#semantic‑ordering‑logic](#semantic‑ordering‑logic)  
+
+- 📦 Compression & Pipeline  
+  - [#compress-text-factory](#compress-text-factory)  
+  - [#compress-function-workflow](#compress-function-workflow)  
+  - [#async‑compression-pipeline](#async‑compression-pipeline)  
+  - [#sync‑compare-pipeline](#sync‑compare-pipeline)  
+  - [#document-generation-pipeline](#document-generation-pipeline)  
+  - [#doc-generation‑pipeline](#doc-generation‑pipeline)  
+  - [#docfactory-module-orchestration](#docfactory-module-orchestration)  
+  - [#sync-part-documentation](#sync-part-documentation)  
+  - [#async-part-documentation](#async-part-documentation)  
+
+- 📊 Runtime & Logging  
+  - [#autodocgenerator/auto_runner/run_file.py](#autodocgenerator/auto_runner/run_file.py)  
+  - [#runtime-interactions](#runtime-interactions)  
+  - [#history-helper](#history-helper)  
+  - [#data-splitting-logic](#data-splitting-logic)  
+  - [#logger-singleton-behavior](#logger-singleton-behavior)  
+  - [#log-message-hierarchy](#log-message-hierarchy)  
+  - [#file-logger-template](#file-logger-template)  
+  - [#progress-implementations](#progress-implementations)  
+
+
 
  
 
