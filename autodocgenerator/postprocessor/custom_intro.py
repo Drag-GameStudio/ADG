@@ -17,7 +17,8 @@ def get_all_html_links(data: str) -> list[str]:
     for match in re.finditer(pattern, data):
         anchor_name = match.group(1)
         
-        links.append("#" + anchor_name)
+        if len(links) > 5:
+            links.append("#" + anchor_name)
 
     
     logger.log(InfoLog(f"Extracted {len(links)} HTML links from documentation."))
@@ -91,8 +92,17 @@ def generete_custom_discription(splited_data: str, model: Model, custom_descript
                 3. DO NOT use external knowledge or invent any logic that is not present in the text.
                 4. Do not provide any introductory or concluding remarks. If there is no info, output must be empty.
                 5. If you dont have any info about it return just !noinfo
-                6. Every response must start with the relevant source link from the Context placed inside an empty HTML anchor tag (e.g., <a name="URL"></a>), followed immediately by the answer.
-                7. Add Title after link"""
+                6. Every response must start with exactly one <a name="CONTENT_DESCRIPTION"></a> tag. The CONTENT_DESCRIPTION must be a short, hyphenated summary of the actual information you are providing (e.g., "user-authentication-logic" instead of "auth.yml"). STRICT RULES:
+
+NO filenames or paths (e.g., forbidden: "autodocconfig.yml", "src/config").
+
+NO file extensions (e.g., forbidden: ".yml", ".md").
+
+NO generic terms (e.g., forbidden: "config", "settings", "run", "docs").
+
+NO protocols (http/https).
+
+This tag must appear ONLY ONCE at the very beginning. Never repeat it or use other links"""
             },
             {
                 "role": "user",

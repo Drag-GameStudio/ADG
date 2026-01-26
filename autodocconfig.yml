@@ -9,5 +9,4 @@ project_additional_info:
 
 custom_descriptions:
   - "explain how install workflow with install.ps1 and install.sh scripts for install you should use links irm https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex for powershell and curl -sSL https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash for linux based systems and also you have to add secret variable to git hub action GROCK_API_KEY with your api key from grock docs https://grockdocs.com to make it work"
-  - "how to use Manager class what parameters i need to give. give full example of usage"
   - "explain how to write autodocconfig.yml file what options are available"
