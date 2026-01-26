@@ -55,8 +55,8 @@ def get_order(model: Model, chanks: dict[str, str]):
 
     order_output = ""
     print("tressafafasfasfasfsafas")
-    print(result)
-    print(len(result))
+    print(list(result))
+    print(len(list(result)))
     for el in result:
         print(el, "EL: ...")
         order_output += f"{chanks.get(el)} \n"
