@@ -1,14 +1,29 @@
 import re
-from .custom_intro import get_all_html_links
 from ..engine.models.model import Model
 from ..ui.logging import BaseLogger, InfoLog, WarningLog, ErrorLog
+
+def extract_links_from_start(chunks):
+    links = []
+    pattern = r'^<a name=["\']?(.*?)["\']?></a>'
+    
+    for chunk in chunks:
+        match = re.search(pattern, chunk.strip())
+        if match:
+            anchor_name = match.group(1)
+            links.append("#" + anchor_name)
+                
+    return links
+
 
 def split_text_by_anchors(text):
     pattern = r'(?=<a name=[^>]*></a>)'
     chunks = re.split(pattern, text)
     result_chanks = [chunk.strip() for chunk in chunks if chunk.strip()]
-    all_links = get_all_html_links(text)
+    all_links = extract_links_from_start(result_chanks)
     result = {}
+
+    if len(all_links) != len(result_chanks):
+        return None
 
     for i in range(len(all_links)):
         result[all_links[i]] = result_chanks[i]
@@ -28,7 +43,7 @@ def get_order(model: Model, chanks: dict[str, str]):
             "content": f"""Sort the following titles semantically (group related topics together). 
                         Return ONLY a comma-separated list of the sorted titles. 
                         Do not include any introductory text, explanations, or concluding remarks.
-                        You can delete somthing strange like #[^>]* or empty
+                        You can delete somthing strange like #[^>]* or empty.
                         Titles:
                         {list(chanks.keys())}
             """
@@ -43,7 +58,7 @@ def get_order(model: Model, chanks: dict[str, str]):
     print(result)
     print(len(result))
     for el in result:
-        print(el)
+        print(el, "EL: ...")
         order_output += f"{chanks.get(el)} \n"
         logger.log(InfoLog(f"Add to {chanks.get(el)}", level=2))
         

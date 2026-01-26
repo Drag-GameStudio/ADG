@@ -131,6 +131,8 @@ class Manager:
     def order_doc(self):
         curr_doc = self.read_file_by_file_key("output_doc")
         result = split_text_by_anchors(curr_doc)
+        if result is None:
+            return
         result = get_order(self.sync_model, result)
 
         with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
