@@ -50,13 +50,13 @@ def get_order(model: Model, chanks: dict[str, str]):
         }
     ]
     result = model.get_answer_without_history(prompt)
-    result = map(lambda x: x.strip(),result.split(","))
-    logger.log(InfoLog(f"End ordering result list {list(result)}"))
+    new_result = map(lambda x: x.strip(),result.split(","))
+    logger.log(InfoLog(f"End ordering result list {list(new_result)}"))
 
     order_output = ""
     print("tressafafasfasfasfsafas")
-    print(list(result))
-    print(len(list(result)))
+    print(list(new_result))
+    print(len(list(new_result)))
     for el in result:
         print(el, "EL: ...")
         order_output += f"{chanks.get(el)} \n"
