@@ -11,7 +11,7 @@ from autodocgenerator.ui.logging import BaseLogger, InfoLog, ErrorLog, WarningLo
 import os
 
 
-def gen_doc(project_settings: ProjectSettings, pcs: ProjectConfigSettings, ignore_list: list[str], project_path: str, doc_factory: DocFactory, intro_factory: DocFactory):
+def gen_doc(project_settings: ProjectSettings, pcs: ProjectConfigSettings, ignore_list: list[str], project_path: str, doc_factory: DocFactory, intro_factory: DocFactory, language: str = "en"):
     
     sync_model = GPTModel(API_KEY, use_random=False)
     async_model = AsyncGPTModel(API_KEY)
@@ -24,7 +24,7 @@ def gen_doc(project_settings: ProjectSettings, pcs: ProjectConfigSettings, ignor
         async_model=async_model,
         ignore_files=ignore_list, 
         progress_bar=ConsoleGtiHubProgress(), 
-        language="en")
+        language=language)
 
 
     manager.generate_code_file()
@@ -42,7 +42,6 @@ if __name__ == "__main__":
         config_data = file.read()
     config: Config = read_config(config_data)
 
-
     project_settings = config.get_project_settings()
     doc_factory, intro_factory = config.get_doc_factory()
 
@@ -52,7 +51,8 @@ if __name__ == "__main__":
         config.ignore_files,
         ".",
         doc_factory,
-        intro_factory
+        intro_factory,
+        language=config.language
     )
 
     
