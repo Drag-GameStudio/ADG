@@ -1,1253 +1,321 @@
-[2026-01-26 17:29:04.429747] [INFO] Starting code mix generation...
-[2026-01-26 17:29:04.435055] [INFO] Ignored: /home/runner/work/ADG/ADG/.auto_doc_cache
-[2026-01-26 17:29:04.435298] [INFO] Ignored: /home/runner/work/ADG/ADG/.auto_doc_cache/code_mix.txt
-[2026-01-26 17:29:04.435512] [INFO] Ignored: /home/runner/work/ADG/ADG/.auto_doc_cache/report.txt
-[2026-01-26 17:29:04.435904] [INFO] Ignored: /home/runner/work/ADG/ADG/.git
-[2026-01-26 17:29:04.436146] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/FETCH_HEAD
-[2026-01-26 17:29:04.436371] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/HEAD
-[2026-01-26 17:29:04.436613] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/config
-[2026-01-26 17:29:04.436846] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/config.worktree
-[2026-01-26 17:29:04.437069] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/description
-[2026-01-26 17:29:04.437287] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks
-[2026-01-26 17:29:04.437530] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/applypatch-msg.sample
-[2026-01-26 17:29:04.437788] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/commit-msg.sample
-[2026-01-26 17:29:04.438030] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/fsmonitor-watchman.sample
-[2026-01-26 17:29:04.438266] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/post-update.sample
-[2026-01-26 17:29:04.438499] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-applypatch.sample
-[2026-01-26 17:29:04.438761] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-commit.sample
-[2026-01-26 17:29:04.439003] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-merge-commit.sample
-[2026-01-26 17:29:04.439237] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-push.sample
-[2026-01-26 17:29:04.439477] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-rebase.sample
-[2026-01-26 17:29:04.439729] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-receive.sample
-[2026-01-26 17:29:04.439970] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/prepare-commit-msg.sample
-[2026-01-26 17:29:04.440206] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/push-to-checkout.sample
-[2026-01-26 17:29:04.440439] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/sendemail-validate.sample
-[2026-01-26 17:29:04.440691] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/update.sample
-[2026-01-26 17:29:04.440916] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/index
-[2026-01-26 17:29:04.441135] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/info
-[2026-01-26 17:29:04.441369] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/info/exclude
-[2026-01-26 17:29:04.441586] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs
-[2026-01-26 17:29:04.441842] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/HEAD
-[2026-01-26 17:29:04.442080] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs
-[2026-01-26 17:29:04.442327] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/heads
-[2026-01-26 17:29:04.442591] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/heads/main
-[2026-01-26 17:29:04.442865] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/remotes
-[2026-01-26 17:29:04.443130] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/remotes/origin
-[2026-01-26 17:29:04.443406] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/remotes/origin/main
-[2026-01-26 17:29:04.443642] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects
-[2026-01-26 17:29:04.443903] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/00
-[2026-01-26 17:29:04.444154] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/00/3ed33f03ba24320be674acc37e2f484440960d
-[2026-01-26 17:29:04.444387] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/02
-[2026-01-26 17:29:04.444653] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/02/1c388e953c4661dc3838cf999026c1f029c38b
-[2026-01-26 17:29:04.444891] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/08
-[2026-01-26 17:29:04.445140] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/08/3bb9598f2f3dee44e7b6d3358c592538e0c708
-[2026-01-26 17:29:04.445385] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/14
-[2026-01-26 17:29:04.445652] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/14/3816379e9cc4229eaaf3cdddad6a5ab36c4627
-[2026-01-26 17:29:04.445897] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/16
-[2026-01-26 17:29:04.446146] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/16/c6bd78d24630228f2f308279feee5992b421d5
-[2026-01-26 17:29:04.446379] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/1c
-[2026-01-26 17:29:04.446648] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/1c/20a24b70b74067317afc6434e5c0c301d10144
-[2026-01-26 17:29:04.446888] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/24
-[2026-01-26 17:29:04.447135] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/24/2577dcb15118e78be6b7d35e6bf49352fe9cc3
-[2026-01-26 17:29:04.447369] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/26
-[2026-01-26 17:29:04.447634] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/26/232583984feff25da44d47972f553bd00e4daa
-[2026-01-26 17:29:04.447874] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/45
-[2026-01-26 17:29:04.448122] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/45/c8c97b68d9edc9608f17662ae5a56937db4722
-[2026-01-26 17:29:04.448354] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/48
-[2026-01-26 17:29:04.448618] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/48/2d00127da59187ea3cfc62e26186a5fe439b78
-[2026-01-26 17:29:04.448864] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/4d
-[2026-01-26 17:29:04.449115] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/4d/887c5d0ba32a7517cce5fc00b7935bfd365b6e
-[2026-01-26 17:29:04.449350] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/50
-[2026-01-26 17:29:04.449611] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/50/9b8c9fc4e905fe2754b074ecd464f204991739
-[2026-01-26 17:29:04.449874] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/50/de1f7cf4fe170128039ffa6d0cc6f3f6d6cc33
-[2026-01-26 17:29:04.450106] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/60
-[2026-01-26 17:29:04.450354] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/60/ce38b6fa334f338dde70b71c1d3cff21f28f50
-[2026-01-26 17:29:04.450585] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/62
-[2026-01-26 17:29:04.450854] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/62/18e73336f4ccb562643cd4202a628d14cf784f
-[2026-01-26 17:29:04.451090] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/69
-[2026-01-26 17:29:04.451339] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/69/d396a65001f587ed762008c81601f789adc34e
-[2026-01-26 17:29:04.451569] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6a
-[2026-01-26 17:29:04.451836] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6a/2dd502eb649bb8e804238af60031db553c13ea
-[2026-01-26 17:29:04.452089] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6a/4ee663203935f06c6f32d4d056257d4f4478a7
-[2026-01-26 17:29:04.452320] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6f
-[2026-01-26 17:29:04.452566] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6f/130bfccfc73d6fe93fe33cd3772d640379f909
-[2026-01-26 17:29:04.452831] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6f/d9b606b0d0b3b2f04dccd274004a0ae3725189
-[2026-01-26 17:29:04.453067] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/77
-[2026-01-26 17:29:04.453313] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/77/4f95ed2142b9dc1709dc3dcce5f35519240464
-[2026-01-26 17:29:04.453543] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/7e
-[2026-01-26 17:29:04.453809] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/7e/f15dd6d3c3dd489f000b4267a54b0d72c0d559
-[2026-01-26 17:29:04.454046] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/81
-[2026-01-26 17:29:04.454294] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/81/becbf7a8a1c3473195d0f85266ab25f85809ce
-[2026-01-26 17:29:04.454525] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/84
-[2026-01-26 17:29:04.454791] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/84/00c2b5c8734df41836d301824574b989b0ec41
-[2026-01-26 17:29:04.455038] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/88
-[2026-01-26 17:29:04.455297] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/88/0d58d664412fbc1fd1ab273ef396daf3699102
-[2026-01-26 17:29:04.455534] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/8a
-[2026-01-26 17:29:04.455799] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/8a/b47c5bc8110cef05224baba95761fd822aa22a
-[2026-01-26 17:29:04.456037] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/94
-[2026-01-26 17:29:04.456285] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/94/e480e5d5e7e16b2be7889ae9e81f561e9bdb50
-[2026-01-26 17:29:04.456522] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a5
-[2026-01-26 17:29:04.456787] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a5/5db6b773130ad03a6a78925677a1c6015fa85b
-[2026-01-26 17:29:04.457025] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a8
-[2026-01-26 17:29:04.457270] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a8/476127e3f807c0aa99fa808560ec2e5584dff2
-[2026-01-26 17:29:04.457507] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/b6
-[2026-01-26 17:29:04.457772] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/b6/d812aceb9c792cb2019b9e244e1dbaa4ad74a1
-[2026-01-26 17:29:04.458009] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/c0
-[2026-01-26 17:29:04.458256] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/c0/224d10f6c6beabb97a1deca15605170948edad
-[2026-01-26 17:29:04.458486] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ca
-[2026-01-26 17:29:04.458751] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ca/3f28b6a4a95a7176cdf2d78622ceb1151e186d
-[2026-01-26 17:29:04.458989] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/cf
-[2026-01-26 17:29:04.459235] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/cf/bdcdf27d06f2404277a03319ef0e13e5811798
-[2026-01-26 17:29:04.459467] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d1
-[2026-01-26 17:29:04.459747] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d1/6e341d20d14b5d9bb2b174f1841ab2c1a345fc
-[2026-01-26 17:29:04.459984] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d6
-[2026-01-26 17:29:04.460232] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d6/54eaa4d6edf57be77d54c32c20a0ccb843373f
-[2026-01-26 17:29:04.460463] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d9
-[2026-01-26 17:29:04.460726] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d9/c5e7426b4d3d800f9cca0b469d6f0c60fe27b7
-[2026-01-26 17:29:04.460972] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/db
-[2026-01-26 17:29:04.461219] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/db/80ec4419abf97b42fd51f286a6dd599d8d77ce
-[2026-01-26 17:29:04.461448] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e6
-[2026-01-26 17:29:04.461731] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e6/6a9a3619184fb9947c0d24768a8ba31246f1f0
-[2026-01-26 17:29:04.461990] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e6/9de29bb2d1d6434b8b29ae775ad8c2e48c5391
-[2026-01-26 17:29:04.462224] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e7
-[2026-01-26 17:29:04.462470] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e7/746f47e059234c8b861cf312d97132a810e145
-[2026-01-26 17:29:04.462718] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ef
-[2026-01-26 17:29:04.462972] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ef/9fb37763d620555f3e448337bcdb1ac580b349
-[2026-01-26 17:29:04.463204] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fb
-[2026-01-26 17:29:04.463451] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fb/8b56ad03d86c61f46cb2c93a162215b23ce129
-[2026-01-26 17:29:04.463701] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fd
-[2026-01-26 17:29:04.463953] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fd/e71a3921784193a3be16833a366cce84f85993
-[2026-01-26 17:29:04.464186] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ff
-[2026-01-26 17:29:04.464441] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ff/963568ede49b719e07b95fb29b788c5ac26940
-[2026-01-26 17:29:04.464707] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ff/f080b973d3aee3c8f7fa07952369740b4105fe
-[2026-01-26 17:29:04.464947] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/info
-[2026-01-26 17:29:04.465178] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/pack
-[2026-01-26 17:29:04.465393] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs
-[2026-01-26 17:29:04.465664] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/heads
-[2026-01-26 17:29:04.465916] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/heads/main
-[2026-01-26 17:29:04.466150] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/remotes
-[2026-01-26 17:29:04.466393] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/remotes/origin
-[2026-01-26 17:29:04.466676] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/remotes/origin/main
-[2026-01-26 17:29:04.466935] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/tags
-[2026-01-26 17:29:04.467194] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/shallow
-[2026-01-26 17:29:04.469407] [INFO] Ignored: /home/runner/work/ADG/ADG/.gitignore
-[2026-01-26 17:29:04.469663] [INFO] Ignored: /home/runner/work/ADG/ADG/README.md
-[2026-01-26 17:29:04.470968] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/__pycache__
-[2026-01-26 17:29:04.471199] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/__pycache__/__init__.cpython-312.pyc
-[2026-01-26 17:29:04.471419] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/__pycache__/manage.cpython-312.pyc
-[2026-01-26 17:29:04.471957] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/auto_runner/__pycache__
-[2026-01-26 17:29:04.472200] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/auto_runner/__pycache__/config_reader.cpython-312.pyc
-[2026-01-26 17:29:04.472438] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/auto_runner/__pycache__/run_file.cpython-312.pyc
-[2026-01-26 17:29:04.473922] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/__pycache__
-[2026-01-26 17:29:04.474163] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/__pycache__/__init__.cpython-312.pyc
-[2026-01-26 17:29:04.474396] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/__pycache__/exceptions.cpython-312.pyc
-[2026-01-26 17:29:04.474969] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/config/__pycache__
-[2026-01-26 17:29:04.475223] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/config/__pycache__/config.cpython-312.pyc
-[2026-01-26 17:29:04.476436] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/models/__pycache__
-[2026-01-26 17:29:04.476713] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/models/__pycache__/gpt_model.cpython-312.pyc
-[2026-01-26 17:29:04.476969] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/models/__pycache__/model.cpython-312.pyc
-[2026-01-26 17:29:04.478475] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/__pycache__
-[2026-01-26 17:29:04.478733] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/__pycache__/__init__.cpython-312.pyc
-[2026-01-26 17:29:04.478970] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/__pycache__/base_factory.cpython-312.pyc
-[2026-01-26 17:29:04.479853] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/modules/__pycache__
-[2026-01-26 17:29:04.480108] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/modules/__pycache__/general_modules.cpython-312.pyc
-[2026-01-26 17:29:04.480357] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/modules/__pycache__/intro.cpython-312.pyc
-[2026-01-26 17:29:04.481864] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/postprocessor/__pycache__
-[2026-01-26 17:29:04.482105] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/postprocessor/__pycache__/custom_intro.cpython-312.pyc
-[2026-01-26 17:29:04.482345] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/postprocessor/__pycache__/sorting.cpython-312.pyc
-[2026-01-26 17:29:04.483496] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__
-[2026-01-26 17:29:04.483754] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/code_mix.cpython-312.pyc
-[2026-01-26 17:29:04.483993] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/compressor.cpython-312.pyc
-[2026-01-26 17:29:04.484226] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/settings.cpython-312.pyc
-[2026-01-26 17:29:04.484458] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/spliter.cpython-312.pyc
-[2026-01-26 17:29:04.486548] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__
-[2026-01-26 17:29:04.486815] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__/__init__.cpython-312.pyc
-[2026-01-26 17:29:04.487055] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__/logging.cpython-312.pyc
-[2026-01-26 17:29:04.487289] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__/progress_base.cpython-312.pyc
-[2026-01-26 17:29:04.525856] [INFO] Code mix generation completed.
-[2026-01-26 17:29:04.527770] [INFO] Starting synchronous documentation generation by parts...
-[2026-01-26 17:29:04.528102] [INFO] Starting data splitting...
-[2026-01-26 17:29:04.528196] [INFO] Data split into 6 parts based on max symbols 10000.
-[2026-01-26 17:29:04.528223] [INFO] Starting documentation generation by parts...
-[2026-01-26 17:29:04.528264] [INFO] Generating documentation for a part...
-[2026-01-26 17:29:04.528303] [INFO] Generating answer...
-[2026-01-26 17:29:06.970164] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 17:29:06.970236] [INFO] Answer: <a name="configuration-loading-logic"></a>  
-## Configuration Loading Logic  
-
-The module parses **autodocconfig.yml**, turning raw YAML into a fully‑featured `Config` object used by the auto‑doc runner.  
-
-<a name="projectconfigsettings-structure"></a>  
-## `ProjectConfigSettings` Structure  
-
-- Attributes `save_logs` and `log_level` default to `False`/`-1`.  
-- `load_settings(data: dict)` iterates over the supplied dictionary and sets matching attributes via `setattr`, allowing any future setting to be added without code changes.  
-
-<a name="config-builder-methods"></a>  
-## `Config` Builder Methods  
-
-| Method | Purpose | Returns |
-|--------|---------|---------|
-| `set_language(str)` | Override default language (`en`). | `self` |
-| `set_pcs(ProjectConfigSettings)` | Attach processed project‑level settings. | `self` |
-| `set_project_name(str)` | Store human‑readable project name. | `self` |
-| `add_project_additional_info(key, value)` | Populate free‑form metadata for `ProjectSettings`. | `self` |
-| `add_ignore_file(pattern)` | Extend the default ignore list for file scanning. | `self` |
-| `add_custom_module(CustomModule)` | Register a user‑provided description that will become a custom doc module. | `self` |
-| `get_project_settings()` | Build a `ProjectSettings` instance, injecting additional info. | `ProjectSettings` |
-| `get_doc_factory()` | Assemble the primary documentation factory and an optional intro factory. | `(DocFactory, DocFactory)` |
-
-<a name="read_config-function-flow"></a>  
-## `read_config(file_data: str) → Config` Flow  
-
-1. **YAML Deserialization** – `yaml.safe_load` converts the file string into a dict.  
-2. **Base Config Instantiation** – a fresh `Config` object is created.  
-3. **Core Fields** – `ignore_files`, `language`, `project_name`, and `project_additional_info` are extracted and applied via the builder methods.  
-4. **Project Settings** – a `ProjectConfigSettings` instance receives `project_settings` and is attached with `set_pcs`.  
-5. **Custom Descriptions** – each entry in `custom_descriptions` becomes a `CustomModule` added to `custom_modules`.  
-6. **Return** – the fully‑populated `Config` ready for consumption by the runner.  
-
-**Data Flow:** Input = raw YAML string; Output = configured `Config` object; Side‑effects = none (pure transformation). The function assumes well‑formed YAML and that any unknown keys are harmlessly ignored by the builder pattern.
-[2026-01-26 17:29:06.970297] [INFO] Documentation for part generated. total length: 2432
-[2026-01-26 17:29:06.970321] [INFO] Part Documentation: <a name="configuration-loading-logic"></a>  
-## Configuration Loading Logic  
-
-The module parses **autodocconfig.yml**, turning raw YAML into a fully‑featured `Config` object used by the auto‑doc runner.  
-
-<a name="projectconfigsettings-structure"></a>  
-## `ProjectConfigSettings` Structure  
-
-- Attributes `save_logs` and `log_level` default to `False`/`-1`.  
-- `load_settings(data: dict)` iterates over the supplied dictionary and sets matching attributes via `setattr`, allowing any future setting to be added without code changes.  
-
-<a name="config-builder-methods"></a>  
-## `Config` Builder Methods  
-
-| Method | Purpose | Returns |
-|--------|---------|---------|
-| `set_language(str)` | Override default language (`en`). | `self` |
-| `set_pcs(ProjectConfigSettings)` | Attach processed project‑level settings. | `self` |
-| `set_project_name(str)` | Store human‑readable project name. | `self` |
-| `add_project_additional_info(key, value)` | Populate free‑form metadata for `ProjectSettings`. | `self` |
-| `add_ignore_file(pattern)` | Extend the default ignore list for file scanning. | `self` |
-| `add_custom_module(CustomModule)` | Register a user‑provided description that will become a custom doc module. | `self` |
-| `get_project_settings()` | Build a `ProjectSettings` instance, injecting additional info. | `ProjectSettings` |
-| `get_doc_factory()` | Assemble the primary documentation factory and an optional intro factory. | `(DocFactory, DocFactory)` |
-
-<a name="read_config-function-flow"></a>  
-## `read_config(file_data: str) → Config` Flow  
-
-1. **YAML Deserialization** – `yaml.safe_load` converts the file string into a dict.  
-2. **Base Config Instantiation** – a fresh `Config` object is created.  
-3. **Core Fields** – `ignore_files`, `language`, `project_name`, and `project_additional_info` are extracted and applied via the builder methods.  
-4. **Project Settings** – a `ProjectConfigSettings` instance receives `project_settings` and is attached with `set_pcs`.  
-5. **Custom Descriptions** – each entry in `custom_descriptions` becomes a `CustomModule` added to `custom_modules`.  
-6. **Return** – the fully‑populated `Config` ready for consumption by the runner.  
-
-**Data Flow:** Input = raw YAML string; Output = configured `Config` object; Side‑effects = none (pure transformation). The function assumes well‑formed YAML and that any unknown keys are harmlessly ignored by the builder pattern.
-[2026-01-26 17:29:06.970388] [INFO] Generating documentation for a part...
-[2026-01-26 17:29:06.970425] [INFO] Generating answer...
-[2026-01-26 17:29:08.886521] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 17:29:08.886581] [INFO] Answer: <a name="environment-variable-loading"></a>
-## Environment Variable Loading  
-
-The module imports **os** and **dotenv**, invokes `load_dotenv()` and extracts `API_KEY` from the process environment. If the key is missing, an exception aborts execution, ensuring that downstream model classes always have a valid credential.
-
-<a name="model-name-registry"></a>
-## Model Name Registry  
-
-`MODELS_NAME` is a constant list of three model identifiers. It is referenced by the GPT model factories to populate the `regen_models_name` rotation pool, enabling automatic fallback when a model fails.
-
-<a name="base-text-generators"></a>
-## Base Text Generators  
-
-`get_BASE_COMPRESS_TEXT(start, power)` builds a formatted multi‑line string that describes a compression‑style documentation request. The returned template embeds the `start` and `int(start/power)` values, allowing callers to customise the length constraints dynamically.
-
-<a name="module‑interactions"></a>
-## Module Interactions  
-
-- The environment loader supplies `API_KEY` to **autodocgenerator.engine.models.gpt_model** via the default argument of its constructors.  
-- `MODELS_NAME` is consumed by the model classes to initialise the fallback model queue.  
-- `get_BASE_COMPRESS_TEXT` is used by higher‑level documentation generators to produce concise summaries before emitting usage examples.
-
-<a name="data‑flow‑summary"></a>
-## Data‑Flow Summary  
-
-**Inputs:** OS environment, integer parameters `start` and `power`.  
-**Outputs:** `API_KEY` (global variable), `MODELS_NAME` list, and a formatted string from `get_BASE_COMPRESS_TEXT`.  
-**Side‑effects:** Loading of `.env` file; raising an exception on missing API key; no mutation of external state beyond these globals.
-[2026-01-26 17:29:08.886647] [INFO] Documentation for part generated. total length: 1735
-[2026-01-26 17:29:08.886676] [INFO] Part Documentation: <a name="environment-variable-loading"></a>
-## Environment Variable Loading  
-
-The module imports **os** and **dotenv**, invokes `load_dotenv()` and extracts `API_KEY` from the process environment. If the key is missing, an exception aborts execution, ensuring that downstream model classes always have a valid credential.
-
-<a name="model-name-registry"></a>
-## Model Name Registry  
-
-`MODELS_NAME` is a constant list of three model identifiers. It is referenced by the GPT model factories to populate the `regen_models_name` rotation pool, enabling automatic fallback when a model fails.
-
-<a name="base-text-generators"></a>
-## Base Text Generators  
-
-`get_BASE_COMPRESS_TEXT(start, power)` builds a formatted multi‑line string that describes a compression‑style documentation request. The returned template embeds the `start` and `int(start/power)` values, allowing callers to customise the length constraints dynamically.
-
-<a name="module‑interactions"></a>
-## Module Interactions  
-
-- The environment loader supplies `API_KEY` to **autodocgenerator.engine.models.gpt_model** via the default argument of its constructors.  
-- `MODELS_NAME` is consumed by the model classes to initialise the fallback model queue.  
-- `get_BASE_COMPRESS_TEXT` is used by higher‑level documentation generators to produce concise summaries before emitting usage examples.
-
-<a name="data‑flow‑summary"></a>
-## Data‑Flow Summary  
-
-**Inputs:** OS environment, integer parameters `start` and `power`.  
-**Outputs:** `API_KEY` (global variable), `MODELS_NAME` list, and a formatted string from `get_BASE_COMPRESS_TEXT`.  
-**Side‑effects:** Loading of `.env` file; raising an exception on missing API key; no mutation of external state beyond these globals.
-[2026-01-26 17:29:08.886745] [INFO] Generating documentation for a part...
-[2026-01-26 17:29:08.886786] [INFO] Generating answer...
-[2026-01-26 17:29:21.888251] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 17:29:21.888309] [INFO] Answer: <a name="history-management"></a>
-## History Management  
-
-`History` builds a per‑session message log.  
-- **Constructor** (`system_prompt`) seeds the log with a *system* entry containing `BASE_SYSTEM_TEXT`.  
-- **add_to_history(role, content)** appends a dict `{"role":…, "content":…}` to `self.history`.  
-The object is injected into every model instance, enabling prompt stitching for chat‑style APIs.
-
-<a name="model-rotation-initialisation"></a>
-## Model Rotation Initialisation  
-
-`ParentModel.__init__(api_key=API_KEY, history=History(), use_random=True)`  
-1. Stores the supplied `api_key` and `history`.  
-2. Copies `MODELS_NAME` (list of model identifiers) to `models_copy`.  
-3. If `use_random` is true, shuffles the copy, producing a **fallback queue** saved as `self.regen_models_name`.  
-This queue drives automatic model fallback when a request fails.
-
-<a name="synchronous-model-interface"></a>
-## Synchronous Model Interface  
-
-`Model` inherits `ParentModel` and provides:  
-- `generate_answer(... )` → placeholder `"answer"` (real implementation overridden elsewhere).  
-- `get_answer(prompt)` records the user prompt, calls `generate_answer`, stores the assistant reply, and returns it.  
-- `get_answer_without_history(prompt)` bypasses history.
-
-<a name="asynchronous-model-interface"></a>
-## Asynchronous Model Interface  
-
-`AsyncModel` mirrors `Model` with `async` methods: `generate_answer`, `get_answer`, and `get_answer_without_history`, preserving the same history handling but allowing non‑blocking calls.
-
-**Data Flow**  
-- **Inputs:** `BASE_SYSTEM_TEXT`, environment‑provided `API_KEY`, `MODELS_NAME`, optional `start`/`power` from callers.  
-- **Outputs:** `self.history` (populated log), `self.regen_models_name` (shuffled fallback list), and generated answer strings.  
-- **Side‑effects:** Global env load via `config.config`; no external mutation beyond the created globals.
-[2026-01-26 17:29:21.888355] [INFO] Documentation for part generated. total length: 1907
-[2026-01-26 17:29:21.888379] [INFO] Part Documentation: <a name="history-management"></a>
-## History Management  
-
-`History` builds a per‑session message log.  
-- **Constructor** (`system_prompt`) seeds the log with a *system* entry containing `BASE_SYSTEM_TEXT`.  
-- **add_to_history(role, content)** appends a dict `{"role":…, "content":…}` to `self.history`.  
-The object is injected into every model instance, enabling prompt stitching for chat‑style APIs.
-
-<a name="model-rotation-initialisation"></a>
-## Model Rotation Initialisation  
-
-`ParentModel.__init__(api_key=API_KEY, history=History(), use_random=True)`  
-1. Stores the supplied `api_key` and `history`.  
-2. Copies `MODELS_NAME` (list of model identifiers) to `models_copy`.  
-3. If `use_random` is true, shuffles the copy, producing a **fallback queue** saved as `self.regen_models_name`.  
-This queue drives automatic model fallback when a request fails.
-
-<a name="synchronous-model-interface"></a>
-## Synchronous Model Interface  
-
-`Model` inherits `ParentModel` and provides:  
-- `generate_answer(... )` → placeholder `"answer"` (real implementation overridden elsewhere).  
-- `get_answer(prompt)` records the user prompt, calls `generate_answer`, stores the assistant reply, and returns it.  
-- `get_answer_without_history(prompt)` bypasses history.
-
-<a name="asynchronous-model-interface"></a>
-## Asynchronous Model Interface  
-
-`AsyncModel` mirrors `Model` with `async` methods: `generate_answer`, `get_answer`, and `get_answer_without_history`, preserving the same history handling but allowing non‑blocking calls.
-
-**Data Flow**  
-- **Inputs:** `BASE_SYSTEM_TEXT`, environment‑provided `API_KEY`, `MODELS_NAME`, optional `start`/`power` from callers.  
-- **Outputs:** `self.history` (populated log), `self.regen_models_name` (shuffled fallback list), and generated answer strings.  
-- **Side‑effects:** Global env load via `config.config`; no external mutation beyond the created globals.
-[2026-01-26 17:29:21.888451] [INFO] Generating documentation for a part...
-[2026-01-26 17:29:21.888494] [INFO] Generating answer...
-[2026-01-26 17:29:43.794933] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 17:29:43.795005] [INFO] Answer: <a name="html-link-extractor"></a>
-## HTML Link Extraction Utility (`custom_intro.py`)
-
-**Responsibility** – Scans generated markdown for `<a name="…"></a>` anchors, builds a list of fragment identifiers, and uses a `Model` to synth‑esize introductions that reference those links.  
-
-**Key Functions**  
-- `get_all_html_links(data: str) → list[str]` – regex‑searches `data`, logs progress, returns `["#anchor"]` entries.  
-- `get_links_intro(links, model, language="en") → str` – builds a three‑message system/user prompt (`BASE_INTRODACTION_CREATE_TEXT`), calls `model.get_answer_without_history`, returns the generated intro.  
-- `get_introdaction(global_data, model, language="en") → str` – similar prompt but uses `BASE_INTRO_CREATE`.  
-- `generete_custom_discription(splited_data, model, custom_description, language="en") → str` – iterates over code chunks, asks the model to produce a title/link pair respecting strict “no‑invent” rules; stops on the first non‑empty result.  
-
-**Interactions** – Relies on `Model` (synchronous) for LLM calls; logging through `BaseLogger`. No external state is mutated besides the returned strings.  
-
-**Data Flow**  
-- **Input:** raw markdown (`data`), list of links, optional language.  
-- **Output:** list of anchor hashes, generated introductory text, or a formatted title/link string.  
-- **Side‑effects:** console‑level logs; model‑side history is bypassed (`get_answer_without_history`).  
-
----
-
-<a name="semantic-section-sorting"></a>
-## Semantic Section Sorting (`sorting.py`)
-
-**Responsibility** – Parses a document split by HTML anchors, validates one‑to‑one anchor‑chunk mapping, then asks the LLM to return a comma‑separated ordering of titles.  
-
-**Core Logic**  
-1. `split_text_by_anchors(text)` – regex split on `<a name…></a>`, builds `dict[anchor → chunk]`. Returns `None` if counts mismatch.  
-2. `get_order(model, chanks)` – logs start, sends a user prompt asking for semantic ordering, receives CSV, reassembles ordered text using the original chunk map.  
-
-**Interactions** – Consumes a `Model` instance for the ordering request; uses `BaseLogger` for traceability.  
-
-**Data Flow**  
-- **Input:** full documentation string, `Model`.  
-- **Output:** concatenated text ordered per LLM suggestion.  
-- **Side‑effects:** logs at levels 0‑2; no file I/O.  
-
----
-
-<a name="repository‑content‑packer"></a>
-## Repository Content Packager (`code_mix.py`)
-
-**Responsibility** – Walks a source tree, filters paths by `ignore_patterns`, and writes a single text file containing a tree view followed by the raw content of each non‑ignored file.  
-
-**Main Class** – `CodeMix`  
-- `should_ignore(path)` – resolves relative path, checks against glob patterns (`fnmatch`).  
-- `build_repo_content(output_file)` – writes “Repository Structure” header, iterates `Path.rglob("*")` to emit indented tree lines, then writes each file wrapped in `<file path="…">` tags. Errors are captured inline.  
-
-**Interactions** – Uses `BaseLogger` for per‑file logs; no external services.  
-
-**Data Flow**  
-- **Input:** root directory, optional ignore list.  
-- **Output:** `output_file` (e.g., `codemix.txt`) containing a printable repository map and source snippets.  
-- **Side‑effects:** filesystem write, console logging, possible read‑error messages embedded in output.
-[2026-01-26 17:29:43.795062] [INFO] Documentation for part generated. total length: 3306
-[2026-01-26 17:29:43.795092] [INFO] Part Documentation: <a name="html-link-extractor"></a>
-## HTML Link Extraction Utility (`custom_intro.py`)
-
-**Responsibility** – Scans generated markdown for `<a name="…"></a>` anchors, builds a list of fragment identifiers, and uses a `Model` to synth‑esize introductions that reference those links.  
-
-**Key Functions**  
-- `get_all_html_links(data: str) → list[str]` – regex‑searches `data`, logs progress, returns `["#anchor"]` entries.  
-- `get_links_intro(links, model, language="en") → str` – builds a three‑message system/user prompt (`BASE_INTRODACTION_CREATE_TEXT`), calls `model.get_answer_without_history`, returns the generated intro.  
-- `get_introdaction(global_data, model, language="en") → str` – similar prompt but uses `BASE_INTRO_CREATE`.  
-- `generete_custom_discription(splited_data, model, custom_description, language="en") → str` – iterates over code chunks, asks the model to produce a title/link pair respecting strict “no‑invent” rules; stops on the first non‑empty result.  
-
-**Interactions** – Relies on `Model` (synchronous) for LLM calls; logging through `BaseLogger`. No external state is mutated besides the returned strings.  
-
-**Data Flow**  
-- **Input:** raw markdown (`data`), list of links, optional language.  
-- **Output:** list of anchor hashes, generated introductory text, or a formatted title/link string.  
-- **Side‑effects:** console‑level logs; model‑side history is bypassed (`get_answer_without_history`).  
-
----
-
-<a name="semantic-section-sorting"></a>
-## Semantic Section Sorting (`sorting.py`)
-
-**Responsibility** – Parses a document split by HTML anchors, validates one‑to‑one anchor‑chunk mapping, then asks the LLM to return a comma‑separated ordering of titles.  
-
-**Core Logic**  
-1. `split_text_by_anchors(text)` – regex split on `<a name…></a>`, builds `dict[anchor → chunk]`. Returns `None` if counts mismatch.  
-2. `get_order(model, chanks)` – logs start, sends a user prompt asking for semantic ordering, receives CSV, reassembles ordered text using the original chunk map.  
-
-**Interactions** – Consumes a `Model` instance for the ordering request; uses `BaseLogger` for traceability.  
-
-**Data Flow**  
-- **Input:** full documentation string, `Model`.  
-- **Output:** concatenated text ordered per LLM suggestion.  
-- **Side‑effects:** logs at levels 0‑2; no file I/O.  
-
----
-
-<a name="repository‑content‑packer"></a>
-## Repository Content Packager (`code_mix.py`)
-
-**Responsibility** – Walks a source tree, filters paths by `ignore_patterns`, and writes a single text file containing a tree view followed by the raw content of each non‑ignored file.  
-
-**Main Class** – `CodeMix`  
-- `should_ignore(path)` – resolves relative path, checks against glob patterns (`fnmatch`).  
-- `build_repo_content(output_file)` – writes “Repository Structure” header, iterates `Path.rglob("*")` to emit indented tree lines, then writes each file wrapped in `<file path="…">` tags. Errors are captured inline.  
-
-**Interactions** – Uses `BaseLogger` for per‑file logs; no external services.  
-
-**Data Flow**  
-- **Input:** root directory, optional ignore list.  
-- **Output:** `output_file` (e.g., `codemix.txt`) containing a printable repository map and source snippets.  
-- **Side‑effects:** filesystem write, console logging, possible read‑error messages embedded in output.
-[2026-01-26 17:29:43.795181] [INFO] Generating documentation for a part...
-[2026-01-26 17:29:43.795233] [INFO] Generating answer...
-[2026-01-26 17:30:15.159927] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 17:30:15.159988] [INFO] Answer: <a name="compressor‑pipeline"></a>
-## Compressor Pipeline (`compressor.py`)
-
-**Responsibility** – Reduces raw markdown/code chunks by prompting an LLM with a project‑specific system prompt and a size‑controlled compress prompt. Provides synchronous (`compress`, `compress_and_compare`) and asynchronous (`async_compress`, `async_compress_and_compare`, `compress_to_one`) workflows that batch‑merge *compress_power* chunks and report progress via `BaseProgress`.
-
-**Interactions** – Calls `model.get_answer_without_history` (or its async counterpart) for every chunk; logs through `BaseLogger`. No external state is altered except the returned concatenated strings.
-
-**Data Flow**  
-- *Input*: `data` (str or list of str), `ProjectSettings`, `Model`, numeric `compress_power`.  
-- *Output*: compressed string (single or list) ready for downstream comparison.  
-- *Side‑effects*: progress‑bar updates, console logs.
-
-
-
-<a name="project‑settings‑builder"></a>
-## Project Settings Builder (`settings.py`)
-
-**Responsibility** – Holds minimal project metadata and assembles the system prompt used by the compressor and other pre‑processors.
-
-**Key API**  
-- `ProjectSettings(project_name)` – creates container.  
-- `add_info(key, value)` – injects arbitrary key/value pairs.  
-- `prompt` property – concatenates `BASE_SETTINGS_PROMPT` with project name and all added entries, yielding the final system prompt string.
-
-**Interactions** – Consumed by `compressor.py` and other modules; pure data object, no I/O.
-
-
-
-<a name="split‑and‑doc‑generation"></a>
-## Split & Documentation Generation (`spliter.py`)
-
-**Responsibility** – Breaks a large source dump into size‑bounded parts (`split_data`) and drives LLM‑based documentation creation per part, both synchronously (`write_docs_by_parts`, `gen_doc_parts`) and asynchronously (`async_write_docs_by_parts`, `async_gen_doc_parts`).
-
-**Technical Flow**  
-1. `split_data` → iteratively halves oversized sections, then packs lines into chunks ≤ `max_symbols`.  
-2. `write_docs_by_parts` → builds a multi‑role prompt (`BASE_PART_COMPLITE_TEXT` + optional prior part) and strips surrounding markdown fences.  
-3. `gen_doc_parts` → iterates over split chunks, concatenates results, trims the tail for context reuse, and updates a `BaseProgress` sub‑task.  
-4. Async equivalents use a semaphore (max 4 concurrent calls) and `await` the model.
-
-**Data Flow**  
-- *Input*: full code‑mix string, `max_symbols`, `Model`/`AsyncModel`, optional `global_info`, language tag.  
-- *Output*: single assembled documentation string.  
-- *Side‑effects*: progress‑bar manipulation, detailed logs (`InfoLog`) at levels 0‑2.
-[2026-01-26 17:30:15.160036] [INFO] Documentation for part generated. total length: 2642
-[2026-01-26 17:30:15.160061] [INFO] Part Documentation: <a name="compressor‑pipeline"></a>
-## Compressor Pipeline (`compressor.py`)
-
-**Responsibility** – Reduces raw markdown/code chunks by prompting an LLM with a project‑specific system prompt and a size‑controlled compress prompt. Provides synchronous (`compress`, `compress_and_compare`) and asynchronous (`async_compress`, `async_compress_and_compare`, `compress_to_one`) workflows that batch‑merge *compress_power* chunks and report progress via `BaseProgress`.
-
-**Interactions** – Calls `model.get_answer_without_history` (or its async counterpart) for every chunk; logs through `BaseLogger`. No external state is altered except the returned concatenated strings.
-
-**Data Flow**  
-- *Input*: `data` (str or list of str), `ProjectSettings`, `Model`, numeric `compress_power`.  
-- *Output*: compressed string (single or list) ready for downstream comparison.  
-- *Side‑effects*: progress‑bar updates, console logs.
-
-
-
-<a name="project‑settings‑builder"></a>
-## Project Settings Builder (`settings.py`)
-
-**Responsibility** – Holds minimal project metadata and assembles the system prompt used by the compressor and other pre‑processors.
-
-**Key API**  
-- `ProjectSettings(project_name)` – creates container.  
-- `add_info(key, value)` – injects arbitrary key/value pairs.  
-- `prompt` property – concatenates `BASE_SETTINGS_PROMPT` with project name and all added entries, yielding the final system prompt string.
-
-**Interactions** – Consumed by `compressor.py` and other modules; pure data object, no I/O.
-
-
-
-<a name="split‑and‑doc‑generation"></a>
-## Split & Documentation Generation (`spliter.py`)
-
-**Responsibility** – Breaks a large source dump into size‑bounded parts (`split_data`) and drives LLM‑based documentation creation per part, both synchronously (`write_docs_by_parts`, `gen_doc_parts`) and asynchronously (`async_write_docs_by_parts`, `async_gen_doc_parts`).
-
-**Technical Flow**  
-1. `split_data` → iteratively halves oversized sections, then packs lines into chunks ≤ `max_symbols`.  
-2. `write_docs_by_parts` → builds a multi‑role prompt (`BASE_PART_COMPLITE_TEXT` + optional prior part) and strips surrounding markdown fences.  
-3. `gen_doc_parts` → iterates over split chunks, concatenates results, trims the tail for context reuse, and updates a `BaseProgress` sub‑task.  
-4. Async equivalents use a semaphore (max 4 concurrent calls) and `await` the model.
-
-**Data Flow**  
-- *Input*: full code‑mix string, `max_symbols`, `Model`/`AsyncModel`, optional `global_info`, language tag.  
-- *Output*: single assembled documentation string.  
-- *Side‑effects*: progress‑bar manipulation, detailed logs (`InfoLog`) at levels 0‑2.
-[2026-01-26 17:30:15.160131] [INFO] Generating documentation for a part...
-[2026-01-26 17:30:15.160171] [INFO] Generating answer...
-[2026-01-26 17:30:37.190518] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 17:30:37.190582] [INFO] Answer: <a name="logging‑hierarchy"></a>
-## Logging hierarchy and formatting  
-
-`BaseLog` stores a raw message and a numeric severity. Sub‑classes (`ErrorLog`, `WarningLog`, `InfoLog`) prepend a timestamp (`[YYYY‑MM‑DD HH:MM:SS]`) and a level tag (`[ERROR]`, `[WARNING]`, `[INFO]`). The `format()` method returns the final string for output.
-
-<a name="logger‑template‑selection"></a>
-## Logger template selection  
-
-`BaseLoggerTemplate` implements a configurable `log_level`. Its `global_log()` forwards a log entry to `log()` only when the entry’s level is ≤ the configured threshold (or when the threshold is negative, meaning “log everything”). `FileLoggerTemplate` overrides `log()` to append formatted lines to a file, while the base implementation writes to stdout.
-
-<a name="singleton‑logger‑facade"></a>
-## Singleton logger façade  
-
-`BaseLogger.__new__` enforces a single shared instance (`BaseLogger.instance`). The façade holds a `logger_template` set via `set_logger()`. Calls to `log()` are delegated to the template’s `global_log()`, allowing the rest of the codebase to log without caring about the concrete sink.
-
-<a name="progress‑abstraction"></a>
-## Progress abstraction – rich vs console  
-
-`BaseProgress` defines the public API (`create_new_subtask`, `update_task`, `remove_subtask`).  
-- `LibProgress` wraps **rich.progress.Progress**, creating a base task (“General progress”) and optional sub‑tasks. `update_task()` advances the current sub‑task if present, otherwise the base task.  
-- `ConsoleGtiHubProgress` mimics the same API with plain `print()` statements via `ConsoleTask`, useful when `rich` is unavailable.
-
-<a name="installation‑scripts‑workflow‑generation"></a>
-## Installation scripts – workflow file generation  
-
-`install.ps1` (PowerShell) and `install.sh` (Bash) both create `.github/workflows/autodoc.yml` and `autodocconfig.yml`. They ensure the target directory exists, write a minimal GitHub Actions workflow that references the reusable workflow in the `Drag-GameStudio/ADG` repository, and inject the current project name into the config file. The scripts finish with a green‑colored success message.
-
-<a name="project‑metadata‑pyproject‑toml"></a>
-## Project metadata in **pyproject.toml**  
-
-The `[project]` table declares the package name (`autodocgenerator`), version, description, author, license, and required Python version (`>=3.11,<4.0`). `dependencies` list all runtime libraries (e.g., `rich`, `openai`, `google‑genai`). The `[build‑system]` section pins Poetry as the build backend. This file is the single source of truth for packaging and dependency resolution.
-[2026-01-26 17:30:37.190658] [INFO] Documentation for part generated. total length: 2613
-[2026-01-26 17:30:37.190687] [INFO] Part Documentation: <a name="logging‑hierarchy"></a>
-## Logging hierarchy and formatting  
-
-`BaseLog` stores a raw message and a numeric severity. Sub‑classes (`ErrorLog`, `WarningLog`, `InfoLog`) prepend a timestamp (`[YYYY‑MM‑DD HH:MM:SS]`) and a level tag (`[ERROR]`, `[WARNING]`, `[INFO]`). The `format()` method returns the final string for output.
-
-<a name="logger‑template‑selection"></a>
-## Logger template selection  
-
-`BaseLoggerTemplate` implements a configurable `log_level`. Its `global_log()` forwards a log entry to `log()` only when the entry’s level is ≤ the configured threshold (or when the threshold is negative, meaning “log everything”). `FileLoggerTemplate` overrides `log()` to append formatted lines to a file, while the base implementation writes to stdout.
-
-<a name="singleton‑logger‑facade"></a>
-## Singleton logger façade  
-
-`BaseLogger.__new__` enforces a single shared instance (`BaseLogger.instance`). The façade holds a `logger_template` set via `set_logger()`. Calls to `log()` are delegated to the template’s `global_log()`, allowing the rest of the codebase to log without caring about the concrete sink.
-
-<a name="progress‑abstraction"></a>
-## Progress abstraction – rich vs console  
-
-`BaseProgress` defines the public API (`create_new_subtask`, `update_task`, `remove_subtask`).  
-- `LibProgress` wraps **rich.progress.Progress**, creating a base task (“General progress”) and optional sub‑tasks. `update_task()` advances the current sub‑task if present, otherwise the base task.  
-- `ConsoleGtiHubProgress` mimics the same API with plain `print()` statements via `ConsoleTask`, useful when `rich` is unavailable.
-
-<a name="installation‑scripts‑workflow‑generation"></a>
-## Installation scripts – workflow file generation  
-
-`install.ps1` (PowerShell) and `install.sh` (Bash) both create `.github/workflows/autodoc.yml` and `autodocconfig.yml`. They ensure the target directory exists, write a minimal GitHub Actions workflow that references the reusable workflow in the `Drag-GameStudio/ADG` repository, and inject the current project name into the config file. The scripts finish with a green‑colored success message.
-
-<a name="project‑metadata‑pyproject‑toml"></a>
-## Project metadata in **pyproject.toml**  
-
-The `[project]` table declares the package name (`autodocgenerator`), version, description, author, license, and required Python version (`>=3.11,<4.0`). `dependencies` list all runtime libraries (e.g., `rich`, `openai`, `google‑genai`). The `[build‑system]` section pins Poetry as the build backend. This file is the single source of truth for packaging and dependency resolution.
-[2026-01-26 17:30:37.190780] [INFO] Documentation generation by parts completed.
-
-                       Total documentation length: 14647
-[2026-01-26 17:30:37.190822] [INFO] Documentation: <a name="configuration-loading-logic"></a>  
-## Configuration Loading Logic  
-
-The module parses **autodocconfig.yml**, turning raw YAML into a fully‑featured `Config` object used by the auto‑doc runner.  
-
-<a name="projectconfigsettings-structure"></a>  
-## `ProjectConfigSettings` Structure  
-
-- Attributes `save_logs` and `log_level` default to `False`/`-1`.  
-- `load_settings(data: dict)` iterates over the supplied dictionary and sets matching attributes via `setattr`, allowing any future setting to be added without code changes.  
-
-<a name="config-builder-methods"></a>  
-## `Config` Builder Methods  
-
-| Method | Purpose | Returns |
-|--------|---------|---------|
-| `set_language(str)` | Override default language (`en`). | `self` |
-| `set_pcs(ProjectConfigSettings)` | Attach processed project‑level settings. | `self` |
-| `set_project_name(str)` | Store human‑readable project name. | `self` |
-| `add_project_additional_info(key, value)` | Populate free‑form metadata for `ProjectSettings`. | `self` |
-| `add_ignore_file(pattern)` | Extend the default ignore list for file scanning. | `self` |
-| `add_custom_module(CustomModule)` | Register a user‑provided description that will become a custom doc module. | `self` |
-| `get_project_settings()` | Build a `ProjectSettings` instance, injecting additional info. | `ProjectSettings` |
-| `get_doc_factory()` | Assemble the primary documentation factory and an optional intro factory. | `(DocFactory, DocFactory)` |
-
-<a name="read_config-function-flow"></a>  
-## `read_config(file_data: str) → Config` Flow  
-
-1. **YAML Deserialization** – `yaml.safe_load` converts the file string into a dict.  
-2. **Base Config Instantiation** – a fresh `Config` object is created.  
-3. **Core Fields** – `ignore_files`, `language`, `project_name`, and `project_additional_info` are extracted and applied via the builder methods.  
-4. **Project Settings** – a `ProjectConfigSettings` instance receives `project_settings` and is attached with `set_pcs`.  
-5. **Custom Descriptions** – each entry in `custom_descriptions` becomes a `CustomModule` added to `custom_modules`.  
-6. **Return** – the fully‑populated `Config` ready for consumption by the runner.  
-
-**Data Flow:** Input = raw YAML string; Output = configured `Config` object; Side‑effects = none (pure transformation). The function assumes well‑formed YAML and that any unknown keys are harmlessly ignored by the builder pattern.
-
-<a name="environment-variable-loading"></a>
-## Environment Variable Loading  
-
-The module imports **os** and **dotenv**, invokes `load_dotenv()` and extracts `API_KEY` from the process environment. If the key is missing, an exception aborts execution, ensuring that downstream model classes always have a valid credential.
-
-<a name="model-name-registry"></a>
-## Model Name Registry  
-
-`MODELS_NAME` is a constant list of three model identifiers. It is referenced by the GPT model factories to populate the `regen_models_name` rotation pool, enabling automatic fallback when a model fails.
-
-<a name="base-text-generators"></a>
-## Base Text Generators  
-
-`get_BASE_COMPRESS_TEXT(start, power)` builds a formatted multi‑line string that describes a compression‑style documentation request. The returned template embeds the `start` and `int(start/power)` values, allowing callers to customise the length constraints dynamically.
-
-<a name="module‑interactions"></a>
-## Module Interactions  
-
-- The environment loader supplies `API_KEY` to **autodocgenerator.engine.models.gpt_model** via the default argument of its constructors.  
-- `MODELS_NAME` is consumed by the model classes to initialise the fallback model queue.  
-- `get_BASE_COMPRESS_TEXT` is used by higher‑level documentation generators to produce concise summaries before emitting usage examples.
-
-<a name="data‑flow‑summary"></a>
-## Data‑Flow Summary  
-
-**Inputs:** OS environment, integer parameters `start` and `power`.  
-**Outputs:** `API_KEY` (global variable), `MODELS_NAME` list, and a formatted string from `get_BASE_COMPRESS_TEXT`.  
-**Side‑effects:** Loading of `.env` file; raising an exception on missing API key; no mutation of external state beyond these globals.
-
-<a name="history-management"></a>
-## History Management  
-
-`History` builds a per‑session message log.  
-- **Constructor** (`system_prompt`) seeds the log with a *system* entry containing `BASE_SYSTEM_TEXT`.  
-- **add_to_history(role, content)** appends a dict `{"role":…, "content":…}` to `self.history`.  
-The object is injected into every model instance, enabling prompt stitching for chat‑style APIs.
-
-<a name="model-rotation-initialisation"></a>
-## Model Rotation Initialisation  
-
-`ParentModel.__init__(api_key=API_KEY, history=History(), use_random=True)`  
-1. Stores the supplied `api_key` and `history`.  
-2. Copies `MODELS_NAME` (list of model identifiers) to `models_copy`.  
-3. If `use_random` is true, shuffles the copy, producing a **fallback queue** saved as `self.regen_models_name`.  
-This queue drives automatic model fallback when a request fails.
-
-<a name="synchronous-model-interface"></a>
-## Synchronous Model Interface  
-
-`Model` inherits `ParentModel` and provides:  
-- `generate_answer(... )` → placeholder `"answer"` (real implementation overridden elsewhere).  
-- `get_answer(prompt)` records the user prompt, calls `generate_answer`, stores the assistant reply, and returns it.  
-- `get_answer_without_history(prompt)` bypasses history.
-
-<a name="asynchronous-model-interface"></a>
-## Asynchronous Model Interface  
-
-`AsyncModel` mirrors `Model` with `async` methods: `generate_answer`, `get_answer`, and `get_answer_without_history`, preserving the same history handling but allowing non‑blocking calls.
-
-**Data Flow**  
-- **Inputs:** `BASE_SYSTEM_TEXT`, environment‑provided `API_KEY`, `MODELS_NAME`, optional `start`/`power` from callers.  
-- **Outputs:** `self.history` (populated log), `self.regen_models_name` (shuffled fallback list), and generated answer strings.  
-- **Side‑effects:** Global env load via `config.config`; no external mutation beyond the created globals.
-
-<a name="html-link-extractor"></a>
-## HTML Link Extraction Utility (`custom_intro.py`)
-
-**Responsibility** – Scans generated markdown for `<a name="…"></a>` anchors, builds a list of fragment identifiers, and uses a `Model` to synth‑esize introductions that reference those links.  
-
-**Key Functions**  
-- `get_all_html_links(data: str) → list[str]` – regex‑searches `data`, logs progress, returns `["#anchor"]` entries.  
-- `get_links_intro(links, model, language="en") → str` – builds a three‑message system/user prompt (`BASE_INTRODACTION_CREATE_TEXT`), calls `model.get_answer_without_history`, returns the generated intro.  
-- `get_introdaction(global_data, model, language="en") → str` – similar prompt but uses `BASE_INTRO_CREATE`.  
-- `generete_custom_discription(splited_data, model, custom_description, language="en") → str` – iterates over code chunks, asks the model to produce a title/link pair respecting strict “no‑invent” rules; stops on the first non‑empty result.  
-
-**Interactions** – Relies on `Model` (synchronous) for LLM calls; logging through `BaseLogger`. No external state is mutated besides the returned strings.  
-
-**Data Flow**  
-- **Input:** raw markdown (`data`), list of links, optional language.  
-- **Output:** list of anchor hashes, generated introductory text, or a formatted title/link string.  
-- **Side‑effects:** console‑level logs; model‑side history is bypassed (`get_answer_without_history`).  
-
----
-
-<a name="semantic-section-sorting"></a>
-## Semantic Section Sorting (`sorting.py`)
-
-**Responsibility** – Parses a document split by HTML anchors, validates one‑to‑one anchor‑chunk mapping, then asks the LLM to return a comma‑separated ordering of titles.  
-
-**Core Logic**  
-1. `split_text_by_anchors(text)` – regex split on `<a name…></a>`, builds `dict[anchor → chunk]`. Returns `None` if counts mismatch.  
-2. `get_order(model, chanks)` – logs start, sends a user prompt asking for semantic ordering, receives CSV, reassembles ordered text using the original chunk map.  
-
-**Interactions** – Consumes a `Model` instance for the ordering request; uses `BaseLogger` for traceability.  
-
-**Data Flow**  
-- **Input:** full documentation string, `Model`.  
-- **Output:** concatenated text ordered per LLM suggestion.  
-- **Side‑effects:** logs at levels 0‑2; no file I/O.  
-
----
-
-<a name="repository‑content‑packer"></a>
-## Repository Content Packager (`code_mix.py`)
-
-**Responsibility** – Walks a source tree, filters paths by `ignore_patterns`, and writes a single text file containing a tree view followed by the raw content of each non‑ignored file.  
-
-**Main Class** – `CodeMix`  
-- `should_ignore(path)` – resolves relative path, checks against glob patterns (`fnmatch`).  
-- `build_repo_content(output_file)` – writes “Repository Structure” header, iterates `Path.rglob("*")` to emit indented tree lines, then writes each file wrapped in `<file path="…">` tags. Errors are captured inline.  
-
-**Interactions** – Uses `BaseLogger` for per‑file logs; no external services.  
-
-**Data Flow**  
-- **Input:** root directory, optional ignore list.  
-- **Output:** `output_file` (e.g., `codemix.txt`) containing a printable repository map and source snippets.  
-- **Side‑effects:** filesystem write, console logging, possible read‑error messages embedded in output.
-
-<a name="compressor‑pipeline"></a>
-## Compressor Pipeline (`compressor.py`)
-
-**Responsibility** – Reduces raw markdown/code chunks by prompting an LLM with a project‑specific system prompt and a size‑controlled compress prompt. Provides synchronous (`compress`, `compress_and_compare`) and asynchronous (`async_compress`, `async_compress_and_compare`, `compress_to_one`) workflows that batch‑merge *compress_power* chunks and report progress via `BaseProgress`.
-
-**Interactions** – Calls `model.get_answer_without_history` (or its async counterpart) for every chunk; logs through `BaseLogger`. No external state is altered except the returned concatenated strings.
-
-**Data Flow**  
-- *Input*: `data` (str or list of str), `ProjectSettings`, `Model`, numeric `compress_power`.  
-- *Output*: compressed string (single or list) ready for downstream comparison.  
-- *Side‑effects*: progress‑bar updates, console logs.
-
-
-
-<a name="project‑settings‑builder"></a>
-## Project Settings Builder (`settings.py`)
-
-**Responsibility** – Holds minimal project metadata and assembles the system prompt used by the compressor and other pre‑processors.
-
-**Key API**  
-- `ProjectSettings(project_name)` – creates container.  
-- `add_info(key, value)` – injects arbitrary key/value pairs.  
-- `prompt` property – concatenates `BASE_SETTINGS_PROMPT` with project name and all added entries, yielding the final system prompt string.
-
-**Interactions** – Consumed by `compressor.py` and other modules; pure data object, no I/O.
-
-
-
-<a name="split‑and‑doc‑generation"></a>
-## Split & Documentation Generation (`spliter.py`)
-
-**Responsibility** – Breaks a large source dump into size‑bounded parts (`split_data`) and drives LLM‑based documentation creation per part, both synchronously (`write_docs_by_parts`, `gen_doc_parts`) and asynchronously (`async_write_docs_by_parts`, `async_gen_doc_parts`).
-
-**Technical Flow**  
-1. `split_data` → iteratively halves oversized sections, then packs lines into chunks ≤ `max_symbols`.  
-2. `write_docs_by_parts` → builds a multi‑role prompt (`BASE_PART_COMPLITE_TEXT` + optional prior part) and strips surrounding markdown fences.  
-3. `gen_doc_parts` → iterates over split chunks, concatenates results, trims the tail for context reuse, and updates a `BaseProgress` sub‑task.  
-4. Async equivalents use a semaphore (max 4 concurrent calls) and `await` the model.
-
-**Data Flow**  
-- *Input*: full code‑mix string, `max_symbols`, `Model`/`AsyncModel`, optional `global_info`, language tag.  
-- *Output*: single assembled documentation string.  
-- *Side‑effects*: progress‑bar manipulation, detailed logs (`InfoLog`) at levels 0‑2.
-
-<a name="logging‑hierarchy"></a>
-## Logging hierarchy and formatting  
-
-`BaseLog` stores a raw message and a numeric severity. Sub‑classes (`ErrorLog`, `WarningLog`, `InfoLog`) prepend a timestamp (`[YYYY‑MM‑DD HH:MM:SS]`) and a level tag (`[ERROR]`, `[WARNING]`, `[INFO]`). The `format()` method returns the final string for output.
-
-<a name="logger‑template‑selection"></a>
-## Logger template selection  
-
-`BaseLoggerTemplate` implements a configurable `log_level`. Its `global_log()` forwards a log entry to `log()` only when the entry’s level is ≤ the configured threshold (or when the threshold is negative, meaning “log everything”). `FileLoggerTemplate` overrides `log()` to append formatted lines to a file, while the base implementation writes to stdout.
-
-<a name="singleton‑logger‑facade"></a>
-## Singleton logger façade  
-
-`BaseLogger.__new__` enforces a single shared instance (`BaseLogger.instance`). The façade holds a `logger_template` set via `set_logger()`. Calls to `log()` are delegated to the template’s `global_log()`, allowing the rest of the codebase to log without caring about the concrete sink.
-
-<a name="progress‑abstraction"></a>
-## Progress abstraction – rich vs console  
-
-`BaseProgress` defines the public API (`create_new_subtask`, `update_task`, `remove_subtask`).  
-- `LibProgress` wraps **rich.progress.Progress**, creating a base task (“General progress”) and optional sub‑tasks. `update_task()` advances the current sub‑task if present, otherwise the base task.  
-- `ConsoleGtiHubProgress` mimics the same API with plain `print()` statements via `ConsoleTask`, useful when `rich` is unavailable.
-
-<a name="installation‑scripts‑workflow‑generation"></a>
-## Installation scripts – workflow file generation  
-
-`install.ps1` (PowerShell) and `install.sh` (Bash) both create `.github/workflows/autodoc.yml` and `autodocconfig.yml`. They ensure the target directory exists, write a minimal GitHub Actions workflow that references the reusable workflow in the `Drag-GameStudio/ADG` repository, and inject the current project name into the config file. The scripts finish with a green‑colored success message.
-
-<a name="project‑metadata‑pyproject‑toml"></a>
-## Project metadata in **pyproject.toml**  
-
-The `[project]` table declares the package name (`autodocgenerator`), version, description, author, license, and required Python version (`>=3.11,<4.0`). `dependencies` list all runtime libraries (e.g., `rich`, `openai`, `google‑genai`). The `[build‑system]` section pins Poetry as the build backend. This file is the single source of truth for packaging and dependency resolution.
-
-
-[2026-01-26 17:30:37.190906] [INFO] Documentation generation by parts completed.
-[2026-01-26 17:30:37.192209] [INFO] Starting factory documentation generation 
+[2026-01-26 18:31:18.375121] [INFO] Starting code mix generation...
+[2026-01-26 18:31:18.379189] [INFO] Ignored: /home/runner/work/ADG/ADG/.auto_doc_cache
+[2026-01-26 18:31:18.379371] [INFO] Ignored: /home/runner/work/ADG/ADG/.auto_doc_cache/code_mix.txt
+[2026-01-26 18:31:18.379520] [INFO] Ignored: /home/runner/work/ADG/ADG/.auto_doc_cache/report.txt
+[2026-01-26 18:31:18.379773] [INFO] Ignored: /home/runner/work/ADG/ADG/.git
+[2026-01-26 18:31:18.379938] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/FETCH_HEAD
+[2026-01-26 18:31:18.380105] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/HEAD
+[2026-01-26 18:31:18.380264] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/config
+[2026-01-26 18:31:18.380414] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/config.worktree
+[2026-01-26 18:31:18.380563] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/description
+[2026-01-26 18:31:18.380710] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks
+[2026-01-26 18:31:18.380871] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/applypatch-msg.sample
+[2026-01-26 18:31:18.381030] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/commit-msg.sample
+[2026-01-26 18:31:18.381201] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/fsmonitor-watchman.sample
+[2026-01-26 18:31:18.381366] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/post-update.sample
+[2026-01-26 18:31:18.381522] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-applypatch.sample
+[2026-01-26 18:31:18.381676] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-commit.sample
+[2026-01-26 18:31:18.381831] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-merge-commit.sample
+[2026-01-26 18:31:18.381986] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-push.sample
+[2026-01-26 18:31:18.382152] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-rebase.sample
+[2026-01-26 18:31:18.382407] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-receive.sample
+[2026-01-26 18:31:18.382584] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/prepare-commit-msg.sample
+[2026-01-26 18:31:18.382745] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/push-to-checkout.sample
+[2026-01-26 18:31:18.382905] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/sendemail-validate.sample
+[2026-01-26 18:31:18.383063] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/update.sample
+[2026-01-26 18:31:18.383225] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/index
+[2026-01-26 18:31:18.383377] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/info
+[2026-01-26 18:31:18.383533] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/info/exclude
+[2026-01-26 18:31:18.383677] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs
+[2026-01-26 18:31:18.383833] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/HEAD
+[2026-01-26 18:31:18.383988] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs
+[2026-01-26 18:31:18.384183] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/heads
+[2026-01-26 18:31:18.384368] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/heads/main
+[2026-01-26 18:31:18.384537] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/remotes
+[2026-01-26 18:31:18.384718] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/remotes/origin
+[2026-01-26 18:31:18.384910] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/remotes/origin/main
+[2026-01-26 18:31:18.385059] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects
+[2026-01-26 18:31:18.385229] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/00
+[2026-01-26 18:31:18.385401] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/00/3ed33f03ba24320be674acc37e2f484440960d
+[2026-01-26 18:31:18.385563] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/02
+[2026-01-26 18:31:18.385728] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/02/1c388e953c4661dc3838cf999026c1f029c38b
+[2026-01-26 18:31:18.385880] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/08
+[2026-01-26 18:31:18.386045] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/08/3bb9598f2f3dee44e7b6d3358c592538e0c708
+[2026-01-26 18:31:18.386223] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/14
+[2026-01-26 18:31:18.386393] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/14/3816379e9cc4229eaaf3cdddad6a5ab36c4627
+[2026-01-26 18:31:18.386548] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/16
+[2026-01-26 18:31:18.386714] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/16/c6bd78d24630228f2f308279feee5992b421d5
+[2026-01-26 18:31:18.386869] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/23
+[2026-01-26 18:31:18.387034] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/23/67462d601175939d673ed29195059004f5f485
+[2026-01-26 18:31:18.387200] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/26
+[2026-01-26 18:31:18.387367] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/26/232583984feff25da44d47972f553bd00e4daa
+[2026-01-26 18:31:18.387521] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/31
+[2026-01-26 18:31:18.387685] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/31/947cbc29165996e70620f06feee333ab5b0a89
+[2026-01-26 18:31:18.387838] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/45
+[2026-01-26 18:31:18.388008] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/45/c8c97b68d9edc9608f17662ae5a56937db4722
+[2026-01-26 18:31:18.388173] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/48
+[2026-01-26 18:31:18.388343] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/48/2d00127da59187ea3cfc62e26186a5fe439b78
+[2026-01-26 18:31:18.388497] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/4d
+[2026-01-26 18:31:18.388663] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/4d/887c5d0ba32a7517cce5fc00b7935bfd365b6e
+[2026-01-26 18:31:18.388816] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/50
+[2026-01-26 18:31:18.388981] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/50/de1f7cf4fe170128039ffa6d0cc6f3f6d6cc33
+[2026-01-26 18:31:18.389151] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/62
+[2026-01-26 18:31:18.389321] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/62/18e73336f4ccb562643cd4202a628d14cf784f
+[2026-01-26 18:31:18.389476] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6a
+[2026-01-26 18:31:18.389642] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6a/2dd502eb649bb8e804238af60031db553c13ea
+[2026-01-26 18:31:18.389806] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6a/4ee663203935f06c6f32d4d056257d4f4478a7
+[2026-01-26 18:31:18.389960] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6e
+[2026-01-26 18:31:18.390135] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6e/b4e3625714c56700ae087bb705bdfb646c1d15
+[2026-01-26 18:31:18.390292] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6f
+[2026-01-26 18:31:18.390456] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6f/130bfccfc73d6fe93fe33cd3772d640379f909
+[2026-01-26 18:31:18.390619] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6f/20af026c7b9673d3f5ebef9dc118a20af47509
+[2026-01-26 18:31:18.390771] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/7e
+[2026-01-26 18:31:18.390934] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/7e/28b749a12deb9b3072b9a031f2000fbd56a4de
+[2026-01-26 18:31:18.391105] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/7e/f15dd6d3c3dd489f000b4267a54b0d72c0d559
+[2026-01-26 18:31:18.391262] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/81
+[2026-01-26 18:31:18.391426] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/81/becbf7a8a1c3473195d0f85266ab25f85809ce
+[2026-01-26 18:31:18.391579] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/84
+[2026-01-26 18:31:18.391742] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/84/00c2b5c8734df41836d301824574b989b0ec41
+[2026-01-26 18:31:18.391894] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/88
+[2026-01-26 18:31:18.392058] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/88/0d58d664412fbc1fd1ab273ef396daf3699102
+[2026-01-26 18:31:18.392221] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/8a
+[2026-01-26 18:31:18.392388] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/8a/b47c5bc8110cef05224baba95761fd822aa22a
+[2026-01-26 18:31:18.392548] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/8b
+[2026-01-26 18:31:18.392712] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/8b/c8eb283f3cdce2c059593a176481c99633de79
+[2026-01-26 18:31:18.392864] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a8
+[2026-01-26 18:31:18.393027] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a8/476127e3f807c0aa99fa808560ec2e5584dff2
+[2026-01-26 18:31:18.393191] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/b6
+[2026-01-26 18:31:18.393363] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/b6/c931c2ccb9ef068be46257795e65436b35d0fd
+[2026-01-26 18:31:18.393525] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/b6/d812aceb9c792cb2019b9e244e1dbaa4ad74a1
+[2026-01-26 18:31:18.393677] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/b8
+[2026-01-26 18:31:18.393840] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/b8/a46081f00b9dac97ba03509b57b1caf04a4a89
+[2026-01-26 18:31:18.393990] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/c0
+[2026-01-26 18:31:18.394164] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/c0/224d10f6c6beabb97a1deca15605170948edad
+[2026-01-26 18:31:18.394319] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/c8
+[2026-01-26 18:31:18.394482] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/c8/49dec63f15d429627006361a6bcd9a51165ad5
+[2026-01-26 18:31:18.394634] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ca
+[2026-01-26 18:31:18.394795] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ca/3f28b6a4a95a7176cdf2d78622ceb1151e186d
+[2026-01-26 18:31:18.394947] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d3
+[2026-01-26 18:31:18.395122] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d3/96f135c23456cf38861ed53265a1a036e39562
+[2026-01-26 18:31:18.395278] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d6
+[2026-01-26 18:31:18.395446] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d6/54eaa4d6edf57be77d54c32c20a0ccb843373f
+[2026-01-26 18:31:18.395597] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d9
+[2026-01-26 18:31:18.395760] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d9/c5e7426b4d3d800f9cca0b469d6f0c60fe27b7
+[2026-01-26 18:31:18.395911] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/db
+[2026-01-26 18:31:18.396072] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/db/80ec4419abf97b42fd51f286a6dd599d8d77ce
+[2026-01-26 18:31:18.396234] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e6
+[2026-01-26 18:31:18.396401] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e6/6a9a3619184fb9947c0d24768a8ba31246f1f0
+[2026-01-26 18:31:18.396562] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e6/9de29bb2d1d6434b8b29ae775ad8c2e48c5391
+[2026-01-26 18:31:18.396714] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e7
+[2026-01-26 18:31:18.396876] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e7/746f47e059234c8b861cf312d97132a810e145
+[2026-01-26 18:31:18.397027] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ef
+[2026-01-26 18:31:18.397200] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ef/9fb37763d620555f3e448337bcdb1ac580b349
+[2026-01-26 18:31:18.397356] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/f3
+[2026-01-26 18:31:18.397519] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/f3/3a8094b9b44c520d028fea1f1ebeb70b0e1b88
+[2026-01-26 18:31:18.397670] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fb
+[2026-01-26 18:31:18.397832] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fb/8b56ad03d86c61f46cb2c93a162215b23ce129
+[2026-01-26 18:31:18.397983] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fd
+[2026-01-26 18:31:18.398156] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fd/e71a3921784193a3be16833a366cce84f85993
+[2026-01-26 18:31:18.398311] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fe
+[2026-01-26 18:31:18.398474] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fe/61c74e86e9aaafa41826086e89d51c19b04a6b
+[2026-01-26 18:31:18.398630] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ff
+[2026-01-26 18:31:18.398797] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ff/f080b973d3aee3c8f7fa07952369740b4105fe
+[2026-01-26 18:31:18.398949] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/info
+[2026-01-26 18:31:18.399113] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/pack
+[2026-01-26 18:31:18.399261] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs
+[2026-01-26 18:31:18.399417] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/heads
+[2026-01-26 18:31:18.399614] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/heads/main
+[2026-01-26 18:31:18.399773] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/remotes
+[2026-01-26 18:31:18.399937] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/remotes/origin
+[2026-01-26 18:31:18.400123] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/remotes/origin/main
+[2026-01-26 18:31:18.400283] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/tags
+[2026-01-26 18:31:18.400433] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/shallow
+[2026-01-26 18:31:18.401912] [INFO] Ignored: /home/runner/work/ADG/ADG/.gitignore
+[2026-01-26 18:31:18.402078] [INFO] Ignored: /home/runner/work/ADG/ADG/README.md
+[2026-01-26 18:31:18.402990] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/__pycache__
+[2026-01-26 18:31:18.403156] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/__pycache__/__init__.cpython-312.pyc
+[2026-01-26 18:31:18.403309] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/__pycache__/manage.cpython-312.pyc
+[2026-01-26 18:31:18.403668] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/auto_runner/__pycache__
+[2026-01-26 18:31:18.403826] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/auto_runner/__pycache__/config_reader.cpython-312.pyc
+[2026-01-26 18:31:18.403983] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/auto_runner/__pycache__/run_file.cpython-312.pyc
+[2026-01-26 18:31:18.405000] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/__pycache__
+[2026-01-26 18:31:18.405173] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/__pycache__/__init__.cpython-312.pyc
+[2026-01-26 18:31:18.405339] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/__pycache__/exceptions.cpython-312.pyc
+[2026-01-26 18:31:18.405724] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/config/__pycache__
+[2026-01-26 18:31:18.405893] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/config/__pycache__/config.cpython-312.pyc
+[2026-01-26 18:31:18.406735] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/models/__pycache__
+[2026-01-26 18:31:18.406909] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/models/__pycache__/gpt_model.cpython-312.pyc
+[2026-01-26 18:31:18.407075] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/models/__pycache__/model.cpython-312.pyc
+[2026-01-26 18:31:18.408164] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/__pycache__
+[2026-01-26 18:31:18.408337] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/__pycache__/__init__.cpython-312.pyc
+[2026-01-26 18:31:18.408496] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/__pycache__/base_factory.cpython-312.pyc
+[2026-01-26 18:31:18.409112] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/modules/__pycache__
+[2026-01-26 18:31:18.409289] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/modules/__pycache__/general_modules.cpython-312.pyc
+[2026-01-26 18:31:18.409460] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/modules/__pycache__/intro.cpython-312.pyc
+[2026-01-26 18:31:18.410498] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/postprocessor/__pycache__
+[2026-01-26 18:31:18.410661] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/postprocessor/__pycache__/custom_intro.cpython-312.pyc
+[2026-01-26 18:31:18.410826] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/postprocessor/__pycache__/sorting.cpython-312.pyc
+[2026-01-26 18:31:18.411642] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__
+[2026-01-26 18:31:18.411809] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/code_mix.cpython-312.pyc
+[2026-01-26 18:31:18.411968] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/compressor.cpython-312.pyc
+[2026-01-26 18:31:18.412135] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/settings.cpython-312.pyc
+[2026-01-26 18:31:18.412295] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/spliter.cpython-312.pyc
+[2026-01-26 18:31:18.413733] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__
+[2026-01-26 18:31:18.413898] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__/__init__.cpython-312.pyc
+[2026-01-26 18:31:18.414053] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__/logging.cpython-312.pyc
+[2026-01-26 18:31:18.414218] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__/progress_base.cpython-312.pyc
+[2026-01-26 18:31:18.441579] [INFO] Code mix generation completed.
+[2026-01-26 18:31:18.443203] [INFO] Starting synchronous documentation generation by parts...
+[2026-01-26 18:31:18.443495] [INFO] Starting data splitting...
+[2026-01-26 18:31:18.443556] [INFO] Data split into 10 parts based on max symbols 6000.
+[2026-01-26 18:31:18.443573] [INFO] Starting documentation generation by parts...
+[2026-01-26 18:31:18.443611] [INFO] Generating documentation for a part...
+[2026-01-26 18:31:18.443641] [INFO] Generating answer...
+[2026-01-26 18:31:20.222362] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-26 18:31:20.222423] [INFO] Documentation for part generated. total length: 2119
+[2026-01-26 18:31:20.222479] [INFO] Generating documentation for a part...
+[2026-01-26 18:31:20.222505] [INFO] Generating answer...
+[2026-01-26 18:31:20.272796] [WARNING] Model openai/gpt-oss-120b failed with error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kfh15w7mfdcs3ywgv91z505n` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199999, Requested 1766. Please try again in 12m42.479999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}. Trying next model...
+[2026-01-26 18:31:21.749906] [INFO] Generated answer with model llama-3.3-70b-versatile.
+[2026-01-26 18:31:21.749968] [INFO] Documentation for part generated. total length: 2409
+[2026-01-26 18:31:21.750027] [INFO] Generating documentation for a part...
+[2026-01-26 18:31:21.750055] [INFO] Generating answer...
+[2026-01-26 18:31:23.008797] [INFO] Generated answer with model llama-3.3-70b-versatile.
+[2026-01-26 18:31:23.008856] [INFO] Documentation for part generated. total length: 1423
+[2026-01-26 18:31:23.008912] [INFO] Generating documentation for a part...
+[2026-01-26 18:31:23.008937] [INFO] Generating answer...
+[2026-01-26 18:31:23.055731] [WARNING] Model llama-3.3-70b-versatile failed with error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kfh15w7mfdcs3ywgv91z505n` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99476, Requested 2213. Please try again in 24m19.295999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}. Trying next model...
+[2026-01-26 18:31:24.194159] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:31:24.194222] [INFO] Documentation for part generated. total length: 1745
+[2026-01-26 18:31:24.194280] [INFO] Generating documentation for a part...
+[2026-01-26 18:31:24.194317] [INFO] Generating answer...
+[2026-01-26 18:31:25.694141] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:31:25.694197] [INFO] Documentation for part generated. total length: 3768
+[2026-01-26 18:31:25.694263] [INFO] Generating documentation for a part...
+[2026-01-26 18:31:25.694288] [INFO] Generating answer...
+[2026-01-26 18:31:32.103491] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:31:32.103554] [INFO] Documentation for part generated. total length: 3297
+[2026-01-26 18:31:32.103615] [INFO] Generating documentation for a part...
+[2026-01-26 18:31:32.103641] [INFO] Generating answer...
+[2026-01-26 18:31:46.414532] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:31:46.414602] [INFO] Documentation for part generated. total length: 3351
+[2026-01-26 18:31:46.414662] [INFO] Generating documentation for a part...
+[2026-01-26 18:31:46.414690] [INFO] Generating answer...
+[2026-01-26 18:32:07.722179] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:32:07.722247] [INFO] Documentation for part generated. total length: 7294
+[2026-01-26 18:32:07.722312] [INFO] Generating documentation for a part...
+[2026-01-26 18:32:07.722333] [INFO] Generating answer...
+[2026-01-26 18:32:27.737426] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:32:27.737496] [INFO] Documentation for part generated. total length: 3937
+[2026-01-26 18:32:27.737550] [INFO] Generating documentation for a part...
+[2026-01-26 18:32:27.737574] [INFO] Generating answer...
+[2026-01-26 18:32:54.141661] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:32:54.141715] [INFO] Documentation for part generated. total length: 3759
+[2026-01-26 18:32:54.141800] [INFO] Documentation generation by parts completed.
+
+                       Total documentation length: 33122
+[2026-01-26 18:32:54.141864] [INFO] Documentation generation by parts completed.
+[2026-01-26 18:32:54.143018] [INFO] Starting factory documentation generation 
 
                                 CustomModule CustomModule CustomModule 
 
-                                Input params: language: 2 chars global_data: 2 chars full_data: 14647 chars code_mix: 323234 chars
+                                Input params: language: 2 chars global_data: 2 chars full_data: 33122 chars code_mix: 326196 chars
                                 
-[2026-01-26 17:30:37.192693] [INFO] Starting data splitting...
-[2026-01-26 17:30:37.192775] [INFO] Data split into 9 parts based on max symbols 7000.
-[2026-01-26 17:30:37.192808] [INFO] Generating answer...
-[2026-01-26 17:30:54.984563] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 17:30:54.984643] [INFO] Answer: <a href="autodocconfig.yml"></a>To install the project, run the appropriate script for your platform:  
-
-- **Windows (PowerShell)**:  
-  ```powershell
-  irm https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex
-  ```  
-
-- **Linux/macOS (bash)**:  
-  ```bash
-  curl -sSL https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash
-  ```  
-
-Additionally, add a secret variable named **`GROCK_API_KEY`** to your GitHub Actions workflow, containing your API key from the Grock documentation (https://grockdocs.com). This secret is required for the documentation generation step to work.
-[2026-01-26 17:30:54.984689] [INFO] Module CustomModule generated its part of the documentation.
-[2026-01-26 17:30:54.984713] [INFO] Module Output: <a href="autodocconfig.yml"></a>To install the project, run the appropriate script for your platform:  
-
-- **Windows (PowerShell)**:  
-  ```powershell
-  irm https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex
-  ```  
-
-- **Linux/macOS (bash)**:  
-  ```bash
-  curl -sSL https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash
-  ```  
-
-Additionally, add a secret variable named **`GROCK_API_KEY`** to your GitHub Actions workflow, containing your API key from the Grock documentation (https://grockdocs.com). This secret is required for the documentation generation step to work.
-[2026-01-26 17:30:54.985224] [INFO] Starting data splitting...
-[2026-01-26 17:30:54.985308] [INFO] Data split into 9 parts based on max symbols 7000.
-[2026-01-26 17:30:54.985340] [INFO] Generating answer...
-[2026-01-26 17:31:12.856188] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 17:31:12.856250] [INFO] Answer: <a href=""></a>!noinfo
-[2026-01-26 17:31:12.856289] [INFO] Generating answer...
-[2026-01-26 17:31:20.820528] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 17:31:20.820611] [INFO] Answer: <a href="autodocgenerator/auto_runner/run_file.py"></a>
-To use the **Manager** class you must provide the following parameters when creating an instance:
-
-| Parameter | Description |
-|-----------|-------------|
-| `project_path` | Root directory of the project you want to document. |
-| `project_settings` | An instance of **ProjectSettings** (obtained from the config). |
-| `pcs` | An instance of **ProjectConfigSettings** (also from the config). |
-| `sync_model` | A synchronous **GPTModel** object (e.g., `GPTModel(API_KEY, use_random=False)`). |
-| `async_model` | An asynchronous **AsyncGPTModel** object (e.g., `AsyncGPTModel(API_KEY)`). |
-| `ignore_files` | List of file names / paths that should be excluded from processing. |
-| `progress_bar` | An implementation of a progress UI, such as **ConsoleGtiHubProgress()**. |
-| `language` | Language code for the generated documentation (e.g., `"en"`). |
-
-### Full example of usage
-
-```python
-from autodocgenerator.manage import Manager
-from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel
-from autodocgenerator.ui.progress_base import ConsoleGtiHubProgress
-from autodocgenerator.preprocessor.settings import ProjectSettings
-from autodocgenerator.auto_runner.config_reader import Config, read_config
-
-# 1. Load configuration (example uses a YAML file)
-with open("autodocconfig.yml", "r", encoding="utf-8") as file:
-    config_data = file.read()
-config: Config = read_config(config_data)
-
-# 2. Extract required objects from the config
-project_settings: ProjectSettings = config.get_project_settings()
-project_config_settings = config.pcs          # ProjectConfigSettings instance
-ignore_list = config.ignore_files             # List of files to ignore
-
-# 3. Create GPT model instances
-sync_model = GPTModel(API_KEY, use_random=False)
-async_model = AsyncGPTModel(API_KEY)
-
-# 4. Instantiate the Manager with all required arguments
-manager = Manager(
-    project_path=".",                 # current directory or any project root
-    project_settings=project_settings,
-    pcs=project_config_settings,
-    sync_model=sync_model,
-    async_model=async_model,
-    ignore_files=ignore_list,
-    progress_bar=ConsoleGtiHubProgress(),
-    language="en"
-)
-
-# 5. Run the documentation generation workflow
-manager.generate_code_file()
-manager.generate_global_info_file(use_async=False, max_symbols=8000)
-manager.generete_doc_parts(use_async=False, max_symbols=10000)
-# … add any additional Manager method calls as needed …
-manager.clear_cache()
-
-# 6. Retrieve the final document
-final_doc = manager.read_file_by_file_key("output_doc")
-print(final_doc)
-```
-
-This example demonstrates the complete setup: loading configuration, creating model instances, constructing the **Manager**, invoking its processing methods, and finally retrieving the generated documentation.
-[2026-01-26 17:31:20.820687] [INFO] Module CustomModule generated its part of the documentation.
-[2026-01-26 17:31:20.820713] [INFO] Module Output: <a href="autodocgenerator/auto_runner/run_file.py"></a>
-To use the **Manager** class you must provide the following parameters when creating an instance:
-
-| Parameter | Description |
-|-----------|-------------|
-| `project_path` | Root directory of the project you want to document. |
-| `project_settings` | An instance of **ProjectSettings** (obtained from the config). |
-| `pcs` | An instance of **ProjectConfigSettings** (also from the config). |
-| `sync_model` | A synchronous **GPTModel** object (e.g., `GPTModel(API_KEY, use_random=False)`). |
-| `async_model` | An asynchronous **AsyncGPTModel** object (e.g., `AsyncGPTModel(API_KEY)`). |
-| `ignore_files` | List of file names / paths that should be excluded from processing. |
-| `progress_bar` | An implementation of a progress UI, such as **ConsoleGtiHubProgress()**. |
-| `language` | Language code for the generated documentation (e.g., `"en"`). |
-
-### Full example of usage
-
-```python
-from autodocgenerator.manage import Manager
-from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel
-from autodocgenerator.ui.progress_base import ConsoleGtiHubProgress
-from autodocgenerator.preprocessor.settings import ProjectSettings
-from autodocgenerator.auto_runner.config_reader import Config, read_config
-
-# 1. Load configuration (example uses a YAML file)
-with open("autodocconfig.yml", "r", encoding="utf-8") as file:
-    config_data = file.read()
-config: Config = read_config(config_data)
-
-# 2. Extract required objects from the config
-project_settings: ProjectSettings = config.get_project_settings()
-project_config_settings = config.pcs          # ProjectConfigSettings instance
-ignore_list = config.ignore_files             # List of files to ignore
-
-# 3. Create GPT model instances
-sync_model = GPTModel(API_KEY, use_random=False)
-async_model = AsyncGPTModel(API_KEY)
-
-# 4. Instantiate the Manager with all required arguments
-manager = Manager(
-    project_path=".",                 # current directory or any project root
-    project_settings=project_settings,
-    pcs=project_config_settings,
-    sync_model=sync_model,
-    async_model=async_model,
-    ignore_files=ignore_list,
-    progress_bar=ConsoleGtiHubProgress(),
-    language="en"
-)
-
-# 5. Run the documentation generation workflow
-manager.generate_code_file()
-manager.generate_global_info_file(use_async=False, max_symbols=8000)
-manager.generete_doc_parts(use_async=False, max_symbols=10000)
-# … add any additional Manager method calls as needed …
-manager.clear_cache()
-
-# 6. Retrieve the final document
-final_doc = manager.read_file_by_file_key("output_doc")
-print(final_doc)
-```
-
-This example demonstrates the complete setup: loading configuration, creating model instances, constructing the **Manager**, invoking its processing methods, and finally retrieving the generated documentation.
-[2026-01-26 17:31:20.821218] [INFO] Starting data splitting...
-[2026-01-26 17:31:20.821305] [INFO] Data split into 9 parts based on max symbols 7000.
-[2026-01-26 17:31:20.821338] [INFO] Generating answer...
-[2026-01-26 17:31:39.221427] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 17:31:39.221488] [INFO] Answer: <a href="autodocconfig.yml"></a>
-The **autodocconfig.yml** file defines the configuration for the documentation generator. The available top‑level keys are:
-
-- **project_name** – a string with the name of the project.  
-- **language** – language code (e.g., `"en"`).  
-- **project_settings** – a map of settings for the generator:
-  - **save_logs** – boolean, whether to save generation logs.  
-  - **log_level** – integer, logging verbosity (e.g., `2`).  
-- **project_additional_info** – a map of arbitrary key/value pairs that will be added to the generated documentation (e.g., `"global idea"`).  
-- **custom_descriptions** – a list of strings, each describing a custom module or documentation section to be included.  
-- **ignore_files** – (optional) a list of glob patterns for files/directories that should be excluded from processing.  
-
-When writing the file, use standard YAML syntax, for example:
-
-```yaml
-project_name: "My Project"
-language: "en"
-project_settings:
-  save_logs: true
-  log_level: 2
-project_additional_info:
-  global idea: "Brief description of the project"
-custom_descriptions:
-  - "First custom description"
-  - "Second custom description"
-ignore_files:
-  - "*.tmp"
-  - "tests/"
-```
-
-These keys are read by `autodocgenerator.auto_runner.config_reader.read_config` and applied during documentation generation.
-[2026-01-26 17:31:39.221534] [INFO] Module CustomModule generated its part of the documentation.
-[2026-01-26 17:31:39.221558] [INFO] Module Output: <a href="autodocconfig.yml"></a>
-The **autodocconfig.yml** file defines the configuration for the documentation generator. The available top‑level keys are:
-
-- **project_name** – a string with the name of the project.  
-- **language** – language code (e.g., `"en"`).  
-- **project_settings** – a map of settings for the generator:
-  - **save_logs** – boolean, whether to save generation logs.  
-  - **log_level** – integer, logging verbosity (e.g., `2`).  
-- **project_additional_info** – a map of arbitrary key/value pairs that will be added to the generated documentation (e.g., `"global idea"`).  
-- **custom_descriptions** – a list of strings, each describing a custom module or documentation section to be included.  
-- **ignore_files** – (optional) a list of glob patterns for files/directories that should be excluded from processing.  
-
-When writing the file, use standard YAML syntax, for example:
-
-```yaml
-project_name: "My Project"
-language: "en"
-project_settings:
-  save_logs: true
-  log_level: 2
-project_additional_info:
-  global idea: "Brief description of the project"
-custom_descriptions:
-  - "First custom description"
-  - "Second custom description"
-ignore_files:
-  - "*.tmp"
-  - "tests/"
-```
-
-These keys are read by `autodocgenerator.auto_runner.config_reader.read_config` and applied during documentation generation.
-[2026-01-26 17:31:39.221641] [INFO] Factory documentation generation completed.
-[2026-01-26 17:31:39.223470] [INFO] Starting factory documentation generation 
+[2026-01-26 18:32:54.143441] [INFO] Starting data splitting...
+[2026-01-26 18:32:54.143512] [INFO] Data split into 9 parts based on max symbols 7000.
+[2026-01-26 18:32:54.143537] [INFO] Generating answer...
+[2026-01-26 18:33:12.162471] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:33:12.162531] [INFO] Module CustomModule generated its part of the documentation.
+[2026-01-26 18:33:12.162918] [INFO] Starting data splitting...
+[2026-01-26 18:33:12.162987] [INFO] Data split into 9 parts based on max symbols 7000.
+[2026-01-26 18:33:12.163013] [INFO] Generating answer...
+[2026-01-26 18:33:29.906666] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:33:29.906746] [INFO] Generating answer...
+[2026-01-26 18:33:38.403944] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:33:38.404026] [INFO] Module CustomModule generated its part of the documentation.
+[2026-01-26 18:33:38.404416] [INFO] Starting data splitting...
+[2026-01-26 18:33:38.404485] [INFO] Data split into 9 parts based on max symbols 7000.
+[2026-01-26 18:33:38.404507] [INFO] Generating answer...
+[2026-01-26 18:33:56.539279] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:33:56.539355] [INFO] Module CustomModule generated its part of the documentation.
+[2026-01-26 18:33:56.539401] [INFO] Factory documentation generation completed.
+[2026-01-26 18:33:56.540524] [INFO] Start ordering
+[2026-01-26 18:33:56.540565] [INFO] chanks name: ['#autodocconfig.yml', '#autodocgenerator/auto_runner/run_file.py', '#module-initialization', '#runtime-interaction', '#technical-elements', '#data-flow', '#config-reader-component', '#config-classes', '#config-methods', '#config-usage', '#model-exception-handling', '#asyncgptmodel-class', '#gptmodel-class', '#intro-links-module', '#intro-text-module', '#module-interactions', '#model‑dependency', '#error‑handling', '#custom-intro-module', '#sorting-module', '#error-handling-and-logging', '#code-mix-module', '#example-output-format', '#compressor-module', '#settings-module', '#spliter-module', '#external-dependencies', '#data-flow-diagram', '#sync-doc-generation', '#async-doc-generation', '#pipeline-assembly', '#interactions', '#base-log-classes', '#logger-templates', '#progress-interfaces', '#installation-scripts', '#pyproject-configuration']
+[2026-01-26 18:33:56.540806] [INFO] Generating answer...
+[2026-01-26 18:34:01.142706] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:34:01.142782] [INFO] End ordering result list ['#autodocconfig.yml', '#config-classes', '#config-methods', '#config-usage', '#config-reader-component', '#pyproject-configuration', '#autodocgenerator/auto_runner/run_file.py', '#async-doc-generation', '#sync-doc-generation', '#module-initialization', '#module-interactions', '#interactions', '#intro-links-module', '#intro-text-module', '#custom-intro-module', '#runtime-interaction', '#data-flow', '#data-flow-diagram', '#asyncgptmodel-class', '#gptmodel-class', '#model‑dependency', '#pipeline-assembly', '#sorting-module', '#compressor-module', '#spliter-module', '#model-exception-handling', '#error-handling', '#error-handling-and-logging', '#base-log-classes', '#logger-templates', '#settings-module', '#external-dependencies', '#progress-interfaces', '#installation-scripts']
+[2026-01-26 18:34:01.143829] [INFO] Starting factory documentation generation 
 
                                 IntroLinks 
 
-                                Input params: language: 2 chars global_data: 2 chars full_data: 19442 chars code_mix: 323234 chars
+                                Input params: language: 2 chars global_data: 2 chars full_data: 33047 chars code_mix: 326196 chars
                                 
-[2026-01-26 17:31:39.223524] [INFO] Extracting HTML links from documentation...
-[2026-01-26 17:31:39.223768] [INFO] Extracted 26 HTML links from documentation.
-[2026-01-26 17:31:39.223816] [INFO] Links: ['#configuration-loading-logic', '#projectconfigsettings-structure', '#config-builder-methods', '#read_config-function-flow', '#environment-variable-loading', '#model-name-registry', '#base-text-generators', '#module‑interactions', '#data‑flow‑summary', '#history-management', '#model-rotation-initialisation', '#synchronous-model-interface', '#asynchronous-model-interface', '#html-link-extractor', '#…', '#semantic-section-sorting', '#repository‑content‑packer', '#compressor‑pipeline', '#project‑settings‑builder', '#split‑and‑doc‑generation', '#logging‑hierarchy', '#logger‑template‑selection', '#singleton‑logger‑facade', '#progress‑abstraction', '#installation‑scripts‑workflow‑generation', '#project‑metadata‑pyproject‑toml']
-[2026-01-26 17:31:39.223860] [INFO] Generating introduction with links...
-[2026-01-26 17:31:39.223882] [INFO] Generating answer...
-[2026-01-26 17:31:49.185556] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 17:31:49.185642] [INFO] Answer: ## Executive Navigation Tree
-- ⚙️ Configuration
-  - [configuration-loading-logic](#configuration-loading-logic)
-  - [projectconfigsettings-structure](#projectconfigsettings-structure)
-  - [config-builder-methods](#config-builder-methods)
-  - [read_config-function-flow](#read_config-function-flow)
-  - [environment-variable-loading](#environment-variable-loading)
-  - [project‑settings‑builder](#project‑settings‑builder)
-  - [installation‑scripts‑workflow‑generation](#installation‑scripts‑workflow‑generation)
-  - [project‑metadata‑pyproject‑toml](#project‑metadata‑pyproject‑toml)
+[2026-01-26 18:34:01.143878] [INFO] Extracting HTML links from documentation...
+[2026-01-26 18:34:01.144171] [INFO] Extracted 33 HTML links from documentation.
+[2026-01-26 18:34:01.144209] [INFO] Links: ['#autodocconfig.yml', '#config-classes', '#config-methods', '#config-usage', '#config-reader-component', '#pyproject-configuration', '#autodocgenerator/auto_runner/run_file.py', '#async-doc-generation', '#sync-doc-generation', '#module-initialization', '#module-interactions', '#interactions', '#intro-links-module', '#intro-text-module', '#custom-intro-module', '#runtime-interaction', '#data-flow', '#data-flow-diagram', '#asyncgptmodel-class', '#gptmodel-class', '#model‑dependency', '#pipeline-assembly', '#sorting-module', '#compressor-module', '#spliter-module', '#model-exception-handling', '#error-handling-and-logging', '#base-log-classes', '#logger-templates', '#settings-module', '#external-dependencies', '#progress-interfaces', '#installation-scripts']
+[2026-01-26 18:34:01.144236] [INFO] Generating introduction with links...
+[2026-01-26 18:34:01.144251] [INFO] Generating answer...
+[2026-01-26 18:34:10.196324] [INFO] Generated answer with model openai/gpt-oss-safeguard-20b.
+[2026-01-26 18:34:10.196387] [INFO] Introduction with links generated.
+[2026-01-26 18:34:10.196405] [INFO] Introduction Links: ## Executive Navigation Tree
 
-- 🤖 Model Management
-  - [model-name-registry](#model-name-registry)
-  - [base-text-generators](#base-text-generators)
-  - [model-rotation-initialisation](#model-rotation-initialisation)
-  - [synchronous-model-interface](#synchronous-model-interface)
-  - [asynchronous-model-interface](#asynchronous-model-interface)
+- 📁 **Configuration**
+  - [#autodocconfig.yml](#autodocconfig.yml)
+  - [#config-classes](#config-classes)
+  - [#config-methods](#config-methods)
+  - [#config-usage](#config-usage)
+  - [#config-reader-component](#config-reader-component)
+  - [#pyproject-configuration](#pyproject-configuration)
 
-- 📊 Data Processing
-  - [module‑interactions](#module‑interactions)
-  - [data‑flow‑summary](#data‑flow‑summary)
-  - [history-management](#history-management)
-  - [semantic-section-sorting](#semantic-section-sorting)
+- ⚙️ **Generation**
+  - [#autodocgenerator/auto_runner/run_file.py](#autodocgenerator/auto_runner/run_file.py)
+  - [#async-doc-generation](#async-doc-generation)
+  - [#sync-doc-generation](#sync-doc-generation)
 
-- 🌐 HTML
-  - [html-link-extractor](#html-link-extractor)
+- 📦 **Modules**
+  - [#module-initialization](#module-initialization)
+  - [#module-interactions](#module-interactions)
 
-- 📦 Packaging
-  - [repository‑content‑packer](#repository‑content‑packer)
-  - [compressor‑pipeline](#compressor‑pipeline)
-  - [split‑and‑doc‑generation](#split‑and‑doc‑generation)
+- 🔗 **Interactions**
+  - [#interactions](#interactions)
+  - [#runtime-interaction](#runtime-interaction)
 
-- 🪵 Logging
-  - [logging‑hierarchy](#logging‑hierarchy)
-  - [logger‑template‑selection](#logger‑template‑selection)
-  - [singleton‑logger‑facade](#singleton‑logger‑facade)
-  - [progress‑abstraction](#progress‑abstraction)
+- 📚 **Intro Modules**
+  - [#intro-links-module](#intro-links-module)
+  - [#intro-text-module](#intro-text-module)
+  - [#custom-intro-module](#custom-intro-module)
 
-- ❓ Misc
-  - […](#…)
-[2026-01-26 17:31:49.185684] [INFO] Introduction with links generated.
-[2026-01-26 17:31:49.185711] [INFO] Introduction Links: ## Executive Navigation Tree
-- ⚙️ Configuration
-  - [configuration-loading-logic](#configuration-loading-logic)
-  - [projectconfigsettings-structure](#projectconfigsettings-structure)
-  - [config-builder-methods](#config-builder-methods)
-  - [read_config-function-flow](#read_config-function-flow)
-  - [environment-variable-loading](#environment-variable-loading)
-  - [project‑settings‑builder](#project‑settings‑builder)
-  - [installation‑scripts‑workflow‑generation](#installation‑scripts‑workflow‑generation)
-  - [project‑metadata‑pyproject‑toml](#project‑metadata‑pyproject‑toml)
+- 📈 **Data Flow**
+  - [#data-flow](#data-flow)
+  - [#data-flow-diagram](#data-flow-diagram)
 
-- 🤖 Model Management
-  - [model-name-registry](#model-name-registry)
-  - [base-text-generators](#base-text-generators)
-  - [model-rotation-initialisation](#model-rotation-initialisation)
-  - [synchronous-model-interface](#synchronous-model-interface)
-  - [asynchronous-model-interface](#asynchronous-model-interface)
+- 🧠 **Models**
+  - [#asyncgptmodel-class](#asyncgptmodel-class)
+  - [#gptmodel-class](#gptmodel-class)
+  - [#model‑dependency](#model‑dependency)
+  - [#model-exception-handling](#model-exception-handling)
 
-- 📊 Data Processing
-  - [module‑interactions](#module‑interactions)
-  - [data‑flow‑summary](#data‑flow‑summary)
-  - [history-management](#history-management)
-  - [semantic-section-sorting](#semantic-section-sorting)
+- 🔧 **Pipeline**
+  - [#pipeline-assembly](#pipeline-assembly)
+  - [#sorting-module](#sorting-module)
+  - [#compressor-module](#compressor-module)
+  - [#spliter-module](#spliter-module)
 
-- 🌐 HTML
-  - [html-link-extractor](#html-link-extractor)
+- ⚠️ **Error & Logging**
+  - [#error-handling-and-logging](#error-handling-and-logging)
+  - [#base-log-classes](#base-log-classes)
+  - [#logger-templates](#logger-templates)
 
-- 📦 Packaging
-  - [repository‑content‑packer](#repository‑content‑packer)
-  - [compressor‑pipeline](#compressor‑pipeline)
-  - [split‑and‑doc‑generation](#split‑and‑doc‑generation)
+- 📂 **Settings**
+  - [#settings-module](#settings-module)
 
-- 🪵 Logging
-  - [logging‑hierarchy](#logging‑hierarchy)
-  - [logger‑template‑selection](#logger‑template‑selection)
-  - [singleton‑logger‑facade](#singleton‑logger‑facade)
-  - [progress‑abstraction](#progress‑abstraction)
+- 🌐 **External Dependencies**
+  - [#external-dependencies](#external-dependencies)
 
-- ❓ Misc
-  - […](#…)
-[2026-01-26 17:31:49.185758] [INFO] Module IntroLinks generated its part of the documentation.
-[2026-01-26 17:31:49.185783] [INFO] Module Output: ## Executive Navigation Tree
-- ⚙️ Configuration
-  - [configuration-loading-logic](#configuration-loading-logic)
-  - [projectconfigsettings-structure](#projectconfigsettings-structure)
-  - [config-builder-methods](#config-builder-methods)
-  - [read_config-function-flow](#read_config-function-flow)
-  - [environment-variable-loading](#environment-variable-loading)
-  - [project‑settings‑builder](#project‑settings‑builder)
-  - [installation‑scripts‑workflow‑generation](#installation‑scripts‑workflow‑generation)
-  - [project‑metadata‑pyproject‑toml](#project‑metadata‑pyproject‑toml)
+- 📈 **Progress Interfaces**
+  - [#progress-interfaces](#progress-interfaces)
 
-- 🤖 Model Management
-  - [model-name-registry](#model-name-registry)
-  - [base-text-generators](#base-text-generators)
-  - [model-rotation-initialisation](#model-rotation-initialisation)
-  - [synchronous-model-interface](#synchronous-model-interface)
-  - [asynchronous-model-interface](#asynchronous-model-interface)
-
-- 📊 Data Processing
-  - [module‑interactions](#module‑interactions)
-  - [data‑flow‑summary](#data‑flow‑summary)
-  - [history-management](#history-management)
-  - [semantic-section-sorting](#semantic-section-sorting)
-
-- 🌐 HTML
-  - [html-link-extractor](#html-link-extractor)
-
-- 📦 Packaging
-  - [repository‑content‑packer](#repository‑content‑packer)
-  - [compressor‑pipeline](#compressor‑pipeline)
-  - [split‑and‑doc‑generation](#split‑and‑doc‑generation)
-
-- 🪵 Logging
-  - [logging‑hierarchy](#logging‑hierarchy)
-  - [logger‑template‑selection](#logger‑template‑selection)
-  - [singleton‑logger‑facade](#singleton‑logger‑facade)
-  - [progress‑abstraction](#progress‑abstraction)
-
-- ❓ Misc
-  - […](#…)
-[2026-01-26 17:31:49.185842] [INFO] Factory documentation generation completed.
+- 📦 **Installation**
+  - [#installation-scripts](#installation-scripts)
+[2026-01-26 18:34:10.196442] [INFO] Module IntroLinks generated its part of the documentation.
+[2026-01-26 18:34:10.196485] [INFO] Factory documentation generation completed.
