@@ -10,13 +10,14 @@ def extract_links_from_start(chunks):
         match = re.search(pattern, chunk.strip())
         if match:
             anchor_name = match.group(1)
-            links.append("#" + anchor_name)
+            if len(anchor_name) > 5:
+                links.append("#" + anchor_name)
                 
     return links
 
 
 def split_text_by_anchors(text):
-    pattern = r'(?=<a name=[^>]*></a>)'
+    pattern = r'(?=<a name=["\']?[^"\'>\s]{6,200}["\']?></a>)'
     chunks = re.split(pattern, text)
     result_chanks = [chunk.strip() for chunk in chunks if chunk.strip()]
     all_links = extract_links_from_start(result_chanks)
@@ -64,5 +65,11 @@ def get_order(model: Model, chanks: dict[str, str]):
         
     return order_output
 
+
+if __name__ == "__main__":
+    with open(r"C:\Users\huina\Python Projects\Impotant projects\AutoDocGenerateGimini\README.md", "r", encoding="utf-8") as file:
+        data = file.read()
+
+    print(split_text_by_anchors(data))
 
 
