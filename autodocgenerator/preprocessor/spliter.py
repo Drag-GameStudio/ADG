@@ -124,7 +124,7 @@ async def async_write_docs_by_parts(part: str, async_model: AsyncModel, global_i
         return answer
 
 
-def gen_doc_parts(full_code_mix, global_info, max_symbols, model: Model, language, progress_bar: BaseProgress):
+def gen_doc_parts(full_code_mix, max_symbols, model: Model, language, progress_bar: BaseProgress):
     splited_data = split_data(full_code_mix, max_symbols)
     result = None
     logger = BaseLogger()

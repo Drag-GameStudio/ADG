@@ -15,6 +15,7 @@ from .ui.logging import BaseLogger, BaseLoggerTemplate, InfoLog, ErrorLog, Warni
 from .preprocessor.settings import ProjectSettings
 from .auto_runner.config_reader import ProjectConfigSettings
 from .postprocessor.sorting import get_order, split_text_by_anchors
+from .config.config import Config
 
 
 class Manager:
@@ -28,21 +29,22 @@ class Manager:
     }
 
 
-    def __init__(self, project_directory: str, project_settings: ProjectSettings,
-                 pcs: ProjectConfigSettings, sync_model: Model = None, async_model: AsyncModel = None, 
-                 ignore_files: list = [], language: str = "en", progress_bar: BaseProgress = BaseProgress()):
+    def __init__(self, project_directory: str, 
+                 config: Config, 
+                 sync_model: Model = None, 
+                 async_model: AsyncModel = None, 
+                 progress_bar: BaseProgress = BaseProgress()):
+        
+        self.config = config
+
         self.project_directory = project_directory
-        self.ignore_files = ignore_files
         self.progress_bar = progress_bar
-        self.language = language
-        self.project_settings = project_settings
-        self.pcs = pcs
 
         self.sync_model = sync_model
         self.async_model = async_model
 
         self.logger = BaseLogger()
-        self.logger.set_logger(FileLoggerTemplate(self.get_file_path("logs"), log_level=self.pcs.log_level))
+        self.logger.set_logger(FileLoggerTemplate(self.get_file_path("logs"), log_level=self.config.pcs.log_level))
 
         cache_path = os.path.join(self.project_directory, self.CACHE_FOLDER_NAME)
 
@@ -59,39 +61,22 @@ class Manager:
 
     def generate_code_file(self):
         self.logger.log(InfoLog("Starting code mix generation..."))
-        cm = CodeMix(self.project_directory, self.ignore_files)
+        cm = CodeMix(self.project_directory, self.config.ignore_files)
         cm.build_repo_content(self.get_file_path("code_mix"))
 
         self.logger.log(InfoLog("Code mix generation completed."))
         self.progress_bar.update_task()
 
-    def generate_global_info_file(self, max_symbols=10_000, use_async: bool = False):
+
+    def generete_doc_parts(self, max_symbols=5_000):
+
+
         full_code_mix = self.read_file_by_file_key("code_mix")
 
-        # splited_data = split_data(full_code_mix, max_symbols)
-        # curr_model = self.async_model if use_async else self.sync_model
-        # result = compress_to_one(splited_data, curr_model, self.project_settings, 2, progress_bar=self.progress_bar, use_async=use_async)
-        with open(self.get_file_path("global_info"), "w", encoding="utf-8") as file:
-            file.write("ss")
-
-        self.progress_bar.update_task()
-
-    def generete_doc_parts(self, max_symbols=5_000, use_async: bool = False):
-
-
-        global_info = self.read_file_by_file_key("global_info")
-        full_code_mix = self.read_file_by_file_key("code_mix")
-
-        if use_async:
-            self.logger.log(InfoLog("Starting asynchronous documentation generation by parts..."))
-            result = asyncio.run(async_gen_doc_parts(full_code_mix, global_info, 
-                                                     max_symbols, self.async_model, 
-                                                     self.language, self.progress_bar))
-        else:
-            self.logger.log(InfoLog("Starting synchronous documentation generation by parts..."))
-            result = gen_doc_parts(full_code_mix, global_info, 
-                                   max_symbols, self.sync_model, 
-                                   self.language, self.progress_bar)
+        self.logger.log(InfoLog("Starting synchronous documentation generation by parts..."))
+        result = gen_doc_parts(full_code_mix,
+                                max_symbols, self.sync_model, 
+                                self.config.language, self.progress_bar)
             
         self.logger.log(InfoLog("Documentation generation by parts completed."))
 
@@ -101,13 +86,11 @@ class Manager:
         self.progress_bar.update_task()
 
     def factory_generate_doc(self, doc_factory: DocFactory):
-        global_info = self.read_file_by_file_key("global_info")
         curr_doc = self.read_file_by_file_key("output_doc")
         code_mix = self.read_file_by_file_key("code_mix")
 
         info = {
-            "language": self.language,
-            "global_data": global_info,
+            "language": self.config.language,
             "full_data": curr_doc,
             "code_mix": code_mix
         }
@@ -118,9 +101,7 @@ class Manager:
                                 """))
 
         result = doc_factory.generate_doc(info, self.sync_model, self.progress_bar)
-
         self.logger.log(InfoLog("Factory documentation generation completed."))
-
         new_data = f"{result} \n\n{curr_doc}"
 
         with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
