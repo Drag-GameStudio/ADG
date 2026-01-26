@@ -44,7 +44,8 @@ def get_order(model: Model, chanks: dict[str, str]):
             "content": f"""Sort the following titles semantically (group related topics together). 
                         Return ONLY a comma-separated list of the sorted titles. 
                         Do not include any introductory text, explanations, or concluding remarks.
-                        You can delete somthing strange like #[^>]* or empty.
+                        leave # in title.
+                        do not skip any title
                         Titles:
                         {list(chanks.keys())}
             """
