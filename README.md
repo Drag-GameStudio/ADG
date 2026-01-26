@@ -1,7 +1,60 @@
 ## Executive Navigation Tree
-- [](#)
+- 📂 Setup & Configuration
+  - [Install Workflow Setup](#install-workflow-setup)
+  - [Configuration Loading And Validation](#configuration-loading-and-validation)
+  - [Manager Configuration](#manager-configuration)
+  - [Projectsettings Prompt Builder](#projectsettings-prompt-builder)
+  - [Command Line Invocation Logic](#command-line-invocation-logic)
+
+- ⚙️ Documentation Generation
+  - [Documentation Pipeline Trigger](#documentation-pipeline-trigger)
+  - [Execution Flow Summary](#execution-flow-summary)
+  - [Documentation Generation Workflow](#documentation-generation-workflow)
+  - [Autodocfile Parameters](#autodocfile-parameters)
+  - [Docfactory Orchestration](#docfactory-orchestration)
+  - [Global Introduction Generation](#global-introduction-generation)
+  - [Intro With Links Generation](#intro-with-links-generation)
+  - [Custom Description Generation](#custom-description-generation)
+  - [Anchor‑Ordering‑Cleanup](#anchor‑ordering‑cleanup)
+  - [Anchor‑Chunk‑Splitting](#anchor‑chunk‑splitting)
+  - [Semantic‑Ordering](#semantic‑ordering)
+  - [Html Link Extraction](#html-link-extraction)
+  - [Factory‑Doc‑Assembly](#factory‑doc‑assembly)
+  - [Doc‑Parts‑Generation](#doc‑parts‑generation)
+  - [Custommodule Intro Modules](#custommodule-intro-modules)
+
+- 🤖 Model Orchestration
+  - [Asyncgptmodel Implementation](#asyncgptmodel-implementation)
+  - [Gptmodel Synchronous Flow](#gptmodel-synchronous-flow)
+  - [Parentmodel Setup And Rotation](#parentmodel-setup-and-rotation)
+  - [Synchronous‑Part‑Doc‑Generator](#synchronous‑part‑doc‑generator)
+  - [Asynchronous‑Part‑Doc‑Generator](#asynchronous‑part‑doc‑generator)
+  - [Synchronous‑Multi‑Part‑Orchestrator](#synchronous‑multi‑part‑orchestrator)
+  - [Asynchronous‑Multi‑Part‑Orchestrator](#asynchronous‑multi‑part‑orchestrator)
+
+- 🔀 Data Splitting & Repository
+  - [Spliter Entry Point](#spliter-entry-point)
+  - [Data‑Splitting Loop](#data‑splitting‑loop)
+  - [Repository‑Mix Builder](#repository‑mix‑builder)
+  - [Code‑Mix Generation](#code‑mix‑generation)
+
+- 🗄️ Caching & Compression
+  - [Cache‑File Access](#cache‑file-access)
+  - [Compress Function](#compress-function)
+  - [Batch Compression Sync](#batch-compression-sync)
+  - [Batch Compression Async](#batch-compression-async)
+
+- 📊 Logging & Progress
+  - [Singleton‑Logger‑Implementation](#singleton‑logger‑implementation)
+  - [Log‑Message‑Hierarchy](#log‑message‑hierarchy)
+  - [Progress‑Abstraction](#progress‑abstraction)
+  - [Rich‑Implementation](#rich‑implementation)
+  - [Console‑Task‑Helper](#console‑task‑helper)
+  - [Fallback‑Console‑Progress](#fallback‑console‑progress)
 
  
+
+
 
 <a name="install-workflow-setup"></a>
 To set up the installation workflow, run the PowerShell script on Windows using:  

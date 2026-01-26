@@ -17,7 +17,7 @@ def get_all_html_links(data: str) -> list[str]:
     for match in re.finditer(pattern, data):
         anchor_name = match.group(1)
         
-        if len(links) > 5:
+        if len(anchor_name) > 5:
             links.append("#" + anchor_name)
 
     
