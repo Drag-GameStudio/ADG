@@ -21,11 +21,11 @@ def gen_doc(project_path: str, config: Config, custom_modules):
     )
 
 
-    # manager.generate_code_file()
-    # manager.generete_doc_parts(max_symbols=6000)
+    manager.generate_code_file()
+    manager.generete_doc_parts(max_symbols=6000)
     manager.factory_generate_doc(DocFactory(*custom_modules))
-    # manager.order_doc()
-    # manager.factory_generate_doc(DocFactory(IntroLinks()))
+    manager.order_doc()
+    manager.factory_generate_doc(DocFactory(IntroLinks()))
     manager.clear_cache()
 
     return manager.read_file_by_file_key("output_doc")
