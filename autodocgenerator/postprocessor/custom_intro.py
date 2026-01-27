@@ -1,6 +1,6 @@
 from ..engine.models.gpt_model import GPTModel
 from ..engine.models.model import Model 
-from ..engine.config.config import BASE_INTRODACTION_CREATE_TEXT, BASE_INTRO_CREATE
+from ..engine.config.config import BASE_INTRODACTION_CREATE_LINKS, BASE_INTRO_CREATE, BASE_CUSTOM_DISCRIPTIONS
 from ..ui.logging import InfoLog, BaseLogger
 import re
 
@@ -35,7 +35,7 @@ def get_links_intro(links: list[str], model: Model, language: str = "en"):
         },
         {
             "role": "system",
-            "content": BASE_INTRODACTION_CREATE_TEXT
+            "content": BASE_INTRODACTION_CREATE_LINKS
         },
         {
             "role": "user",
@@ -79,30 +79,15 @@ def generete_custom_discription(splited_data: str, model: Model, custom_descript
             },
             {
                 "role": "system",
-                "content": f"Act as a precise Technical Analyst. You will be provided with specific code or documentation. Your task is to describe or extract information based ONLY on the provided context. And make title and link <a name='your_title'> </a> format"
+                "content": f"Act as a precise Technical Analyst. You will be provided with specific code or documentation. Your task is to describe or extract information based ONLY on the provided context"
             },
             {
                 "role": "system",
                 "content": f"### Context: {sp_data}"
             },
-            {"role": "system",
-            "content": """### Strict Rules:
-                1. Use ONLY the provided Context to answer. 
-                2. If the requested information is not explicitly mentioned in the Context, or if you don't know the answer based on the provided data, respond with an empty string ("") or simply say "No information found". 
-                3. DO NOT use external knowledge or invent any logic that is not present in the text.
-                4. Do not provide any introductory or concluding remarks. If there is no info, output must be empty.
-                5. If you dont have any info about it return just !noinfo
-                6. Every response must start with exactly one <a name="CONTENT_DESCRIPTION"></a> tag. The CONTENT_DESCRIPTION must be a short, hyphenated summary of the actual information you are providing (e.g., "user-authentication-logic" instead of "auth.yml"). STRICT RULES:
-
-NO filenames or paths (e.g., forbidden: "autodocconfig.yml", "src/config").
-
-NO file extensions (e.g., forbidden: ".yml", ".md").
-
-NO generic terms (e.g., forbidden: "config", "settings", "run", "docs").
-
-NO protocols (http/https).
-
-This tag must appear ONLY ONCE at the very beginning. Never repeat it or use other links"""
+            {
+                "role": "system",
+                "content": BASE_CUSTOM_DISCRIPTIONS
             },
             {
                 "role": "user",

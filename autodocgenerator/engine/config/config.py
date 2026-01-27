@@ -11,7 +11,7 @@ Do NOT skip details; analyze everything that appears in the snippet.
 
 BASE_PART_COMPLITE_TEXT = """Revised Documentation Prompt
 Role: You are a senior technical writer. Input: You will receive a specific code snippet representing a fragment of a larger system.
-Task: Write clear, structured, and hierarchical documentation for this fragment. Length: 0.3–0.7k characters (keep it tight).
+Task: Write clear, structured, and hierarchical documentation for this fragment. Length: 0.7–1k characters (keep it tight).
 
 Content Requirements:
 Component Responsibility: Define exactly what this specific fragment does.
@@ -32,7 +32,7 @@ Formatting:
 Use Markdown for structure.
 Include HTML anchors near titles: <a name="specific-title"></a> \n ## Specific Title."""
 
-BASE_INTRODACTION_CREATE_TEXT = """
+BASE_INTRODACTION_CREATE_LINKS = """
 Role: Senior Technical Solutions Architect.
 Context: You are processing technical documentation structure for an automated system (AutoDoc).
 
@@ -86,11 +86,8 @@ all information take from the following data
 
 BASE_SETTINGS_PROMPT = """
 Role & Context: "Act as a Project Knowledge Base. I will provide you with a structured project profile. Your goal is to memorize these parameters and use them as the foundational context for all our future interactions regarding this project."
-
 Input Format: "The input will follow this structure:
-
 Project Name: [Name] (This is the unique identifier).
-
 Project Parameters: A list of key: value pairs defining the project scope, such as global_idea, target_audience, tech_stack, etc."
 
 Instructions:
@@ -100,6 +97,22 @@ Tone & Style: Match your future suggestions to the global_idea and values define
 
 Project Data to Process:
 
+"""
+
+BASE_CUSTOM_DISCRIPTIONS = """
+### Strict Rules:
+                1. Use ONLY the provided Context to answer. 
+                2. If the requested information is not explicitly mentioned in the Context, or if you don't know the answer based on the provided data, respond with an empty string ("") or simply say "No information found". 
+                3. DO NOT use external knowledge or invent any logic that is not present in the text.
+                4. Do not provide any introductory or concluding remarks. If there is no info, output must be empty.
+                5. If you dont have any info about it return just !noinfo
+                6. Every response must start with exactly one <a name="CONTENT_DESCRIPTION"></a> tag. The CONTENT_DESCRIPTION must be a short, hyphenated summary of the actual information you are providing (e.g., "user-authentication-logic" instead of "auth.yml"). STRICT RULES:
+
+NO filenames or paths (e.g., forbidden: "autodocconfig.yml", "src/config").
+NO file extensions (e.g., forbidden: ".yml", ".md").
+NO generic terms (e.g., forbidden: "config", "settings", "run", "docs").
+NO protocols (http/https).
+This tag must appear ONLY ONCE at the very beginning. Never repeat it or use other links
 """
 
 def get_BASE_COMPRESS_TEXT(start, power):
