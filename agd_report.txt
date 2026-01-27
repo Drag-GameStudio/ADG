@@ -1,253 +1,340 @@
-[2026-01-26 23:36:11.095217] [INFO] Starting code mix generation...
-[2026-01-26 23:36:11.100485] [INFO] Ignored: /home/runner/work/ADG/ADG/.auto_doc_cache
-[2026-01-26 23:36:11.100748] [INFO] Ignored: /home/runner/work/ADG/ADG/.auto_doc_cache/code_mix.txt
-[2026-01-26 23:36:11.100966] [INFO] Ignored: /home/runner/work/ADG/ADG/.auto_doc_cache/report.txt
-[2026-01-26 23:36:11.101335] [INFO] Ignored: /home/runner/work/ADG/ADG/.git
-[2026-01-26 23:36:11.101568] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/FETCH_HEAD
-[2026-01-26 23:36:11.101809] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/HEAD
-[2026-01-26 23:36:11.102035] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/config
-[2026-01-26 23:36:11.102253] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/config.worktree
-[2026-01-26 23:36:11.102471] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/description
-[2026-01-26 23:36:11.102705] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks
-[2026-01-26 23:36:11.102949] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/applypatch-msg.sample
-[2026-01-26 23:36:11.103184] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/commit-msg.sample
-[2026-01-26 23:36:11.103417] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/fsmonitor-watchman.sample
-[2026-01-26 23:36:11.103664] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/post-update.sample
-[2026-01-26 23:36:11.103905] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-applypatch.sample
-[2026-01-26 23:36:11.104137] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-commit.sample
-[2026-01-26 23:36:11.104374] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-merge-commit.sample
-[2026-01-26 23:36:11.104607] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-push.sample
-[2026-01-26 23:36:11.104861] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-rebase.sample
-[2026-01-26 23:36:11.105093] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-receive.sample
-[2026-01-26 23:36:11.105324] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/prepare-commit-msg.sample
-[2026-01-26 23:36:11.105554] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/push-to-checkout.sample
-[2026-01-26 23:36:11.105802] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/sendemail-validate.sample
-[2026-01-26 23:36:11.106040] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/update.sample
-[2026-01-26 23:36:11.106258] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/index
-[2026-01-26 23:36:11.106473] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/info
-[2026-01-26 23:36:11.106720] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/info/exclude
-[2026-01-26 23:36:11.106948] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs
-[2026-01-26 23:36:11.107178] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/HEAD
-[2026-01-26 23:36:11.107404] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs
-[2026-01-26 23:36:11.107663] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/heads
-[2026-01-26 23:36:11.107928] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/heads/main
-[2026-01-26 23:36:11.108174] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/remotes
-[2026-01-26 23:36:11.108433] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/remotes/origin
-[2026-01-26 23:36:11.108721] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/remotes/origin/main
-[2026-01-26 23:36:11.108944] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects
-[2026-01-26 23:36:11.109174] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/00
-[2026-01-26 23:36:11.109419] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/00/3ed33f03ba24320be674acc37e2f484440960d
-[2026-01-26 23:36:11.109664] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/02
-[2026-01-26 23:36:11.109916] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/02/1c388e953c4661dc3838cf999026c1f029c38b
-[2026-01-26 23:36:11.110146] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/06
-[2026-01-26 23:36:11.110392] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/06/e9b517aa057e76cacbb638b00982dacfed376d
-[2026-01-26 23:36:11.110644] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/08
-[2026-01-26 23:36:11.110895] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/08/3bb9598f2f3dee44e7b6d3358c592538e0c708
-[2026-01-26 23:36:11.111124] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/0b
-[2026-01-26 23:36:11.111366] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/0b/4f2b7d71e8dfd683a2882d5723d1c931a8b88f
-[2026-01-26 23:36:11.111594] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/14
-[2026-01-26 23:36:11.111855] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/14/3816379e9cc4229eaaf3cdddad6a5ab36c4627
-[2026-01-26 23:36:11.112090] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/16
-[2026-01-26 23:36:11.112333] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/16/c6bd78d24630228f2f308279feee5992b421d5
-[2026-01-26 23:36:11.112559] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/1e
-[2026-01-26 23:36:11.112820] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/1e/3756cb4960405c387a6de0c9b5f79cee0699a1
-[2026-01-26 23:36:11.113052] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/1f
-[2026-01-26 23:36:11.113294] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/1f/fe6b3646c3a74bce85991df79d7b5808a3376e
-[2026-01-26 23:36:11.113522] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/26
-[2026-01-26 23:36:11.113780] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/26/232583984feff25da44d47972f553bd00e4daa
-[2026-01-26 23:36:11.114013] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/29
-[2026-01-26 23:36:11.114259] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/29/e91c54d3b33f906c38c25bbd76b6391931faa4
-[2026-01-26 23:36:11.114493] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/31
-[2026-01-26 23:36:11.114760] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/31/947cbc29165996e70620f06feee333ab5b0a89
-[2026-01-26 23:36:11.114993] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/40
-[2026-01-26 23:36:11.115237] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/40/3af57e1f2ba76f011eb0b99c450414ec1b4aa9
-[2026-01-26 23:36:11.115464] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/42
-[2026-01-26 23:36:11.115722] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/42/47e86e5d467366df91d576f9eb0961c68ae7b1
-[2026-01-26 23:36:11.115956] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/45
-[2026-01-26 23:36:11.116197] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/45/abf18a355c0af847a695af065f76d937f9c756
-[2026-01-26 23:36:11.116440] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/45/c8c97b68d9edc9608f17662ae5a56937db4722
-[2026-01-26 23:36:11.116681] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/48
-[2026-01-26 23:36:11.116930] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/48/2d00127da59187ea3cfc62e26186a5fe439b78
-[2026-01-26 23:36:11.117158] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/50
-[2026-01-26 23:36:11.117402] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/50/de1f7cf4fe170128039ffa6d0cc6f3f6d6cc33
-[2026-01-26 23:36:11.117645] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/62
-[2026-01-26 23:36:11.117895] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/62/18e73336f4ccb562643cd4202a628d14cf784f
-[2026-01-26 23:36:11.118138] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/62/5a3814f817aa0548631c3cb646b9faf7546f9e
-[2026-01-26 23:36:11.118364] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6a
-[2026-01-26 23:36:11.118607] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6a/2dd502eb649bb8e804238af60031db553c13ea
-[2026-01-26 23:36:11.118873] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6a/4ee663203935f06c6f32d4d056257d4f4478a7
-[2026-01-26 23:36:11.119102] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6f
-[2026-01-26 23:36:11.119346] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6f/130bfccfc73d6fe93fe33cd3772d640379f909
-[2026-01-26 23:36:11.119572] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/73
-[2026-01-26 23:36:11.119830] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/73/965c31913dad17e60c92e64f556c7f13200700
-[2026-01-26 23:36:11.120071] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/74
-[2026-01-26 23:36:11.120315] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/74/a3c1e6f20401d349509161b755a9ee6c763717
-[2026-01-26 23:36:11.120543] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/76
-[2026-01-26 23:36:11.120801] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/76/545a7caa4949334b4a7b32fd2e61aca801de8e
-[2026-01-26 23:36:11.121036] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/7e
-[2026-01-26 23:36:11.121279] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/7e/f15dd6d3c3dd489f000b4267a54b0d72c0d559
-[2026-01-26 23:36:11.121507] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/81
-[2026-01-26 23:36:11.121767] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/81/becbf7a8a1c3473195d0f85266ab25f85809ce
-[2026-01-26 23:36:11.122000] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/84
-[2026-01-26 23:36:11.122241] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/84/00c2b5c8734df41836d301824574b989b0ec41
-[2026-01-26 23:36:11.122482] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/84/ac0c029f73a6fe8f13064296828789c7977d42
-[2026-01-26 23:36:11.122728] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/88
-[2026-01-26 23:36:11.122976] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/88/98cba48b06d12b18dffd9be3b78407a8234caf
-[2026-01-26 23:36:11.123203] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/8a
-[2026-01-26 23:36:11.123446] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/8a/b47c5bc8110cef05224baba95761fd822aa22a
-[2026-01-26 23:36:11.123693] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a1
-[2026-01-26 23:36:11.123942] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a1/74987040ef16bb4a027c8cad0e70eee18daf2d
-[2026-01-26 23:36:11.124170] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a8
-[2026-01-26 23:36:11.124418] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a8/476127e3f807c0aa99fa808560ec2e5584dff2
-[2026-01-26 23:36:11.124661] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/af
-[2026-01-26 23:36:11.124912] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/af/7b9d51d9f5c817e84faf76e422bf495da7796b
-[2026-01-26 23:36:11.125140] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/b6
-[2026-01-26 23:36:11.125382] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/b6/d812aceb9c792cb2019b9e244e1dbaa4ad74a1
-[2026-01-26 23:36:11.125610] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ca
-[2026-01-26 23:36:11.125875] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ca/3f28b6a4a95a7176cdf2d78622ceb1151e186d
-[2026-01-26 23:36:11.126103] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d9
-[2026-01-26 23:36:11.126347] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d9/c5e7426b4d3d800f9cca0b469d6f0c60fe27b7
-[2026-01-26 23:36:11.126573] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/db
-[2026-01-26 23:36:11.126832] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/db/80ec4419abf97b42fd51f286a6dd599d8d77ce
-[2026-01-26 23:36:11.127064] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e5
-[2026-01-26 23:36:11.127307] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e5/79429fa02e99262ec5618960833f99b649c926
-[2026-01-26 23:36:11.127556] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e6
-[2026-01-26 23:36:11.127816] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e6/9de29bb2d1d6434b8b29ae775ad8c2e48c5391
-[2026-01-26 23:36:11.128050] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e7
-[2026-01-26 23:36:11.128293] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e7/746f47e059234c8b861cf312d97132a810e145
-[2026-01-26 23:36:11.128524] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ed
-[2026-01-26 23:36:11.128793] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ed/ad13c003a370ccaa39700963726e6fbbccc9e0
-[2026-01-26 23:36:11.129031] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ef
-[2026-01-26 23:36:11.129285] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ef/9fb37763d620555f3e448337bcdb1ac580b349
-[2026-01-26 23:36:11.129514] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/f7
-[2026-01-26 23:36:11.129773] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/f7/e7387d133530b1714ad5f603f8b1341350ff04
-[2026-01-26 23:36:11.130009] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fb
-[2026-01-26 23:36:11.130252] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fb/8b56ad03d86c61f46cb2c93a162215b23ce129
-[2026-01-26 23:36:11.130480] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fd
-[2026-01-26 23:36:11.130739] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fd/2116ecd9915ae256df74ec7338b0b079f5634e
-[2026-01-26 23:36:11.130974] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/info
-[2026-01-26 23:36:11.131202] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/pack
-[2026-01-26 23:36:11.131414] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs
-[2026-01-26 23:36:11.131659] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/heads
-[2026-01-26 23:36:11.131909] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/heads/main
-[2026-01-26 23:36:11.132138] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/remotes
-[2026-01-26 23:36:11.132380] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/remotes/origin
-[2026-01-26 23:36:11.132653] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/remotes/origin/main
-[2026-01-26 23:36:11.132888] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/tags
-[2026-01-26 23:36:11.133102] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/shallow
-[2026-01-26 23:36:11.135195] [INFO] Ignored: /home/runner/work/ADG/ADG/.gitignore
-[2026-01-26 23:36:11.135427] [INFO] Ignored: /home/runner/work/ADG/ADG/README.md
-[2026-01-26 23:36:11.136722] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/__pycache__
-[2026-01-26 23:36:11.136952] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/__pycache__/__init__.cpython-312.pyc
-[2026-01-26 23:36:11.137172] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/__pycache__/manage.cpython-312.pyc
-[2026-01-26 23:36:11.137703] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/auto_runner/__pycache__
-[2026-01-26 23:36:11.137943] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/auto_runner/__pycache__/config_reader.cpython-312.pyc
-[2026-01-26 23:36:11.138175] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/auto_runner/__pycache__/run_file.cpython-312.pyc
-[2026-01-26 23:36:11.139314] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/config/__pycache__
-[2026-01-26 23:36:11.139551] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/config/__pycache__/config.cpython-312.pyc
-[2026-01-26 23:36:11.140697] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/__pycache__
-[2026-01-26 23:36:11.140936] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/__pycache__/__init__.cpython-312.pyc
-[2026-01-26 23:36:11.141167] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/__pycache__/exceptions.cpython-312.pyc
-[2026-01-26 23:36:11.141735] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/config/__pycache__
-[2026-01-26 23:36:11.141989] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/config/__pycache__/config.cpython-312.pyc
-[2026-01-26 23:36:11.143189] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/models/__pycache__
-[2026-01-26 23:36:11.143443] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/models/__pycache__/gpt_model.cpython-312.pyc
-[2026-01-26 23:36:11.143706] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/models/__pycache__/model.cpython-312.pyc
-[2026-01-26 23:36:11.145203] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/__pycache__
-[2026-01-26 23:36:11.145441] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/__pycache__/__init__.cpython-312.pyc
-[2026-01-26 23:36:11.145698] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/__pycache__/base_factory.cpython-312.pyc
-[2026-01-26 23:36:11.146560] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/modules/__pycache__
-[2026-01-26 23:36:11.146823] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/modules/__pycache__/general_modules.cpython-312.pyc
-[2026-01-26 23:36:11.147074] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/modules/__pycache__/intro.cpython-312.pyc
-[2026-01-26 23:36:11.148537] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/postprocessor/__pycache__
-[2026-01-26 23:36:11.148790] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/postprocessor/__pycache__/custom_intro.cpython-312.pyc
-[2026-01-26 23:36:11.149025] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/postprocessor/__pycache__/sorting.cpython-312.pyc
-[2026-01-26 23:36:11.150154] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__
-[2026-01-26 23:36:11.150392] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/code_mix.cpython-312.pyc
-[2026-01-26 23:36:11.150636] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/compressor.cpython-312.pyc
-[2026-01-26 23:36:11.150879] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/settings.cpython-312.pyc
-[2026-01-26 23:36:11.151111] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/spliter.cpython-312.pyc
-[2026-01-26 23:36:11.153170] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__
-[2026-01-26 23:36:11.153410] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__/__init__.cpython-312.pyc
-[2026-01-26 23:36:11.153658] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__/logging.cpython-312.pyc
-[2026-01-26 23:36:11.153900] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__/progress_base.cpython-312.pyc
-[2026-01-26 23:36:11.192897] [INFO] Code mix generation completed.
-[2026-01-26 23:36:11.193654] [INFO] Starting synchronous documentation generation by parts...
-[2026-01-26 23:36:11.193949] [INFO] Starting data splitting...
-[2026-01-26 23:36:11.194029] [INFO] Data split into 8 parts based on max symbols 7000.
-[2026-01-26 23:36:11.194055] [INFO] Starting documentation generation by parts...
-[2026-01-26 23:36:11.194100] [INFO] Generating documentation for a part...
-[2026-01-26 23:36:11.194144] [INFO] Generating answer...
-[2026-01-26 23:36:13.262968] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 23:36:13.263024] [INFO] Documentation for part generated. total length: 2850
-[2026-01-26 23:36:13.263082] [INFO] Generating documentation for a part...
-[2026-01-26 23:36:13.263112] [INFO] Generating answer...
-[2026-01-26 23:36:14.992829] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 23:36:14.992875] [INFO] Documentation for part generated. total length: 1793
-[2026-01-26 23:36:14.992925] [INFO] Generating documentation for a part...
-[2026-01-26 23:36:14.992952] [INFO] Generating answer...
-[2026-01-26 23:36:17.186125] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 23:36:17.186171] [INFO] Documentation for part generated. total length: 2062
-[2026-01-26 23:36:17.186223] [INFO] Generating documentation for a part...
-[2026-01-26 23:36:17.186249] [INFO] Generating answer...
-[2026-01-26 23:36:32.135693] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 23:36:32.135746] [INFO] Documentation for part generated. total length: 2668
-[2026-01-26 23:36:32.135803] [INFO] Generating documentation for a part...
-[2026-01-26 23:36:32.135837] [INFO] Generating answer...
-[2026-01-26 23:36:53.506287] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 23:36:53.506343] [INFO] Documentation for part generated. total length: 3067
-[2026-01-26 23:36:53.506404] [INFO] Generating documentation for a part...
-[2026-01-26 23:36:53.506442] [INFO] Generating answer...
-[2026-01-26 23:37:15.079558] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 23:37:15.079631] [INFO] Documentation for part generated. total length: 1889
-[2026-01-26 23:37:15.079695] [INFO] Generating documentation for a part...
-[2026-01-26 23:37:15.079723] [INFO] Generating answer...
-[2026-01-26 23:37:35.557456] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 23:37:35.557511] [INFO] Documentation for part generated. total length: 3087
-[2026-01-26 23:37:35.557570] [INFO] Generating documentation for a part...
-[2026-01-26 23:37:35.557604] [INFO] Generating answer...
-[2026-01-26 23:37:58.205465] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 23:37:58.205518] [INFO] Documentation for part generated. total length: 1814
-[2026-01-26 23:37:58.205581] [INFO] Documentation generation by parts completed.
+[2026-01-27 00:02:17.218064] [INFO] Starting code mix generation...
+[2026-01-27 00:02:17.223434] [INFO] Ignored: /home/runner/work/ADG/ADG/.auto_doc_cache
+[2026-01-27 00:02:17.223696] [INFO] Ignored: /home/runner/work/ADG/ADG/.auto_doc_cache/code_mix.txt
+[2026-01-27 00:02:17.223911] [INFO] Ignored: /home/runner/work/ADG/ADG/.auto_doc_cache/report.txt
+[2026-01-27 00:02:17.224277] [INFO] Ignored: /home/runner/work/ADG/ADG/.git
+[2026-01-27 00:02:17.224523] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/FETCH_HEAD
+[2026-01-27 00:02:17.224769] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/HEAD
+[2026-01-27 00:02:17.224991] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/config
+[2026-01-27 00:02:17.225208] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/config.worktree
+[2026-01-27 00:02:17.225423] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/description
+[2026-01-27 00:02:17.225671] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks
+[2026-01-27 00:02:17.225925] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/applypatch-msg.sample
+[2026-01-27 00:02:17.226159] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/commit-msg.sample
+[2026-01-27 00:02:17.226391] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/fsmonitor-watchman.sample
+[2026-01-27 00:02:17.226641] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/post-update.sample
+[2026-01-27 00:02:17.226878] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-applypatch.sample
+[2026-01-27 00:02:17.227110] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-commit.sample
+[2026-01-27 00:02:17.227339] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-merge-commit.sample
+[2026-01-27 00:02:17.227586] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-push.sample
+[2026-01-27 00:02:17.227823] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-rebase.sample
+[2026-01-27 00:02:17.228052] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/pre-receive.sample
+[2026-01-27 00:02:17.228282] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/prepare-commit-msg.sample
+[2026-01-27 00:02:17.228524] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/push-to-checkout.sample
+[2026-01-27 00:02:17.228766] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/sendemail-validate.sample
+[2026-01-27 00:02:17.228996] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/hooks/update.sample
+[2026-01-27 00:02:17.229212] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/index
+[2026-01-27 00:02:17.229425] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/info
+[2026-01-27 00:02:17.229671] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/info/exclude
+[2026-01-27 00:02:17.229898] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs
+[2026-01-27 00:02:17.230127] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/HEAD
+[2026-01-27 00:02:17.230355] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs
+[2026-01-27 00:02:17.230614] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/heads
+[2026-01-27 00:02:17.230886] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/heads/main
+[2026-01-27 00:02:17.231132] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/remotes
+[2026-01-27 00:02:17.231390] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/remotes/origin
+[2026-01-27 00:02:17.231678] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/logs/refs/remotes/origin/main
+[2026-01-27 00:02:17.231899] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects
+[2026-01-27 00:02:17.232128] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/00
+[2026-01-27 00:02:17.232372] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/00/3ed33f03ba24320be674acc37e2f484440960d
+[2026-01-27 00:02:17.232620] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/02
+[2026-01-27 00:02:17.232872] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/02/1c388e953c4661dc3838cf999026c1f029c38b
+[2026-01-27 00:02:17.233105] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/06
+[2026-01-27 00:02:17.233351] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/06/e43b5c8ffb636717679b5fc8ee423cea737763
+[2026-01-27 00:02:17.233608] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/08
+[2026-01-27 00:02:17.233858] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/08/3bb9598f2f3dee44e7b6d3358c592538e0c708
+[2026-01-27 00:02:17.234088] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/0a
+[2026-01-27 00:02:17.234334] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/0a/137ab74e1d4d4a4aee040d92fd1fcd7cfedd6f
+[2026-01-27 00:02:17.234580] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/0e
+[2026-01-27 00:02:17.234833] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/0e/edce493b9e252cc52330a0f8dea4077a65a9d4
+[2026-01-27 00:02:17.235062] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/14
+[2026-01-27 00:02:17.235307] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/14/3816379e9cc4229eaaf3cdddad6a5ab36c4627
+[2026-01-27 00:02:17.235553] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/16
+[2026-01-27 00:02:17.235804] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/16/c6bd78d24630228f2f308279feee5992b421d5
+[2026-01-27 00:02:17.236032] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/26
+[2026-01-27 00:02:17.236275] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/26/232583984feff25da44d47972f553bd00e4daa
+[2026-01-27 00:02:17.236504] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/29
+[2026-01-27 00:02:17.236776] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/29/e91c54d3b33f906c38c25bbd76b6391931faa4
+[2026-01-27 00:02:17.237007] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/31
+[2026-01-27 00:02:17.237251] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/31/947cbc29165996e70620f06feee333ab5b0a89
+[2026-01-27 00:02:17.237480] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/3d
+[2026-01-27 00:02:17.237748] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/3d/0b6800bc38ed2e822a56c0151dacd7c8b90854
+[2026-01-27 00:02:17.237983] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/40
+[2026-01-27 00:02:17.238227] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/40/3af57e1f2ba76f011eb0b99c450414ec1b4aa9
+[2026-01-27 00:02:17.238453] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/42
+[2026-01-27 00:02:17.238714] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/42/47e86e5d467366df91d576f9eb0961c68ae7b1
+[2026-01-27 00:02:17.238946] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/45
+[2026-01-27 00:02:17.239189] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/45/abf18a355c0af847a695af065f76d937f9c756
+[2026-01-27 00:02:17.239431] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/45/c8c97b68d9edc9608f17662ae5a56937db4722
+[2026-01-27 00:02:17.239674] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/48
+[2026-01-27 00:02:17.239921] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/48/2d00127da59187ea3cfc62e26186a5fe439b78
+[2026-01-27 00:02:17.240149] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/50
+[2026-01-27 00:02:17.240391] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/50/de1f7cf4fe170128039ffa6d0cc6f3f6d6cc33
+[2026-01-27 00:02:17.240635] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/62
+[2026-01-27 00:02:17.240893] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/62/18e73336f4ccb562643cd4202a628d14cf784f
+[2026-01-27 00:02:17.241137] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/62/5a3814f817aa0548631c3cb646b9faf7546f9e
+[2026-01-27 00:02:17.241365] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6a
+[2026-01-27 00:02:17.241627] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6a/2dd502eb649bb8e804238af60031db553c13ea
+[2026-01-27 00:02:17.241875] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6a/4ee663203935f06c6f32d4d056257d4f4478a7
+[2026-01-27 00:02:17.242103] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6f
+[2026-01-27 00:02:17.242345] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/6f/130bfccfc73d6fe93fe33cd3772d640379f909
+[2026-01-27 00:02:17.242591] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/73
+[2026-01-27 00:02:17.242838] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/73/965c31913dad17e60c92e64f556c7f13200700
+[2026-01-27 00:02:17.243073] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/76
+[2026-01-27 00:02:17.243315] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/76/545a7caa4949334b4a7b32fd2e61aca801de8e
+[2026-01-27 00:02:17.243561] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/7e
+[2026-01-27 00:02:17.243812] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/7e/f15dd6d3c3dd489f000b4267a54b0d72c0d559
+[2026-01-27 00:02:17.244040] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/81
+[2026-01-27 00:02:17.244284] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/81/becbf7a8a1c3473195d0f85266ab25f85809ce
+[2026-01-27 00:02:17.244528] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/84
+[2026-01-27 00:02:17.244783] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/84/00c2b5c8734df41836d301824574b989b0ec41
+[2026-01-27 00:02:17.245011] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/86
+[2026-01-27 00:02:17.245255] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/86/a8148edac92a9d8f16b51f000d10f91887447f
+[2026-01-27 00:02:17.245482] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/8a
+[2026-01-27 00:02:17.245743] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/8a/b47c5bc8110cef05224baba95761fd822aa22a
+[2026-01-27 00:02:17.245974] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/90
+[2026-01-27 00:02:17.246217] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/90/8298a8725ffb2770688c1b72ef0424bf419858
+[2026-01-27 00:02:17.246444] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a1
+[2026-01-27 00:02:17.246706] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a1/74987040ef16bb4a027c8cad0e70eee18daf2d
+[2026-01-27 00:02:17.246940] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a7
+[2026-01-27 00:02:17.247182] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a7/38de9ca08a544654d9be3c65b6349f7eb5627a
+[2026-01-27 00:02:17.247409] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a8
+[2026-01-27 00:02:17.247670] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/a8/476127e3f807c0aa99fa808560ec2e5584dff2
+[2026-01-27 00:02:17.247903] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/b6
+[2026-01-27 00:02:17.248145] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/b6/d812aceb9c792cb2019b9e244e1dbaa4ad74a1
+[2026-01-27 00:02:17.248372] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/be
+[2026-01-27 00:02:17.248651] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/be/15c1b383f2d930588f65f2e3be95d4a7783807
+[2026-01-27 00:02:17.248891] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/c0
+[2026-01-27 00:02:17.249136] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/c0/51eb7604964a56f184938c921c05e5a21cd991
+[2026-01-27 00:02:17.249364] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/c9
+[2026-01-27 00:02:17.249633] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/c9/a14e0531c0018ea88a48cd5b045ec3b7ea055c
+[2026-01-27 00:02:17.249869] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ca
+[2026-01-27 00:02:17.250110] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ca/3f28b6a4a95a7176cdf2d78622ceb1151e186d
+[2026-01-27 00:02:17.250338] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d9
+[2026-01-27 00:02:17.250598] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/d9/c5e7426b4d3d800f9cca0b469d6f0c60fe27b7
+[2026-01-27 00:02:17.250838] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/db
+[2026-01-27 00:02:17.251081] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/db/80ec4419abf97b42fd51f286a6dd599d8d77ce
+[2026-01-27 00:02:17.251308] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e6
+[2026-01-27 00:02:17.251567] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e6/9de29bb2d1d6434b8b29ae775ad8c2e48c5391
+[2026-01-27 00:02:17.251801] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e7
+[2026-01-27 00:02:17.252043] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/e7/746f47e059234c8b861cf312d97132a810e145
+[2026-01-27 00:02:17.252279] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ef
+[2026-01-27 00:02:17.252544] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/ef/9fb37763d620555f3e448337bcdb1ac580b349
+[2026-01-27 00:02:17.252779] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/f7
+[2026-01-27 00:02:17.253021] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/f7/e7387d133530b1714ad5f603f8b1341350ff04
+[2026-01-27 00:02:17.253248] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fb
+[2026-01-27 00:02:17.253489] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fb/8b56ad03d86c61f46cb2c93a162215b23ce129
+[2026-01-27 00:02:17.253734] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fd
+[2026-01-27 00:02:17.253982] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/fd/2116ecd9915ae256df74ec7338b0b079f5634e
+[2026-01-27 00:02:17.254218] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/info
+[2026-01-27 00:02:17.254453] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/objects/pack
+[2026-01-27 00:02:17.254685] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs
+[2026-01-27 00:02:17.254921] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/heads
+[2026-01-27 00:02:17.255165] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/heads/main
+[2026-01-27 00:02:17.255395] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/remotes
+[2026-01-27 00:02:17.255656] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/remotes/origin
+[2026-01-27 00:02:17.255921] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/remotes/origin/main
+[2026-01-27 00:02:17.256150] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/refs/tags
+[2026-01-27 00:02:17.256365] [INFO] Ignored: /home/runner/work/ADG/ADG/.git/shallow
+[2026-01-27 00:02:17.258454] [INFO] Ignored: /home/runner/work/ADG/ADG/.gitignore
+[2026-01-27 00:02:17.258707] [INFO] Ignored: /home/runner/work/ADG/ADG/README.md
+[2026-01-27 00:02:17.259985] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/__pycache__
+[2026-01-27 00:02:17.260211] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/__pycache__/__init__.cpython-312.pyc
+[2026-01-27 00:02:17.260430] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/__pycache__/manage.cpython-312.pyc
+[2026-01-27 00:02:17.260965] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/auto_runner/__pycache__
+[2026-01-27 00:02:17.261201] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/auto_runner/__pycache__/config_reader.cpython-312.pyc
+[2026-01-27 00:02:17.261432] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/auto_runner/__pycache__/run_file.cpython-312.pyc
+[2026-01-27 00:02:17.262585] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/config/__pycache__
+[2026-01-27 00:02:17.262825] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/config/__pycache__/config.cpython-312.pyc
+[2026-01-27 00:02:17.263958] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/__pycache__
+[2026-01-27 00:02:17.264197] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/__pycache__/__init__.cpython-312.pyc
+[2026-01-27 00:02:17.264429] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/__pycache__/exceptions.cpython-312.pyc
+[2026-01-27 00:02:17.264999] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/config/__pycache__
+[2026-01-27 00:02:17.265253] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/config/__pycache__/config.cpython-312.pyc
+[2026-01-27 00:02:17.266456] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/models/__pycache__
+[2026-01-27 00:02:17.266727] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/models/__pycache__/gpt_model.cpython-312.pyc
+[2026-01-27 00:02:17.266979] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/engine/models/__pycache__/model.cpython-312.pyc
+[2026-01-27 00:02:17.268467] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/__pycache__
+[2026-01-27 00:02:17.268723] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/__pycache__/__init__.cpython-312.pyc
+[2026-01-27 00:02:17.268969] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/__pycache__/base_factory.cpython-312.pyc
+[2026-01-27 00:02:17.269853] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/modules/__pycache__
+[2026-01-27 00:02:17.270105] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/modules/__pycache__/general_modules.cpython-312.pyc
+[2026-01-27 00:02:17.270349] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/factory/modules/__pycache__/intro.cpython-312.pyc
+[2026-01-27 00:02:17.271828] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/postprocessor/__pycache__
+[2026-01-27 00:02:17.272065] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/postprocessor/__pycache__/custom_intro.cpython-312.pyc
+[2026-01-27 00:02:17.272296] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/postprocessor/__pycache__/sorting.cpython-312.pyc
+[2026-01-27 00:02:17.273427] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__
+[2026-01-27 00:02:17.273680] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/code_mix.cpython-312.pyc
+[2026-01-27 00:02:17.273918] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/compressor.cpython-312.pyc
+[2026-01-27 00:02:17.274148] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/settings.cpython-312.pyc
+[2026-01-27 00:02:17.274377] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/preprocessor/__pycache__/spliter.cpython-312.pyc
+[2026-01-27 00:02:17.276429] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__
+[2026-01-27 00:02:17.276838] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__/__init__.cpython-312.pyc
+[2026-01-27 00:02:17.277128] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__/logging.cpython-312.pyc
+[2026-01-27 00:02:17.277364] [INFO] Ignored: /home/runner/work/ADG/ADG/autodocgenerator/ui/__pycache__/progress_base.cpython-312.pyc
+[2026-01-27 00:02:17.316217] [INFO] Code mix generation completed.
+[2026-01-27 00:02:17.317012] [INFO] Starting synchronous documentation generation by parts...
+[2026-01-27 00:02:17.317313] [INFO] Starting data splitting...
+[2026-01-27 00:02:17.317386] [INFO] Data split into 12 parts based on max symbols 5000.
+[2026-01-27 00:02:17.317413] [INFO] Starting documentation generation by parts...
+[2026-01-27 00:02:17.317454] [INFO] Generating documentation for a part...
+[2026-01-27 00:02:17.317487] [INFO] Generating answer...
+[2026-01-27 00:02:19.388962] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:02:19.389029] [INFO] Documentation for part generated. total length: 2374
+[2026-01-27 00:02:19.389094] [INFO] Generating documentation for a part...
+[2026-01-27 00:02:19.389124] [INFO] Generating answer...
+[2026-01-27 00:02:21.428290] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:02:21.428348] [INFO] Documentation for part generated. total length: 3565
+[2026-01-27 00:02:21.428412] [INFO] Generating documentation for a part...
+[2026-01-27 00:02:21.428446] [INFO] Generating answer...
+[2026-01-27 00:02:22.964037] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:02:22.964097] [INFO] Documentation for part generated. total length: 1732
+[2026-01-27 00:02:22.964158] [INFO] Generating documentation for a part...
+[2026-01-27 00:02:22.964191] [INFO] Generating answer...
+[2026-01-27 00:02:31.726149] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:02:31.726208] [INFO] Documentation for part generated. total length: 2250
+[2026-01-27 00:02:31.726272] [INFO] Generating documentation for a part...
+[2026-01-27 00:02:31.726300] [INFO] Generating answer...
+[2026-01-27 00:02:42.261255] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:02:42.261313] [INFO] Documentation for part generated. total length: 2089
+[2026-01-27 00:02:42.261392] [INFO] Generating documentation for a part...
+[2026-01-27 00:02:42.261421] [INFO] Generating answer...
+[2026-01-27 00:02:57.849275] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:02:57.849343] [INFO] Documentation for part generated. total length: 3459
+[2026-01-27 00:02:57.849416] [INFO] Generating documentation for a part...
+[2026-01-27 00:02:57.849450] [INFO] Generating answer...
+[2026-01-27 00:03:16.216657] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:03:16.216723] [INFO] Documentation for part generated. total length: 3632
+[2026-01-27 00:03:16.216790] [INFO] Generating documentation for a part...
+[2026-01-27 00:03:16.216832] [INFO] Generating answer...
+[2026-01-27 00:03:35.448472] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:03:35.448569] [INFO] Documentation for part generated. total length: 3149
+[2026-01-27 00:03:35.448634] [INFO] Generating documentation for a part...
+[2026-01-27 00:03:35.448665] [INFO] Generating answer...
+[2026-01-27 00:03:55.875833] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:03:55.875899] [INFO] Documentation for part generated. total length: 3365
+[2026-01-27 00:03:55.875962] [INFO] Generating documentation for a part...
+[2026-01-27 00:03:55.875994] [INFO] Generating answer...
+[2026-01-27 00:04:16.966338] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:04:16.966406] [INFO] Documentation for part generated. total length: 3022
+[2026-01-27 00:04:16.966475] [INFO] Generating documentation for a part...
+[2026-01-27 00:04:16.966506] [INFO] Generating answer...
+[2026-01-27 00:04:38.445555] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:04:38.445621] [INFO] Documentation for part generated. total length: 2958
+[2026-01-27 00:04:38.445684] [INFO] Generating documentation for a part...
+[2026-01-27 00:04:38.445715] [INFO] Generating answer...
+[2026-01-27 00:04:49.898409] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:04:49.898477] [INFO] Documentation for part generated. total length: 1400
+[2026-01-27 00:04:49.898556] [INFO] Documentation generation by parts completed.
 
-                       Total documentation length: 19246
-[2026-01-26 23:37:58.205644] [INFO] Documentation generation by parts completed.
-[2026-01-26 23:37:58.206813] [INFO] Starting factory documentation generation 
+                       Total documentation length: 33019
+[2026-01-27 00:04:49.898632] [INFO] Documentation generation by parts completed.
+[2026-01-27 00:04:49.899773] [INFO] Starting factory documentation generation 
 
                                 CustomModule CustomModule 
 
-                                Input params: language: 2 chars full_data: 19246 chars code_mix: 270524 chars
+                                Input params: language: 2 chars full_data: 33019 chars code_mix: 267608 chars
                                 
-[2026-01-26 23:37:58.207176] [INFO] Starting data splitting...
-[2026-01-26 23:37:58.207257] [INFO] Data split into 8 parts based on max symbols 7000.
-[2026-01-26 23:37:58.207292] [INFO] Generating answer...
-[2026-01-26 23:38:19.287595] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 23:38:19.287678] [INFO] Module CustomModule generated its part of the documentation.
-[2026-01-26 23:38:19.288086] [INFO] Starting data splitting...
-[2026-01-26 23:38:19.288169] [INFO] Data split into 8 parts based on max symbols 7000.
-[2026-01-26 23:38:19.288203] [INFO] Generating answer...
-[2026-01-26 23:38:40.877001] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 23:38:40.877066] [INFO] Module CustomModule generated its part of the documentation.
-[2026-01-26 23:38:40.877121] [INFO] Factory documentation generation completed.
-[2026-01-26 23:38:40.878196] [INFO] Start ordering
-[2026-01-26 23:38:40.878252] [INFO] chanks name: ['#install-workflow-setup', '#autodocfile-parameters', '#documentation-generation-workflow', '#command-line-invocation-logic', '#configuration-loading-and-validation', '#documentation-pipeline-trigger', '#execution-flow-summary', '#asyncgptmodel-implementation', '#gptmodel-synchronous-flow', '#parentmodel-setup-and-rotation', '#docfactory-orchestration', '#custommodule-intro-modules', '#manager-configuration', '#cache‑file‑access', '#code‑mix‑generation', '#doc‑parts‑generation', '#factory‑doc‑assembly', '#anchor‑ordering‑cleanup', '#html-link-extraction', '#intro-with-links-generation', '#global-introduction-generation', '#custom-description-generation', '#anchor‑chunk‑splitting', '#semantic‑ordering', '#repository‑mix‑builder', '#compress-function', '#batch-compression-sync', '#batch-compression-async', '#projectsettings-prompt-builder', '#spliter-entry-point', '#data‑splitting‑loop', '#synchronous‑part‑doc‑generator', '#asynchronous‑part‑doc‑generator', '#synchronous‑multi‑part‑orchestrator', '#asynchronous‑multi‑part‑orchestrator', '#singleton‑logger‑implementation', '#log‑message‑hierarchy', '#progress‑abstraction', '#rich‑implementation', '#console‑task-helper', '#fallback‑console‑progress']
-[2026-01-26 23:38:40.878419] [INFO] Generating answer...
-[2026-01-26 23:38:50.433940] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 23:38:50.434024] [INFO] End ordering result list ['#install-workflow-setup', '#configuration-loading-and-validation', '#manager-configuration', '#projectsettings-prompt-builder', '#command-line-invocation-logic', '#documentation-pipeline-trigger', '#execution-flow-summary', '#documentation-generation-workflow', '#autodocfile-parameters', '#docfactory-orchestration', '#global-introduction-generation', '#intro-with-links-generation', '#custom-description-generation', '#anchor‑ordering‑cleanup', '#anchor‑chunk‑splitting', '#semantic‑ordering', '#html-link-extraction', '#factory‑doc‑assembly', '#doc‑parts‑generation', '#custommodule-intro-modules', '#asyncgptmodel-implementation', '#gptmodel-synchronous-flow', '#parentmodel-setup-and-rotation', '#synchronous‑part‑doc‑generator', '#asynchronous‑part‑doc‑generator', '#synchronous‑multi‑part‑orchestrator', '#asynchronous‑multi‑part‑orchestrator', '#spliter-entry-point', '#data‑splitting‑loop', '#repository‑mix‑builder', '#code‑mix‑generation', '#cache‑file‑access', '#compress-function', '#batch-compression-sync', '#batch-compression-async', '#singleton‑logger‑implementation', '#log‑message‑hierarchy', '#progress‑abstraction', '#rich‑implementation', '#console‑task-helper', '#fallback‑console‑progress']
-[2026-01-26 23:38:50.435081] [INFO] Starting factory documentation generation 
+[2026-01-27 00:04:49.900138] [INFO] Starting data splitting...
+[2026-01-27 00:04:49.900220] [INFO] Data split into 8 parts based on max symbols 7000.
+[2026-01-27 00:04:49.900255] [INFO] Generating answer...
+[2026-01-27 00:05:12.282809] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:05:12.282880] [INFO] Module CustomModule generated its part of the documentation.
+[2026-01-27 00:05:12.283275] [INFO] Starting data splitting...
+[2026-01-27 00:05:12.283360] [INFO] Data split into 8 parts based on max symbols 7000.
+[2026-01-27 00:05:12.283395] [INFO] Generating answer...
+[2026-01-27 00:05:34.267016] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:05:34.267099] [INFO] Module CustomModule generated its part of the documentation.
+[2026-01-27 00:05:34.267156] [INFO] Factory documentation generation completed.
+[2026-01-27 00:05:34.268486] [INFO] Start ordering
+[2026-01-27 00:05:34.268575] [INFO] chanks name: ['#install-workflow-guide', '#autodocconfig-file-options', '#purpose-of-config-reader', '#integration-with-factory-modules', '#key-function-read-config', '#processing-steps', '#assumptions-and-side-effects', '#entry-point-for-doc-generation', '#model-instantiation-and-manager-setup', '#generation‑pipeline‑steps', '#cli‑bootstrap‑and‑configuration‑loading', '#integration‑points‑and‑assumptions', '#configuration-constants', '#environment-variable-loading', '#compression-prompt-generator', '#model-exhausted-exception', '#history-buffer-management', '#parentmodel‑selection‑logic', '#gptmodel‑synchronous‑wrapper', '#asyncgptmodel‑asynchronous‑wrapper', '#basemodule‑abstract‑contract', '#docfactory‑module‑orchestrator', '#custommodule‑custom‑description‑generator', '#introlinks‑html‑link‑extraction‑intro', '#introtext‑global‑introduction‑assembly', '#manager‑orchestration‑role', '#cache‑initialisation‑paths', '#code‑mix‑generation‑method', '#synchronous‑doc‑parts‑generation', '#factory‑doc‑augmentation', '#document‑ordering‑step', '#cache‑cleanup‑routine', '#module-purpose', '#html-link-extraction', '#link‑driven‑intro-generation', '#global‑intro‑generation', '#custom‑description‑generation', '#integration‑points', '#anchor-extraction-and-chunk-splitting', '#semantic-ordering-of-chunks', '#repository-content-aggregation-codemix', '#compress-function', '#compress-and-compare-sync', '#async-compress-function', '#async-compress-and-compare', '#compress-to-one-loop', '#generate-descriptions', '#projectsettings-class', '#data-splitting-logic', '#sync-part-doc-generation', '#async-part-doc-generation', '#batch-doc-generation-sync', '#batch-doc-generation-async', '#logging-infrastructure', '#rich-console-progress', '#console-progress', '#powershell-setup-script', '#bash-setup-script', '#project-metadata-declaration', '#dependency-specification', '#build-system-configuration']
+[2026-01-27 00:05:34.268831] [INFO] Generating answer...
+[2026-01-27 00:05:46.372190] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:05:46.372302] [INFO] End ordering result list ['#install-workflow-guide', '#powershell-setup-script', '#bash-setup-script', '#autodocconfig-file-options', '#purpose-of-config-reader', '#key-function-read-config', '#cli‑bootstrap‑and‑configuration‑loading', '#configuration-constants', '#environment-variable-loading', '#projectsettings-class', '#project-metadata-declaration', '#dependency-specification', '#build-system-configuration', '#entry-point-for-doc-generation', '#integration-with-factory-modules', '#integration‑points‑and‑assumptions', '#integration‑points', '#assumptions-and-side-effects', '#module-purpose', '#basemodule‑abstract‑contract', '#manager‑orchestration‑role', '#docfactory‑module‑orchestrator', '#factory‑doc‑augmentation', '#model-instantiation-and-manager-setup', '#processing-steps', '#generation‑pipeline‑steps', '#document‑ordering‑step', '#anchor-extraction-and-chunk-splitting', '#semantic-ordering-of-chunks', '#data-splitting-logic', '#history-buffer-management', '#parentmodel‑selection‑logic', '#gptmodel‑synchronous‑wrapper', '#asyncgptmodel‑asynchronous‑wrapper', '#model-exhausted-exception', '#compress-function', '#compress-and-compare-sync', '#compress-to-one-loop', '#async-compress-function', '#async-compress-and-compare', '#compression-prompt-generator', '#custommodule‑custom‑description‑generator', '#custom‑description‑generation', '#generate-descriptions', '#code‑mix‑generation‑method', '#repository-content-aggregation-codemix', '#sync-part-doc-generation', '#synchronous‑doc‑parts‑generation', '#async-part-doc-generation', '#batch-doc-generation-sync', '#batch-doc-generation-async', '#introlinks‑html‑link‑extraction‑intro', '#html-link-extraction', '#introtext‑global‑introduction‑assembly', '#global‑intro‑generation', '#link‑driven‑intro-generation', '#cache‑initialisation‑paths', '#cache‑cleanup‑routine', '#logging-infrastructure', '#rich-console-progress', '#console-progress']
+[2026-01-27 00:05:46.373449] [INFO] Starting factory documentation generation 
 
                                 IntroLinks 
 
-                                Input params: language: 2 chars full_data: 20923 chars code_mix: 270524 chars
+                                Input params: language: 2 chars full_data: 34661 chars code_mix: 267608 chars
                                 
-[2026-01-26 23:38:50.435135] [INFO] Extracting HTML links from documentation...
-[2026-01-26 23:38:50.435395] [INFO] Extracted 0 HTML links from documentation.
-[2026-01-26 23:38:50.435426] [INFO] Links: []
-[2026-01-26 23:38:50.435451] [INFO] Generating introduction with links...
-[2026-01-26 23:38:50.435472] [INFO] Generating answer...
-[2026-01-26 23:38:55.003242] [INFO] Generated answer with model openai/gpt-oss-120b.
-[2026-01-26 23:38:55.003292] [INFO] Introduction with links generated.
-[2026-01-26 23:38:55.003318] [INFO] Introduction Links: ## Executive Navigation Tree
-- [](#)
-[2026-01-26 23:38:55.003343] [INFO] Module IntroLinks generated its part of the documentation.
-[2026-01-26 23:38:55.003388] [INFO] Factory documentation generation completed.
+[2026-01-27 00:05:46.373505] [INFO] Extracting HTML links from documentation...
+[2026-01-27 00:05:46.373907] [INFO] Extracted 62 HTML links from documentation.
+[2026-01-27 00:05:46.373961] [INFO] Links: ['#install-workflow-guide', '#powershell-setup-script', '#bash-setup-script', '#autodocconfig-file-options', '#purpose-of-config-reader', '#key-function-read-config', '#cli‑bootstrap‑and‑configuration‑loading', '#configuration-constants', '#environment-variable-loading', '#projectsettings-class', '#project-metadata-declaration', '#dependency-specification', '#build-system-configuration', '#entry-point-for-doc-generation', '#integration-with-factory-modules', '#integration‑points‑and‑assumptions', '#integration‑points', '#assumptions-and-side-effects', '#module-purpose', '#basemodule‑abstract‑contract', '#manager‑orchestration‑role', '#docfactory‑module‑orchestrator', '#factory‑doc‑augmentation', '#model-instantiation-and-manager-setup', '#processing-steps', '#generation‑pipeline‑steps', '#document‑ordering‑step', '#anchor-extraction-and-chunk-splitting', '#semantic-ordering-of-chunks', '#data-splitting-logic', '#history-buffer-management', '#parentmodel‑selection‑logic', '#gptmodel‑synchronous‑wrapper', '#asyncgptmodel‑asynchronous‑wrapper', '#model-exhausted-exception', '#compress-function', '#compress-and-compare-sync', '#compress-to-one-loop', '#async-compress-function', '#async-compress-and-compare', '#compression-prompt-generator', '#custommodule‑custom‑description‑generator', '#custom‑description‑generation', '#generate-descriptions', '#code‑mix‑generation‑method', '#repository-content-aggregation-codemix', '#sync-part-doc-generation', '#synchronous‑doc‑parts‑generation', '#async-part-doc-generation', '#batch-doc-generation-sync', '#batch-doc-generation-async', '#introlinks‑html‑link‑extraction‑intro', '#html-link-extraction', '#["\\\']?(.*?)["\\\']?', '#introtext‑global‑introduction‑assembly', '#global‑intro‑generation', '#link‑driven‑intro-generation', '#cache‑initialisation‑paths', '#cache‑cleanup‑routine', '#logging-infrastructure', '#rich-console-progress', '#console-progress']
+[2026-01-27 00:05:46.374006] [INFO] Generating introduction with links...
+[2026-01-27 00:05:46.374028] [INFO] Generating answer...
+[2026-01-27 00:05:59.086985] [INFO] Generated answer with model openai/gpt-oss-120b.
+[2026-01-27 00:05:59.087049] [INFO] Introduction with links generated.
+[2026-01-27 00:05:59.087075] [INFO] Introduction Links: ## Executive Navigation Tree
+- 📂 Installation & Setup
+  - [Install Workflow Guide](#install-workflow-guide)
+  - [PowerShell Setup Script](#powershell-setup-script)
+  - [Bash Setup Script](#bash-setup-script)
+- ⚙️ Configuration & Core
+  - [Autodocconfig File Options](#autodocconfig-file-options)
+  - [Purpose Of Config Reader](#purpose-of-config-reader)
+  - [Key Function Read Config](#key-function-read-config)
+  - [Cli Bootstrap And Configuration Loading](#cli‑bootstrap‑and‑configuration‑loading)
+  - [Configuration Constants](#configuration-constants)
+  - [Environment Variable Loading](#environment-variable-loading)
+  - [Projectsettings Class](#projectsettings-class)
+  - [Project Metadata Declaration](#project-metadata-declaration)
+  - [Dependency Specification](#dependency-specification)
+  - [Build System Configuration](#build-system-configuration)
+- 🏗️ Integration & Modules
+  - [Integration With Factory Modules](#integration-with-factory-modules)
+  - [Integration Points And Assumptions](#integration‑points‑and‑assumptions)
+  - [Integration Points](#integration‑points)
+  - [Assumptions And Side‑Effects](#assumptions-and-side-effects)
+  - [Module Purpose](#module-purpose)
+  - [Basemodule Abstract Contract](#basemodule‑abstract‑contract)
+  - [Manager Orchestration Role](#manager‑orchestration‑role)
+  - [Docfactory Module Orchestrator](#docfactory‑module‑orchestrator)
+  - [Factory Doc Augmentation](#factory‑doc‑augmentation)
+  - [Model Instantiation And Manager Setup](#model-instantiation-and-manager-setup)
+- 🔄 Processing & Generation Pipeline
+  - [Processing Steps](#processing-steps)
+  - [Generation Pipeline Steps](#generation‑pipeline‑steps)
+  - [Document Ordering Step](#document‑ordering‑step)
+  - [Anchor Extraction And Chunk Splitting](#anchor-extraction-and-chunk-splitting)
+  - [Semantic Ordering Of Chunks](#semantic-ordering-of-chunks)
+  - [Data Splitting Logic](#data-splitting-logic)
+  - [History Buffer Management](#history-buffer-management)
+  - [Parentmodel Selection Logic](#parentmodel‑selection‑logic)
+  - [Gptmodel Synchronous Wrapper](#gptmodel‑synchronous‑wrapper)
+  - [Asyncgptmodel Asynchronous Wrapper](#asyncgptmodel‑asynchronous‑wrapper)
+  - [Model Exhausted Exception](#model-exhausted-exception)
+- 🗂️ Compression & Optimization
+  - [Compress Function](#compress-function)
+  - [Compress And Compare Sync](#compress-and-compare-sync)
+  - [Compress To One Loop](#compress-to-one-loop)
+  - [Async Compress Function](#async-compress-function)
+  - [Async Compress And Compare](#async-compress-and-compare)
+  - [Compression Prompt Generator](#compression-prompt-generator)
+- 📄 Documentation Generation
+  - [Custommodule Custom Description Generator](#custommodule‑custom‑description‑generator)
+  - [Custom Description Generation](#custom‑description‑generation)
+  - [Generate Descriptions](#generate-descriptions)
+  - [Code Mix Generation Method](#code‑mix‑generation‑method)
+  - [Repository Content Aggregation Codemix](#repository-content-aggregation-codemix)
+  - [Sync Part Doc Generation](#sync-part-doc-generation)
+  - [Synchronous Doc Parts Generation](#synchronous‑doc‑parts‑generation)
+  - [Async Part Doc Generation](#async-part-doc-generation)
+  - [Batch Doc Generation Sync](#batch-doc-generation-sync)
+  - [Batch Doc Generation Async](#batch-doc-generation-async)
+- 🌐 HTML Extraction & Intro Links
+  - [Introlinks Html Link Extraction Intro](#introlinks‑html‑link‑extraction‑intro)
+  - [Html Link Extraction](#html-link-extraction)
+- 🧩 Misc Tools
+  - [Regex Pattern](#["\\\']?(.*?)["\\\']?)
+- 📄 Intro Generation
+  - [Introtext Global Introduction Assembly](#introtext‑global‑introduction‑assembly)
+  - [Global Intro Generation](#global‑intro‑generation)
+  - [Link Driven Intro Generation](#link‑driven‑intro‑generation)
+- 🗃️ Cache & Logging
+  - [Cache Initialisation Paths](#cache‑initialisation‑paths)
+  - [Cache Cleanup Routine](#cache‑cleanup‑routine)
+  - [Logging Infrastructure](#logging-infrastructure)
+  - [Rich Console Progress](#rich-console-progress)
+  - [Console Progress](#console-progress)
+[2026-01-27 00:05:59.087128] [INFO] Module IntroLinks generated its part of the documentation.
+[2026-01-27 00:05:59.087181] [INFO] Factory documentation generation completed.
