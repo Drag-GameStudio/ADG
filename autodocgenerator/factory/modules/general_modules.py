@@ -1,6 +1,6 @@
 from ..base_factory import BaseModule
 from ...engine.models.model import Model
-from ...postprocessor.custom_intro import generete_custom_discription
+from ...postprocessor.custom_intro import generete_custom_discription, generete_custom_discription_without
 from ...preprocessor.spliter import split_data
 
 class CustomModule(BaseModule):
@@ -10,5 +10,15 @@ class CustomModule(BaseModule):
         self.discription = discription  
 
     def generate(self, info: dict, model: Model):
-        result = generete_custom_discription(split_data(info.get("code_mix"), max_symbols=7000), model, self.discription, info.get("language"))
+        result = generete_custom_discription(split_data(info.get("code_mix"), max_symbols=5000), model, self.discription, info.get("language"))
+        return result
+    
+class CustomModuleWithOutContext(BaseModule):
+
+    def __init__(self, discription: str):
+        super().__init__()
+        self.discription = discription  
+
+    def generate(self, info: dict, model: Model):
+        result = generete_custom_discription_without(model, self.discription, info.get("language"))
         return result

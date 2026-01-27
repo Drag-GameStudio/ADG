@@ -1,5 +1,5 @@
 import yaml
-from autodocgenerator.factory.modules.general_modules import CustomModule
+from autodocgenerator.factory.modules.general_modules import CustomModule, CustomModuleWithOutContext
 from ..config.config import Config, ProjectConfigSettings
 
 
@@ -29,6 +29,6 @@ def read_config(file_data: str) -> tuple[Config, list[CustomModule]]:
 
     custom_discriptions = data.get("custom_descriptions", [])
 
-    custom_modules = [CustomModule(custom_discription) for custom_discription in custom_discriptions]
+    custom_modules = [CustomModuleWithOutContext(custom_discription[1:])  if custom_discription[0] == "%" else CustomModule(custom_discription) for custom_discription in custom_discriptions]
 
     return config, custom_modules

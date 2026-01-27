@@ -100,3 +100,33 @@ def generete_custom_discription(splited_data: str, model: Model, custom_descript
             break
         result = ""
     return result
+
+def generete_custom_discription_without(model: Model, custom_description: str, language: str = "en") -> str:
+    prompt = [
+         {
+            "role": "system",
+            "content": f"For the following task use language {language}"
+        },
+        {
+            "role": "system",
+            "content": f"Act as a precise Technical Analyst. You will be provided with specific code or documentation. Your task is to describe and rewrite the following text"
+        },
+        {
+            "role": "system",
+            "content": """Every response must start with exactly one <a name="CONTENT_DESCRIPTION"></a> tag. The CONTENT_DESCRIPTION must be a short, hyphenated summary of the actual information you are providing (e.g., "user-authentication-logic" instead of "auth.yml"). STRICT RULES:
+
+NO filenames or paths (e.g., forbidden: "autodocconfig.yml", "src/config").
+NO file extensions (e.g., forbidden: ".yml", ".md").
+NO generic terms (e.g., forbidden: "config", "settings", "run", "docs").
+NO protocols (http/https).
+This tag must appear ONLY ONCE at the very beginning. Never repeat it or use other links"""
+        },
+        {
+            "role": "user",
+            "content": f"### Task to discribe: {custom_description}"
+        }
+    ]
+
+    result = model.get_answer_without_history(prompt=prompt)
+    return result
+
