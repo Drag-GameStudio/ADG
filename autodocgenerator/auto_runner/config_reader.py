@@ -1,12 +1,20 @@
 import yaml
 from autodocgenerator.factory.modules.general_modules import CustomModule, CustomModuleWithOutContext
-from ..config.config import Config, ProjectConfigSettings
+from ..config.config import Config, ProjectBuildConfig
 
 
+class StructureSettings:
+    include_intro_links = True
+    include_order = True
+    max_doc_part_size = 5_000
 
-def read_config(file_data: str) -> tuple[Config, list[CustomModule]]:
+    def load_settings(self, data: dict[str, any]):
+        for key, el in data.items():
+            setattr(self, key, el)
+
+
+def read_config(file_data: str) -> tuple[Config, list[CustomModule], StructureSettings]:
     data = yaml.safe_load(file_data)
-
     config : Config = Config()
 
     ignore_files = data.get("ignore_files", [])
@@ -15,8 +23,8 @@ def read_config(file_data: str) -> tuple[Config, list[CustomModule]]:
     project_name = data.get("project_name")
     project_additional_info = data.get("project_additional_info", {})
 
-    project_settings = data.get("project_settings", {})
-    pcs = ProjectConfigSettings()
+    project_settings = data.get("build_settings", {})
+    pcs = ProjectBuildConfig()
     pcs.load_settings(project_settings)
     
     config.set_language(language).set_project_name(project_name).set_pcs(pcs)
@@ -31,4 +39,8 @@ def read_config(file_data: str) -> tuple[Config, list[CustomModule]]:
 
     custom_modules = [CustomModuleWithOutContext(custom_discription[1:])  if custom_discription[0] == "%" else CustomModule(custom_discription) for custom_discription in custom_discriptions]
 
-    return config, custom_modules
+    structure_settings = data.get("structure_settings", {})
+    structure_settings_object = StructureSettings()
+    structure_settings_object.load_settings(structure_settings)
+
+    return config, custom_modules, structure_settings_object

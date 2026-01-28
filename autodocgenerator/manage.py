@@ -13,7 +13,7 @@ from .factory.modules.general_modules import CustomModule
 from .ui.progress_base import BaseProgress, LibProgress
 from .ui.logging import BaseLogger, BaseLoggerTemplate, InfoLog, ErrorLog, WarningLog, FileLoggerTemplate
 from .preprocessor.settings import ProjectSettings
-from .auto_runner.config_reader import ProjectConfigSettings
+from .auto_runner.config_reader import ProjectBuildConfig
 from .postprocessor.sorting import get_order, split_text_by_anchors
 from .config.config import Config
 
@@ -44,7 +44,7 @@ class Manager:
         self.async_model = async_model
 
         self.logger = BaseLogger()
-        self.logger.set_logger(FileLoggerTemplate(self.get_file_path("logs"), log_level=self.config.pcs.log_level))
+        self.logger.set_logger(FileLoggerTemplate(self.get_file_path("logs"), log_level=self.config.pbc.log_level))
 
         cache_path = os.path.join(self.project_directory, self.CACHE_FOLDER_NAME)
 
@@ -120,6 +120,6 @@ class Manager:
             file.write(result)
 
     def clear_cache(self):
-        if not self.config.pcs.save_logs:
+        if not self.config.pbc.save_logs:
             os.remove(self.get_file_path("logs"))
         

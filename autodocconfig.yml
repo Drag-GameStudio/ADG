@@ -1,8 +1,13 @@
 project_name: "Auto Doc Generator"  
 language: "en"
-project_settings:
+build_settings:
   save_logs: true 
   log_level: 2
+
+structure_settings:
+  include_intro_links: true
+  include_order: true
+  max_doc_part_size: 5000
 
 project_additional_info:
   global idea: "This project was created to help developers make documentations for them projects"
@@ -10,3 +15,4 @@ project_additional_info:
 custom_descriptions:
   - "%explain how install workflow with install.ps1 and install.sh scripts for install you should use links irm https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex for powershell and curl -sSL https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash for linux based systems and also you have to add secret variable to git hub action GROCK_API_KEY with your api key from grock docs https://grockdocs.com to make it work"
   - "explain how to write autodocconfig.yml file what options are available"
+  - "explain how to use Manager class and what methods are available"

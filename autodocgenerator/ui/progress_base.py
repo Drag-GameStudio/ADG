@@ -57,7 +57,7 @@ class ConsoleGtiHubProgress(BaseProgress):
     def __init__(self):
         super().__init__()
         self.curr_task = None
-        self.gen_task = ConsoleTask("General Progress", 5)
+        self.gen_task = ConsoleTask("General Progress", 4)
 
     def create_new_subtask(self, name: str, total_len: int):
         self.curr_task = ConsoleTask(name, total_len)

@@ -4,7 +4,7 @@ from ..factory.base_factory import DocFactory
 from ..factory.modules.intro import IntroLinks
 
 
-class ProjectConfigSettings:
+class ProjectBuildConfig:
     save_logs = False
     log_level = -1
     def load_settings(self, data: dict[str, any]):
@@ -22,14 +22,14 @@ class Config:
         self.language: str = "en"
         self.project_name: str = ""
         self.project_additional_info: dict = {}
-        self.pcs: ProjectConfigSettings = ProjectConfigSettings()
+        self.pbc: ProjectBuildConfig = ProjectBuildConfig()
 
     def set_language(self, language: str):
         self.language = language
         return self
     
-    def set_pcs(self, pcs: ProjectConfigSettings):
-        self.pcs = pcs
+    def set_pcs(self, pcs: ProjectBuildConfig):
+        self.pbc = pcs
         return self
     
     def set_project_name(self, name: str):
