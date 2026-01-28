@@ -48,8 +48,7 @@
   - [async_compress](#async_compress)
   - [async_compress_and_compare](#async_compress_and_compare)
   - [compress_to_one](#compress_to_one)
-- ❓ Miscellaneous
-  - [missing-fragment](#missing-fragment)
+
 
  
 
