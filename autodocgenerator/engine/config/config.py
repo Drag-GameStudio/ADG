@@ -9,28 +9,34 @@ You should understand, that it is not full code, it is just part
 Do NOT skip details; analyze everything that appears in the snippet.
 """
 
-BASE_PART_COMPLITE_TEXT = """Revised Documentation Prompt
-Role: You are a senior technical writer. Input: You will receive a specific code snippet representing a fragment of a larger system.
-Task: Write clear, structured, and hierarchical documentation for this fragment. Length: 0.7–1k characters (keep it tight).
+BASE_PART_COMPLITE_TEXT = """
+Role: You are a Senior Technical Writer & System Architect. Objective: Create high-fidelity, visually polished, and strictly factual documentation for a specific code fragment.
 
-Content Requirements:
-Component Responsibility: Define exactly what this specific fragment does.
-Interactions: Describe how this piece communicates with the rest of the system.
-Technical Details: Detail key functions, classes, and logic flows present in the snippet.
-Data Flow: Outline inputs, outputs, side effects, and logic assumptions.
+1. STRICT GROUNDING & ACCURACY (NO HALLUCINATIONS):
+Source Truth: Use ONLY the provided code snippet and the explicit global context.
+Zero Assumption Policy: If a function's origin, a variable's purpose, or a data source is not explicitly present in the provided text, do not invent it. If information is missing, omit the section or state: "Information not present in the provided fragment."
+Context Lock: Do not use general knowledge about external libraries unless their specific usage is visible in the code.
 
-Constraint - No Generic Headers (CRITICAL):
-DO NOT use generic or global topic headers such as "Overview," "Core," "Introduction," "Background," or "System Summary."
-All headings must be specific to the functionality of the code fragment provided.
+2. VISUAL STRUCTURE & MD STYLE:
+Layout: Use a highly scannable, hierarchical Markdown structure.
+Data Visualization: Present Inputs, Outputs, and Parameters in a Markdown Table (Columns: Entity, Type, Role, Notes).
+Emphasis: Use backticks for code symbols, bolding for key terms, and > Blockquotes for critical logic assumptions or warnings.
+Navigation: Every heading must be preceded by an HTML anchor: <a name="unique-id"></a> \n ## Specific Heading.
 
-Context & Style:
-Use the global system description as the primary context, but do not restate it. Focus exclusively on the fragment.
-Write for developers who are new to the codebase.
-Maintain high technical accuracy and a concise, professional tone.
+3. CONTENT REQUIREMENTS (0.7–1k characters):
+Specific Component Responsibility: Define the exact functional role of this fragment within the system.
+Visible Interactions: Describe how this piece communicates with other parts of the system based only on the snippet.
+Technical Logic Flow: A step-by-step breakdown of the classes, functions, and internal logic.
+Data Contract: Detailed flow of inputs, outputs, and side effects in table format.
 
-Formatting:
-Use Markdown for structure.
-Include HTML anchors near titles: <a name="specific-title"></a> \n ## Specific Title."""
+4. CRITICAL CONSTRAINT - NO GENERIC HEADERS:
+Forbidden: "Overview", "Introduction", "Background", "Technical Details", "Summary", "Core".
+Required: Use headers that describe the specific functionality (e.g., ## [Component Name] Request Validation or ## Stream Processing Pipeline).
+
+5. TONE & STYLE:
+Professional, technical, and laconic.
+Write for developers who need to understand the fragment's implementation instantly.
+Focus exclusively on the fragment; do not restate the global system description."""
 
 BASE_INTRODACTION_CREATE_LINKS = """
 Role: Senior Technical Solutions Architect.

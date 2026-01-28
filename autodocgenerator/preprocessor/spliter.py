@@ -40,13 +40,13 @@ def split_data(data: str, max_symbols: int) -> list[str]:
 
     return split_objects
 
-def write_docs_by_parts(part_id: int, part: str, model: Model, prev_info: str = None, language: str = "en"):
+def write_docs_by_parts(part: str, model: Model, prev_info: str = None, language: str = "en"):
     logger = BaseLogger()
     logger.log(InfoLog("Generating documentation for a part..."))
     prompt = [
             {
                 "role": "system",
-                "content": f"For the following task use language {language}. your part id is {part_id}"
+                "content": f"For the following task use language {language}"
             },
             {
                 "role": "system",
@@ -89,10 +89,7 @@ async def async_write_docs_by_parts(part: str, async_model: AsyncModel, global_i
                 "role": "system",
                 "content": BASE_PART_COMPLITE_TEXT
             },
-            # {
-                # "role": "system",
-                # "content": global_info
-            # },
+           
             {
                 "role": "user",
                 "content": part
@@ -102,7 +99,7 @@ async def async_write_docs_by_parts(part: str, async_model: AsyncModel, global_i
         if prev_info is not None:
             prompt.append({
                     "role": "system",
-                    "content": f"it is last part of documentation that you have write before{prev_info}"
+                    "content": f"it is last part of documentation that you have write before {prev_info}"
                 })
 
         prompt.append({
@@ -134,7 +131,7 @@ def gen_doc_parts(full_code_mix, max_symbols, model: Model, language, progress_b
     
     all_result = ""
     for i, el in enumerate(splited_data):
-        result = write_docs_by_parts(i + 1, el, model, result, language)
+        result = write_docs_by_parts(el, model, result, language)
         all_result += result
         all_result += "\n\n"
 
