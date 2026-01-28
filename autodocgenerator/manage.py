@@ -67,15 +67,12 @@ class Manager:
         self.logger.log(InfoLog("Code mix generation completed."))
         self.progress_bar.update_task()
 
-
     def generete_doc_parts(self, max_symbols=5_000):
-
-
         full_code_mix = self.read_file_by_file_key("code_mix")
 
         self.logger.log(InfoLog("Starting synchronous documentation generation by parts..."))
         result = gen_doc_parts(full_code_mix,
-                                max_symbols, self.sync_model, 
+                                max_symbols, self.sync_model, self.config.get_project_settings(),
                                 self.config.language, self.progress_bar)
             
         self.logger.log(InfoLog("Documentation generation by parts completed."))

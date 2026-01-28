@@ -112,7 +112,8 @@ BASE_CUSTOM_DISCRIPTIONS = """
                 3. DO NOT use external knowledge or invent any logic that is not present in the text.
                 4. Do not provide any introductory or concluding remarks. If there is no info, output must be empty.
                 5. If you dont have any info about it return just !noinfo
-                6. Every response must start with exactly one <a name="CONTENT_DESCRIPTION"></a> tag. The CONTENT_DESCRIPTION must be a short, hyphenated summary of the actual information you are providing (e.g., "user-authentication-logic" instead of "auth.yml"). STRICT RULES:
+                6. Every response must start with exactly one <a name="CONTENT_DESCRIPTION"></a> tag. The CONTENT_DESCRIPTION must be a short, hyphenated summary of the actual information you are providing (e.g., "user-authentication-logic" instead of "auth.yml"). 
+STRICT RULES(This rules works only for <a name=""></a> tag):
 
 NO filenames or paths (e.g., forbidden: "autodocconfig.yml", "src/config").
 NO file extensions (e.g., forbidden: ".yml", ".md").

@@ -3,6 +3,7 @@ from ..engine.config.config import BASE_PART_COMPLITE_TEXT
 import asyncio
 from ..ui.progress_base import BaseProgress
 from ..ui.logging import BaseLogger, InfoLog, ErrorLog, WarningLog
+from .settings import ProjectSettings
 
 
 def split_data(data: str, max_symbols: int) -> list[str]:
@@ -40,13 +41,17 @@ def split_data(data: str, max_symbols: int) -> list[str]:
 
     return split_objects
 
-def write_docs_by_parts(part: str, model: Model, prev_info: str = None, language: str = "en"):
+def write_docs_by_parts(part: str, model: Model, project_settings: ProjectSettings, prev_info: str = None, language: str = "en"):
     logger = BaseLogger()
     logger.log(InfoLog("Generating documentation for a part..."))
     prompt = [
             {
                 "role": "system",
                 "content": f"For the following task use language {language}"
+            },
+            {
+                "role": "system",
+                "content": f"global project info: {project_settings.prompt}"
             },
             {
                 "role": "system",
@@ -121,7 +126,7 @@ async def async_write_docs_by_parts(part: str, async_model: AsyncModel, global_i
         return answer
 
 
-def gen_doc_parts(full_code_mix, max_symbols, model: Model, language, progress_bar: BaseProgress):
+def gen_doc_parts(full_code_mix, max_symbols, model: Model, project_settings: ProjectSettings,  language, progress_bar: BaseProgress):
     splited_data = split_data(full_code_mix, max_symbols)
     result = None
     logger = BaseLogger()
@@ -131,7 +136,7 @@ def gen_doc_parts(full_code_mix, max_symbols, model: Model, language, progress_b
     
     all_result = ""
     for i, el in enumerate(splited_data):
-        result = write_docs_by_parts(el, model, result, language)
+        result = write_docs_by_parts(el, model, project_settings, result, language)
         all_result += result
         all_result += "\n\n"
 
