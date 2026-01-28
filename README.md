@@ -59,7 +59,7 @@
    - Open a PowerShell terminal with administrative rights.  
    - Run the following one‑liner, which downloads the PowerShell installer script directly from the project's repository and executes it in the same session:  
      ```powershell
-     irm <raw‑script‑url> | iex
+     irm https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex
      ```  
    - The command uses `Invoke‑WebRequest` (`irm`) to fetch the script content and pipes it to `iex` (Invoke‑Expression) for immediate execution.
 
@@ -67,7 +67,7 @@
    - Open a terminal.  
    - Execute the following command to retrieve the shell installer script from the repository and run it with `bash`:  
      ```bash
-     curl -sSL <raw‑script‑url> | bash
+     curl -sSL https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash
      ```  
    - `curl` fetches the script silently (`-s`) while following redirects (`-L`). The output is streamed to `bash` for execution.
 
