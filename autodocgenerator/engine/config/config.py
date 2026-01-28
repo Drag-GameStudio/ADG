@@ -110,9 +110,9 @@ BASE_CUSTOM_DISCRIPTIONS = """
                 1. Use ONLY the provided Context to answer. 
                 2. If the requested information is not explicitly mentioned in the Context, or if you don't know the answer based on the provided data, respond with an empty string ("") or simply say "No information found". 
                 3. DO NOT use external knowledge or invent any logic that is not present in the text.
-                4. Do not provide any introductory or concluding remarks. If there is no info, output must be empty.
-                5. If you dont have any info about it return just !noinfo
-                6. Every response must start with exactly one <a name="CONTENT_DESCRIPTION"></a> tag. The CONTENT_DESCRIPTION must be a short, hyphenated summary of the actual information you are providing (e.g., "user-authentication-logic" instead of "auth.yml"). 
+                4. Do not provide any introductory or concluding remarks.
+                5. If you dont have any info about it return just !noinfo Exception for "example usage": If the goal is to provide a usage example and the Context contains a class or function implementation, you are permitted to synthesize a code example by deriving the logic strictly from the provided implementation details.
+                7. Every response must start with exactly one <a name="CONTENT_DESCRIPTION"></a> tag. The CONTENT_DESCRIPTION must be a short, hyphenated summary of the actual information you are providing (e.g., "user-authentication-logic" instead of "auth.yml"). 
 STRICT RULES(This rules works only for <a name=""></a> tag):
 
 NO filenames or paths (e.g., forbidden: "autodocconfig.yml", "src/config").
