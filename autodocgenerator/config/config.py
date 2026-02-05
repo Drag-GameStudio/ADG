@@ -7,6 +7,7 @@ from ..factory.modules.intro import IntroLinks
 class ProjectBuildConfig:
     save_logs = False
     log_level = -1
+    use_global_file = True
     def load_settings(self, data: dict[str, any]):
         for key, el in data.items():
             setattr(self, key, el)
@@ -15,7 +16,7 @@ class ProjectBuildConfig:
 
 class Config:
     def __init__(self):
-        self.ignore_files: list[str] = [    "*.pyo", "*.pyd", "*.pdb", "*.pkl", "*.log", "*.sqlite3", "*.db", "data",
+        self.ignore_files: list[str] = ["*.pyo", "*.pyd", "*.pdb", "*.pkl", "*.log", "*.sqlite3", "*.db", "data",
         "venv", "env", ".venv", ".env", ".vscode", ".idea", "*.iml", ".gitignore", ".ruff_cache", ".auto_doc_cache",
         "*.pyc", "__pycache__", ".git", ".coverage", "htmlcov", "migrations", "*.md", "static", "staticfiles", ".mypy_cache"
     ]
