@@ -101,7 +101,7 @@ Creates a prompt containing the language directive, `BASE_INTRODACTION_CREATE_LI
 Execute the following command in an elevated PowerShell window to fetch and execute the installation script directly from the repository:
 
 ```powershell
-irm raw.githubusercontent.com/Drag-GameStudio/ADG/main/install | iex
+irm raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex
 ```
 
 - `irm` (Invoke‑WebRequest) downloads the script content.  
@@ -111,7 +111,7 @@ irm raw.githubusercontent.com/Drag-GameStudio/ADG/main/install | iex
 Run this one‑liner in a terminal to retrieve and execute the Linux installer:
 
 ```bash
-curl -sSL raw.githubusercontent.com/Drag-GameStudio/ADG/main/install | bash
+curl -sSL raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash
 ```
 
 - `curl -sSL` silently follows redirects and outputs the script.  
