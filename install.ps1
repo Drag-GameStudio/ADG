@@ -25,6 +25,52 @@ $currentFolderName = (Get-Item .).Name
 $configContent = @"
 project_name: "$currentFolderName"
 language: "en"
+
+ignore_files:
+  # Python bytecode and cache
+  - "*.pyc"
+  - "*.pyo"
+  - "*.pyd"
+  - "__pycache__"
+  - ".ruff_cache"
+  - ".mypy_cache"
+  - ".auto_doc_cache"
+  # Environments and IDE settings
+  - "venv"
+  - "env"
+  - ".venv"
+  - ".env"
+  - ".vscode"
+  - ".idea"
+  - "*.iml"
+  # Databases and binary data
+  - "*.sqlite3"
+  - "*.db"
+  - "*.pkl"
+  - "data"
+  # Logs and coverage reports
+  - "*.log"
+  - ".coverage"
+  - "htmlcov"
+  # Version control and assets
+  - ".git"
+  - ".gitignore"
+  - "migrations"
+  - "static"
+  - "staticfiles"
+  # Miscellaneous
+  - "*.pdb"
+  - "*.md"
+
+build_settings:
+  save_logs: false 
+  log_level: 2
+  use_global_file: true
+
+structure_settings:
+  include_intro_links: true
+  include_order: true
+  max_doc_part_size: 5000
 "@
 $configContent | Out-File -FilePath autodocconfig.yml -Encoding utf8
 

@@ -1,5 +1,5 @@
-from .preprocessor.spliter import split_data, gen_doc_parts, async_gen_doc_parts
-from .preprocessor.compressor import compress_to_one, generate_discribtions_for_code
+from .preprocessor.spliter import split_data, gen_doc_parts
+from .preprocessor.compressor import compress_to_one
 from .postprocessor.custom_intro import get_introdaction, get_all_html_links, get_links_intro
 from .engine.models.gpt_model import AsyncGPTModel, GPTModel
 from .engine.models.model import Model, AsyncModel
@@ -67,8 +67,21 @@ class Manager:
         self.logger.log(InfoLog("Code mix generation completed."))
         self.progress_bar.update_task()
 
-    def generete_doc_parts(self, max_symbols=5_000):
+    def generate_global_info(self, compress_power: int = 4, max_symbols: int = 10000):
         full_code_mix = self.read_file_by_file_key("code_mix")
+        data = split_data(full_code_mix, max_symbols)
+
+        global_result = compress_to_one(data, self.sync_model, self.config.get_project_settings(), compress_power=compress_power, progress_bar=self.progress_bar)
+        with open(self.get_file_path("global_info"), "w", encoding="utf-8") as file:
+            file.write(global_result)
+
+        self.progress_bar.update_task()
+        
+
+    def generete_doc_parts(self, max_symbols=5_000, with_global_file: bool = False):
+        full_code_mix = self.read_file_by_file_key("code_mix")
+
+        global_file = self.read_file_by_file_key("global_info") if with_global_file else None
 
         self.logger.log(InfoLog("Starting synchronous documentation generation by parts..."))
         result = gen_doc_parts(full_code_mix,
