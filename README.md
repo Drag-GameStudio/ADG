@@ -1,903 +1,706 @@
 ## Executive Navigation Tree
-* 📂 Project Overview
-  * [AutoDoc Generator Project](#autodoc-generator-project)
-  * [Project Description](#project-description)
-  * [Intro Links](#intro-links)
-  * [Intro Text](#intro-text)
-* ⚙️ Installation and Setup
-  * [Installation Workflow Description](#installation-workflow-description)
-  * [Installation Scripts](#installation-scripts)
-  * [Windows Installation Script](#windows-installation-script)
-  * [Linux Installation Script](#linux-installation-script)
-* 📄 Core Engine
-  * [Project Metadata](#project-metadata)
-  * [Dependencies](#dependencies)
-  * [Build System](#build-system)
-  * [Package Initialization and Logger Setup](#package-initialization-and-logger-setup)
-* 📊 Logging and Progress Tracking
-  * [Logging Component](#logging-component)
-  * [Log Classes](#log-classes)
-  * [Logger Classes](#logger-classes)
-  * [Progress Tracking Component](#progress-tracking-component)
-  * [Progress Classes](#progress-classes)
-* 📈 Configuration and Management
-  * [Config Reader Read Config](#config-reader-read-config)
-  * [Run File Gen Doc](#run-file-gen-doc)
-  * [AutoDoc Configuration Options](#autodoc-configuration-options)
-  * [Manager Class Usage and Methods](#manager-class-usage-and-methods)
-  * [Manager Factory](#manager-factory)
-  * [Manager Orchestration](#manager-orchestration)
-  * [Manager Read File](#manager-read-file)
-  * [Manager Generate Code](#manager-generate-code)
-  * [Manager Gen Parts](#manager-gen-parts)
-  * [Manager Order](#manager-order)
-  * [Manager Clear](#manager-clear)
-* 📁 Modules and Functionality
-  * [Base Module](#base-module)
-  * [Custom Module](#custom-module)
-  * [Custom Module No Context](#custom-module-no-context)
-  * [Doc Factory](#doc-factory)
-  * [GPT Model](#gpt-model)
-  * [Async GPT Model](#async-gpt-model)
-* 📊 Data Processing
-  * [Data Splitting Mechanism](#data-splitting-mechanism)
-  * [Split Data Function](#split-data-function)
-  * [Write Docs by Parts Function](#write-docs-by-parts-function)
-  * [Async Write Docs by Parts Function](#async-write-docs-by-parts-function)
-  * [Gen Doc Parts Function](#gen-doc-parts-function)
-  * [Async Gen Doc Parts Function](#async-gen-doc-parts-function)
-* 📈 Module Functionalities
-  * [Sorting Module Functionality](#sorting-module-functionality)
-  * [Code Mix Module Functionality](#code-mix-module-functionality)
-  * [Compressor Module Functionality](#compressor-module-functionality)
-* 📊 Interactions and Logic
-  * [Visible Interactions](#visible-interactions)
-  * [Visible Interactions 1](#visible-interactions-1)
-  * [Visible Interactions 2](#visible-interactions-2)
-  * [Visible Interactions 3](#visible-interactions-3)
-  * [Visible Interactions 4](#visible-interactions-4)
-  * [Visible Interactions 5](#visible-interactions-5)
-  * [Technical Logic Flow](#technical-logic-flow)
-  * [Technical Logic Flow 1](#technical-logic-flow-1)
-  * [Technical Logic Flow 2](#technical-logic-flow-2)
-  * [Technical Logic Flow 3](#technical-logic-flow-3)
-  * [Technical Logic Flow 4](#technical-logic-flow-4)
-  * [Technical Logic Flow 5](#technical-logic-flow-5)
-* 📄 Data Contract
-  * [Data Contract](#data-contract)
-  * [Data Contract 1](#data-contract-1)
-  * [Data Contract 2](#data-contract-2)
-  * [Data Contract 3](#data-contract-3)
-  * [Data Contract 4](#data-contract-4)
-  * [Data Contract 5](#data-contract-5)
+- 📘 Introduction
+  - [Basic Introduction](#basic-introduction)
+  - [Intro Text](#intro-text)
+  - [Intro Links](#intro-links)
+  - [Intro With Links](#intro-with-links)
+  - [CONTENT DESCRIPTION](#CONTENT_DESCRIPTION)
+- ⚙️ Setup & Configuration
+  - [Install Workflow Setup](#install-workflow-setup)
+  - [Autodoc Yml Structure](#autodoc-yml-structure)
+  - [Read Config](#read-config)
+- 🛠️ Core Functions
+  - [_Print Welcome Function](#_print_welcome-function)
+  - [Logger Initialization](#logger-initialization)
+  - [Logging Infrastructure](#logging-infrastructure)
+  - [Base Progress](#base-progress)
+  - [Lib Progress](#lib-progress)
+  - [Console Github Progress](#console-github-progress)
+- 📦 Manager
+  - [Manager Class](#manager-class)
+  - [Manager Class Usage](#manager-class-usage)
+- 🧩 Modules
+  - [Base Module Abstract](#base-module-abstract)
+  - [Custom Module](#custom-module)
+  - [Custom Module Without Context](#custom-module-without-context)
+  - [Docfactory Orchestrator](#docfactory-orchestrator)
+- 🤖 Models
+  - [Parent Model](#parent-model)
+  - [Gpt Model](#gpt-model)
+  - [Async Gpt Model](#async-gpt-model)
+  - [Semantic Ordering Llm](#semantic-ordering-llm)
+- 📡 Extraction & Processing
+  - [Html Link Extraction](#html-link-extraction)
+  - [Anchor Extraction Chunk Splitting](#anchor-extraction-chunk-splitting)
+  - [Regex Pattern](#["\\\']?(.*?)["\\\']?)
+- 📝 Documentation Generation
+  - [Gen Doc](#gen-doc)
+  - [Gen Doc Parts](#gen-doc-parts)
+  - [Write Docs By Parts](#write-docs-by-parts)
+  - [Custom Description Template](#custom-description-template)
+  - [Custom Description Iterative](#custom-description-iterative)
+- 📚 Repository & Mixing
+  - [Repository Mixer](#repository-mixer)
+- 📦 Compression
+  - [Compressor Core Function](#compressor-core-function)
+  - [Batch Compression Compare](#batch-compression-compare)
+  - [Iterative Full Compression](#iterative-full-compression)
+- 🔄 Data Loop
+  - [Split Data Loop](#split-data-loop)
 
  
 
-<a name="autodoc-generator-project"></a> AutoDoc Generator Project
-### 
-<a name="project-description"></a> Project Description
-The AutoDoc Generator project is designed to help developers generate documentation for their projects. The project includes various components, such as logging, progress tracking, and installation scripts.
-
-### 
-<a name="intro-links"></a>
-## `IntroLinks` – HTML‑Link Intro Builder  
+<a name="basic-introduction"></a>
+## Basic Introduction Generation (`get_introdaction`)
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `generate` | `def` → `str` | Extracts links and builds intro | Calls `get_all_html_links` then `get_links_intro` |
+| `global_data` | `str` | Input | Full documentation content. |
+| `model` | `Model` | Input | LLM interface. |
+| `language` | `str` | Input (default `"en"`) | Language hint. |
+| `intro` | `str` | Output | Generated introduction. |
 
-**Logic Flow**  
-1. Extract all HTML links from `info["full_data"]`.  
-2. Pass links, `model`, and language to `get_links_intro`.  
-3. Return the generated introductory text.
-
-**Visible Interactions**  
-- Depends on `get_all_html_links` and `get_links_intro` from `postprocessor.custom_intro`.  
-
---- 
+Builds a prompt with `BASE_INTRO_CREATE` and `global_data`, then returns the LLM answer. 
 <a name="intro-text"></a>
-## `IntroText` – Global Data Intro Builder  
+## `IntroText` – Global Data Intro Builder
+**Responsibility** – Generates a textual introduction from `global_data`.  
+**Visible Interactions** – Calls `get_introdaction`.  
+**Logic Flow** –  
+1. `generate(info, model)` →  
+   - `intro = get_introdaction(info.get("global_data"), model, info.get("language"))`.  
+   - Return `intro`.  
+
+> **Warning:** All modules assume the presence of specific keys (`code_mix`, `full_data`, `global_data`, `language`). Absence results in `None` being passed to downstream functions, which may raise runtime errors if those functions lack internal checks. 
+<a name="intro-links"></a>
+## `IntroLinks` – HTML Link Intro Builder
+**Responsibility** – Extracts HTML links from `full_data` and builds an introductory paragraph.  
+**Visible Interactions** – Calls `get_all_html_links`, `get_links_intro`.  
+**Logic Flow** –  
+1. `generate(info, model)` →  
+   - `links = get_all_html_links(info.get("full_data"))`.  
+   - `intro_links = get_links_intro(links, model, info.get("language"))`.  
+   - Return `intro_links`. 
+<a name="intro-with-links"></a>
+## Introduction Generation with Links (`get_links_intro`)
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `generate` | `def` → `str` | Produces introductory paragraph from global data | Calls `get_introdaction` |
+| `links` | `list[str]` | Input | Anchor list from `get_all_html_links`. |
+| `model` | `Model` | Input | Provides `get_answer_without_history`. |
+| `language` | `str` | Input (default `"en"`) | Language hint for the LLM. |
+| `intro_links` | `str` | Output | Generated introductory text. |
+| `logger` | `BaseLogger` | Side‑effect | Logs start, completion, and result. |
+
+Creates a prompt containing the language directive, `BASE_INTRODACTION_CREATE_LINKS`, and the stringified `links`. Calls `model.get_answer_without_history` and returns the LLM’s response. 
+<a name="CONTENT_DESCRIPTION"></a>` tag with strict naming constraints, then returns the LLM’s response.
+
+> **Warning** – All functions assume the provided `Model` instance implements `get_answer_without_history`. Missing methods will raise `AttributeError`. The logger must be operational; otherwise logging calls will fail. 
+<a name="install-workflow-setup"></a>
+
+**PowerShell installation (Windows)**  
+Execute the following command in an elevated PowerShell window to fetch and execute the installation script directly from the repository:
+
+```powershell
+irm raw.githubusercontent.com/Drag-GameStudio/ADG/main/install | iex
+```
+
+- `irm` (Invoke‑WebRequest) downloads the script content.  
+- The pipeline to `iex` (Invoke‑Expression) runs the script in the current session.
+
+**Shell installation (Linux/macOS)**  
+Run this one‑liner in a terminal to retrieve and execute the Linux installer:
+
+```bash
+curl -sSL raw.githubusercontent.com/Drag-GameStudio/ADG/main/install | bash
+```
+
+- `curl -sSL` silently follows redirects and outputs the script.  
+- The output is piped to `bash` for immediate execution.
+
+**GitHub Actions secret configuration**  
+To enable the workflow to interact with the Grock service, add a secret named `GROCK_API_KEY` to the repository’s GitHub Actions secrets:
+
+1. Navigate to the repository’s **Settings → Secrets and variables → Actions**.  
+2. Click **New repository secret**.  
+3. Enter **Name**: `GROCK_API_KEY`.  
+4. Paste the API key obtained from the Grock documentation.  
+5. Save the secret.
+
+The workflow will automatically read `GROCK_API_KEY` from the environment, allowing authenticated calls to the Grock API during execution. 
+<a name="autodoc-yml-structure"></a>
+The configuration file is a YAML document that defines several top‑level sections:
+
+**Project metadata**  
+- `project_name`: a string that specifies the name of the project.  
+- `language`: the language code (e.g., `"en"`).
+
+**Files to ignore**  
+- `ignore_files`: a list of directory or file names that should be excluded from documentation generation (e.g., `"dist"`).
+
+**Build settings** (`build_settings` block)  
+- `save_logs`: boolean, when `true` the generation process stores logs.  
+- `log_level`: integer controlling verbosity (e.g., `2`).
+
+**Structure settings** (`structure_settings` block)  
+- `include_intro_links`: boolean, adds introductory links if `true`.  
+- `include_order`: boolean, keeps the original order of sections when `true`.  
+- `max_doc_part_size`: integer, maximum size (in characters) for each documentation part.
+
+**Additional project information** (`project_additional_info` block)  
+- Custom key/value pairs, such as `global idea`, provide free‑form description of the project’s purpose.
+
+**Custom descriptions** (`custom_descriptions` block)  
+- A list of strings that can contain special instructions or explanatory text. These strings are processed by the generator to enrich the final documentation (e.g., how to install the workflow, how to write the configuration file, how to use the Manager class).
+
+When creating the file, follow standard YAML syntax: use indentation (two spaces) for nested sections, place lists under a dash (`-`), and ensure string values are quoted if they contain special characters. This structure enables the documentation generator to read all required options and produce the desired output. 
+<a name="read-config"></a>
+## `read_config` – YAML Configuration Parsing  
+
+| Entity | Type | Role | Notes |
+|--------|------|------|-------|
+| `file_data` | `str` | Raw YAML content | Passed by caller |
+| `data` | `dict` | Parsed YAML tree | Result of `yaml.safe_load` |
+| `config` | `Config` | Central project configuration | Instantiated locally |
+| `ignore_files` | `list[str]` | Files/patterns to skip | Defaults from YAML or empty |
+| `language` | `str` | Documentation language | Defaults to `"en"` |
+| `project_name` | `str` | Identifier for the project | May be `None` |
+| `project_additional_info` | `dict` | Arbitrary key‑value pairs | Empty dict if omitted |
+| `pcs` | `ProjectBuildConfig` | Build‑time settings container | Populated via `load_settings` |
+| `custom_modules` | `list[CustomModule|CustomModuleWithOutContext]` | User‑defined processing hooks | Constructed from `custom_descriptions` |
+| `structure_settings_object` | `StructureSettings` | Runtime doc‑structure flags | Loaded from `structure_settings` |
 
 **Logic Flow**  
-1. Retrieve `global_data` from `info`.  
-2. Invoke `get_introdaction` with this data, `model`, and language.  
-3. Return the resulting text.
+1. Parse `file_data` with `yaml.safe_load`.  
+2. Instantiate a fresh `Config`.  
+3. Extract top‑level keys (`ignore_files`, `language`, `project_name`, `project_additional_info`, `build_settings`).  
+4. Load build settings into a `ProjectBuildConfig` and attach to `config` via `set_pcs`.  
+5. Populate ignore patterns and additional info on `config`.  
+6. Build `custom_modules` list, choosing `CustomModuleWithOutContext` when a description starts with `"%"`.  
+7. Initialise `StructureSettings`, apply any overrides from YAML.  
+8. Return tuple `(config, custom_modules, structure_settings_object)`.
+
+> **Assumption** – All expected YAML sections exist; missing sections yield defaults as coded. 
+<a name="_print_welcome-function"></a>
+## `_print_welcome` Function Execution  
+
+| Entity | Type | Role | Notes |
+|--------|------|------|-------|
+| `BLUE`, `BOLD`, `CYAN`, `RESET` | `str` | ANSI colour codes | Used only within this function |
+| `ascii_logo` | `str` | Formatted ASCII art | Combines colour codes for visual header |
+| `print` (built‑in) | callable | Output side‑effect | Sends logo and status lines to **stdout** |
+
+**Purpose** – Render a coloured ASCII banner and a one‑line status message when the package is imported.  
+
+**Logic Flow**  
+1. Define colour constants (`BLUE`, `BOLD`, `CYAN`, `RESET`).  
+2. Build `ascii_logo` using an f‑string that inserts the colour constants.  
+3. Print the logo, then a line showing *“ADG Library | Status: Ready to work”* with cyan text.  
+4. Print a separator line (`'—' * 35`).  
+
+> **Warning** – This function executes at import time, causing I/O side‑effects even if the consumer only needs the library’s API. 
+<a name="logger-initialization"></a>
+## Logger Initialization  
+
+| Entity | Type | Role | Notes |
+|--------|------|------|-------|
+| `BaseLogger` | class | Core logger object | Instantiated as `logger` |
+| `BaseLoggerTemplate` | class | Formatting/template provider | Passed to `logger.set_logger` |
+| `InfoLog`, `ErrorLog`, `WarningLog` | classes | Log‑level helpers (imported but not used here) | Exported for downstream modules |
+
+**Purpose** – Prepare a singleton‑style logger ready for use throughout the package.  
+
+**Logic Flow**  
+1. Import logger classes from `.ui.logging`.  
+2. Create `logger = BaseLogger()`.  
+3. Apply a default template via `logger.set_logger(BaseLoggerTemplate())`.  
+
+**Interactions** – Subsequent modules import `logger` from this package; they rely on the pre‑configured template for consistent output formatting. No external configuration files are consulted in this fragment.  
+
+---  
+
+*All information is derived exclusively from the provided `autodocgenerator/__init__.py` source.* 
+<a name="logging-infrastructure"></a>
+## Logging Infrastructure – `BaseLog` Hierarchy & Singleton `BaseLogger`  
+
+| Entity | Type | Role | Notes |
+|--------|------|------|-------|
+| `BaseLog` | class | Abstract | Stores `message` and `level`; provides `_log_prefix`. |
+| `ErrorLog`, `WarningLog`, `InfoLog` | subclasses | Concrete | Override `format()` with severity tag. |
+| `BaseLoggerTemplate` | class | Abstract logger | Holds `log_level`; routes via `global_log`. |
+| `FileLoggerTemplate` | subclass | File‑output logger | Writes formatted logs to a file. |
+| `BaseLogger` | singleton class | Proxy | Delegates `log()` to assigned `logger_template`. |
+
+**Logic Flow**  
+1. `BaseLogger.__new__` ensures a single instance.  
+2. `set_logger()` injects a concrete `BaseLoggerTemplate`.  
+3. `log()` forwards the `BaseLog` object to `logger_template.global_log`, which respects `log_level`.  
+
+> **Assumption** – A logger template is set before any `BaseLogger.log` call; otherwise an `AttributeError` would occur. 
+<a name="base-progress"></a>
+## `BaseProgress` – Abstract Progress Interface  
+
+| Entity | Type | Role | Notes |
+|--------|------|------|-------|
+| `BaseProgress` | class | Abstract base | Defines the progress API used by the documentation generator. |
+| `create_new_subtask` | `method(name: str, total_len: int) → None` | Abstract | Intended to start a child progress track. |
+| `update_task` | `method() → None` | Abstract | Advances either the current sub‑task or the base task. |
+| `remove_subtask` | `method() → None` | Abstract | Clears the active sub‑task reference. |
+
+**Component Responsibility**  
+Provides a minimal contract that concrete progress reporters must implement, allowing the generator to switch between rich‑terminal, console, or other visual back‑ends without code changes.
 
 **Visible Interactions**  
-- Utilises `get_introdaction` from `postprocessor.custom_intro`. 
-<a name="installation-workflow-description"></a>
-The installation process utilizes two scripts: one for PowerShell and one for Linux-based systems. To install using PowerShell, the command `irm https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex` is used. This command downloads the `install.ps1` script from the specified repository and executes it directly in the PowerShell environment.
+`LibProgress` and `ConsoleGtiHubProgress` inherit from it and are passed to higher‑level functions (e.g., `gen_doc_parts`) as the `progress_bar` argument.
 
-For Linux-based systems, the installation command is `curl -sSL https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash`. This command downloads the `install.sh` script from the repository and pipes it to the Bash shell for execution.
+**Technical Logic Flow**  
+1. Instantiation does nothing (`__init__` is empty).  
+2. Sub‑classes override the three abstract methods to manipulate their own state.  
 
-To complete the installation and make it functional, a secret variable named `GROCK_API_KEY` must be added to the GitHub Actions configuration. The value for this variable should be obtained from the GROCK documentation portal, found at https://grockdocs.com. This API key is necessary for integrating with GROCK services and must be kept secure to prevent unauthorized access.
+**Data Contract**  
 
-Here is a rewritten version with precise steps:
+| Entity | Type | Role | Notes |
+|--------|------|------|-------|
+| `name` | `str` | Input to `create_new_subtask` | Human‑readable identifier of the sub‑task. |
+| `total_len` | `int` | Input to `create_new_subtask` | Expected number of `update_task` calls. |
+| `current progress` | internal | Side‑effect | Updated via `update_task`; no external return. |
 
-1. **For Windows (PowerShell):**
-   - Open PowerShell.
-   - Execute the command: `irm https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex`
-   - Follow any additional prompts from the script.
+> **Assumption** – The base class is never used directly; calling its methods without a concrete implementation would raise `NotImplementedError`. 
+<a name="lib-progress"></a>
+## `LibProgress` – Rich‑Library Progress Implementation  
 
-2. **For Linux-Based Systems:**
-   - Open a terminal.
-   - Execute the command: `curl -sSL https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash`
-   - Follow any additional prompts from the script.
+| Entity | Type | Role | Notes |
+|--------|------|------|-------|
+| `LibProgress` | class | Concrete `BaseProgress` | Wraps `rich.progress.Progress`. |
+| `progress` | `Progress` | Dependency | Provided by the `rich` library. |
+| `_base_task` | `int` | Internal | ID of the top‑level “General progress” task. |
+| `_cur_sub_task` | `int | None` | Internal | ID of the active sub‑task, if any. |
 
-3. **Configuring GitHub Actions:**
-   - Navigate to your repository on GitHub.
-   - Go to the "Actions" tab and then click on "Workflows".
-   - Find your workflow and click on the three dots next to it, then select "Edit".
-   - In the workflow editor, click on the "Actions" tab on the left and scroll down to "Secrets".
-   - Add a new secret named `GROCK_API_KEY`.
-   - Paste your API key from GROCK into the value field for `GROCK_API_KEY`.
-   - Save the changes to your workflow.
-
-This process ensures that the necessary scripts are executed for installation and that the required API key is securely stored for use with GROCK services. 
-<a name="installation-scripts"></a> Installation Scripts
-The project includes installation scripts for Windows and Linux, which create the necessary files and directories for the project.
-
-#### 
-<a name="windows-installation-script"></a> Windows Installation Script
-The Windows installation script is written in PowerShell and creates the `.github/workflows` directory and the `autodocconfig.yml` file.
-
-#### 
-<a name="linux-installation-script"></a> Linux Installation Script
-The Linux installation script is written in Bash and creates the `.github/workflows` directory and the `autodocconfig.yml` file.
-
-### 
-<a name="project-metadata"></a> Project Metadata
-The project metadata is defined in the `pyproject.toml` file. The key metadata points are:
-* **Project Name:** `autodocgenerator`
-* **Version:** `0.9.0.2`
-* **Description:** `This Project helps you to create docs for your projects`
-* **Authors:** `dima-on <sinica911@gmail.com>`
-* **License:** `MIT`
-* **Python Version:** `>=3.11,<4.0`
-
-## 
-<a name="dependencies"></a> Dependencies
-The project dependencies are listed in the `pyproject.toml` file. The dependencies are:
-| Dependency | Version |
-| --- | --- |
-| annotated-types | 0.7.0 |
-| pyyaml | 6.0.3 |
-| anyio | 4.12.1 |
-| CacheControl | 0.14.4 |
-| certifi | 2026.1.4 |
-| charset-normalizer | 3.4.4 |
-| cleo | 2.1.0 |
-| colorama | 0.4.6 |
-| crashtest | 0.4.1 |
-| distlib | 0.4.0 |
-| distro | 1.9.0 |
-| dulwich | 0.25.2 |
-| fastjsonschema | 2.21.2 |
-| filelock | 3.20.3 |
-| findpython | 0.7.1 |
-| google-auth | 2.47.0 |
-| google-genai | 1.56.0 |
-| groq | 1.0.0 |
-| h11 | 0.16.0 |
-| httpcore | 1.0.9 |
-| httpx | 0.28.1 |
-| idna | 3.11 |
-| installer | 0.7.0 |
-| jaraco.classes | 3.4.0 |
-| jaraco.context | 6.1.0 |
-| jaraco.functools | 4.4.0 |
-| jiter | 0.12.0 |
-| keyring | 25.7.0 |
-| markdown-it-py | 4.0.0 |
-| mdurl | 0.1.2 |
-| more-itertools | 10.8.0 |
-| msgpack | 1.1.2 |
-| openai | 2.14.0 |
-| packaging | 25.0 |
-| pbs-installer | 2026.1.14 |
-| pkginfo | 1.12.1.2 |
-| platformdirs | 4.5.1 |
-| pyasn1 | 0.6.1 |
-| pyasn1_modules | 0.4.2 |
-| pydantic | 2.12.5 |
-| pydantic_core | 2.41.5 |
-| Pygments | 2.19.2 |
-| pyproject_hooks | 1.2.0 |
-| python-dotenv | 1.2.1 |
-| pywin32-ctypes | 0.2.3 |
-| RapidFuzz | 3.14.3 |
-| requests | 2.32.5 |
-| requests-toolbelt | 1.0.0 |
-| rich | 14.2.0 |
-| rich_progress | 0.4.0 |
-| rsa | 4.9.1 |
-| shellingham | 1.5.4 |
-| sniffio | 1.3.1 |
-| tenacity | 9.1.2 |
-| tomlkit | 0.14.0 |
-| tqdm | 4.67.1 |
-| trove-classifiers | 2026.1.14.14 |
-| typing_extensions | 4.15.0 |
-| typing-inspection | 0.4.2 |
-| urllib3 | 2.6.2 |
-| virtualenv | 20.36.1 |
-| websockets | 15.0.1 |
-| zstandard | 0.25.0 |
-
-## 
-<a name="build-system"></a> Build System
-The build system is defined in the `pyproject.toml` file. The build system is:
-* **Requires:** `poetry-core>=2.0.0`
-* **Build Backend:** `poetry.core.masonry.api` 
-<a name="package-initialization-and-logger-setup"></a>
-## Package Initialization and Logger Setup
-
-**Functional Role**  
-Initializes the `autodocgenerator` package and configures a global logger instance (`logger`) that other modules can use for structured logging.
+**Component Responsibility**  
+Renders hierarchical progress bars in terminals that support ANSI graphics, tracking overall and per‑chunk documentation generation.
 
 **Visible Interactions**  
-- Imports logging primitives from `autodocgenerator.ui.logging`.  
-- Instantiates `BaseLogger` → creates an object capable of routing log messages.  
-- Calls `BaseLogger.set_logger` with a `BaseLoggerTemplate` instance, selecting the concrete logging format/handler.  
-- Emits a side‑effect `print("ADG")` to standard output when the package is first imported.
+- `create_new_subtask(name, total_len)` registers a new rich task and stores its ID.  
+- `update_task()` advances either `_cur_sub_task` or `_base_task`.  
+- `remove_subtask()` discards the current sub‑task reference, leaving the base task alive.
 
-**Step‑by‑Step Logic Flow**  
+**Technical Logic Flow**  
+1. Constructor receives a `Progress` instance and creates the base task (`total` defaults to 4).  
+2. `create_new_subtask` calls `self.progress.add_task(name, total=total_len)` and caches the ID.  
+3. `update_task` checks `_cur_sub_task`; if set, updates it, otherwise updates the base task.  
+4. `remove_subtask` simply null‑ifies `_cur_sub_task`.  
 
-1. **Execute top‑level `print`** – writes the literal string `ADG` to `stdout`.  
-2. **Import statements** – bring `BaseLogger`, `BaseLoggerTemplate`, `InfoLog`, `ErrorLog`, `WarningLog` into the module namespace. No runtime side‑effects beyond standard import mechanics.  
-3. **Instantiate logger** – `logger = BaseLogger()` creates a fresh logger object.  
-4. **Configure logger** – `logger.set_logger(BaseLoggerTemplate())` attaches a default template (format/handler) to the logger, preparing it for subsequent use by other package components.
+**Data Contract** – same as abstract plus the internal task IDs. 
+<a name="console-github-progress"></a>
+## `ConsoleGtiHubProgress` – Simple Console Fallback  
+
+| Entity | Type | Role | Notes |
+|--------|------|------|-------|
+| `ConsoleGtiHubProgress` | class | Concrete `BaseProgress` | Prints textual progress to stdout. |
+| `gen_task` | `ConsoleTask` | Internal | Represents the overall “General Progress”. |
+| `curr_task` | `ConsoleTask | None` | Internal | Active per‑chunk task. |
+
+**Component Responsibility**  
+Provides a lightweight, environment‑agnostic progress indicator when the rich library cannot be used (e.g., CI logs).
+
+**Visible Interactions**  
+- Mirrors the abstract API: `create_new_subtask`, `update_task`, `remove_subtask`.  
+- Delegates actual printing to `ConsoleTask.progress()`.
+
+**Technical Logic Flow**  
+1. Instantiation creates a `ConsoleTask` named “General Progress” with 4 steps.  
+2. `create_new_subtask` replaces `curr_task` with a new `ConsoleTask`.  
+3. `update_task` calls `curr_task.progress()` if a sub‑task exists; otherwise updates `gen_task`.  
+4. `remove_subtask` clears `curr_task`, causing subsequent updates to affect the general task again.  
+
+**Data Contract** – identical to the abstract contract; progress is emitted via `print`.  
+
+> **Warning** – This implementation does not persist state beyond the current process; restarting the script will reset all counters. 
+<a name="manager-class"></a>
+## `Manager` – Orchestrator for Documentation Pipeline  
+
+**Responsibility** – Coordinates preprocessing, LLM‑driven generation, post‑processing and caching for a single project directory.  
+
+**Visible Interactions** –  
+- Imports from **preprocessor**, **postprocessor**, **engine.models**, **ui**, **factory**.  
+- Uses `BaseProgress`/`LibProgress` for task updates, `BaseLogger` for log emission, `DocFactory` for modular doc assembly.  
+
+**Logic Flow** –  
+1. `__init__` stores paths, config, models, logger and ensures a cache folder exists.  
+2. `read_file_by_file_key` → open cached file → return its contents.  
+3. `get_file_path` → compose absolute path under `CACHE_FOLDER_NAME`.  
+4. `generate_code_file` → instantiate `CodeMix`, build repository content into `code_mix.txt`, log start/finish, update progress.  
+5. `generate_global_info` → read `code_mix.txt`, split via `split_data`, compress with `compress_to_one`, write `global_info.md`, update progress.  
+6. `generete_doc_parts` → optionally read `global_info.md`, call `gen_doc_parts` with sync model & settings, write `output_doc.md`, update progress.  
+7. `factory_generate_doc` → read current doc & code mix, build `info` dict, log module list & key sizes, invoke `doc_factory.generate_doc`, prepend result to existing doc, update progress.  
+8. `order_doc` → split current doc by anchors, reorder sections via `get_order`, overwrite `output_doc.md`.  
+9. `clear_cache` → delete log file if `save_logs` is false.  
+
+**Data Contract**  
+
+| Entity | Type | Role | Notes |
+|--------|------|------|-------|
+| `project_directory` | `str` | Input | Root of the target code base. |
+| `config` | `Config` | Input | Supplies `ignore_files`, `language`, `pbc.log_level`, `pbc.save_logs`, `get_project_settings()`. |
+| `sync_model` / `async_model` | `Model` / `AsyncModel` | Input | LLM interface passed to preprocessors/post‑processors. |
+| `progress_bar` | `BaseProgress` | Input/Side‑effect | Must implement `update_task()`. |
+| `self.logger` | `BaseLogger` | Side‑effect | Writes to `report.txt` via `FileLoggerTemplate`. |
+| Cached files (`code_mix.txt`, `global_info.md`, `output_doc.md`, `report.txt`) | on‑disk | Persistent storage | Created/overwritten by manager methods. |
+| `info` (in `factory_generate_doc`) | `dict` | Input to `DocFactory.generate_doc` | Keys: `language`, `full_data`, `code_mix`. |
+| Return values | `None` (except `read_file_by_file_key`) | Side‑effects | Methods write files or update progress; only `read_file_by_file_key` returns file contents. |
+
+> **Warning** – The manager assumes all configured keys exist; missing files raise `FileNotFoundError`, and absent config attributes cause `AttributeError`. 
+<a name="manager-class-usage"></a>!noinfo 
+<a name="base-module-abstract"></a>
+## `BaseModule` Abstract Interface
+**Responsibility** – Defines the contract for all documentation generation modules.  
+**Visible Interactions** – Sub‑classes inherit from this ABC and are invoked by `DocFactory`.  
+**Logic Flow** –  
+1. Constructor (`__init__`) does nothing (`pass`).  
+2. Declares abstract `generate(info: dict, model: Model)` method. 
+<a name="custom-module"></a>
+## `CustomModule` – Context‑Aware Description Generator
+**Responsibility** – Generates a custom description using the supplied `discription` and a code split.  
+**Visible Interactions** – Calls `generete_custom_discription`, `split_data`.  
+**Logic Flow** –  
+1. Store `discription` at init.  
+2. `generate(info, model)` →  
+   - Retrieve `code_mix` via `info.get("code_mix")`.  
+   - Split with `split_data(..., max_symbols=5000)`.  
+   - Invoke `generete_custom_discription(split_result, model, self.discription, info.get("language"))`.  
+   - Return the resulting string. 
+<a name="custom-module-without-context"></a>
+## `CustomModuleWithOutContext` – Description‑Only Generator
+**Responsibility** – Produces a description without processing source code.  
+**Visible Interactions** – Calls `generete_custom_discription_without`.  
+**Logic Flow** –  
+1. Store `discription`.  
+2. `generate(info, model)` →  
+   - Invoke `generete_custom_discription_without(model, self.discription, info.get("language"))`.  
+   - Return the result. 
+<a name="docfactory-orchestrator"></a>
+## `DocFactory` Orchestrator
+**Responsibility** – Executes a sequence of `BaseModule` instances, aggregates their outputs, and logs progress.  
+**Visible Interactions** – Receives a list of module instances, a `Model`, a `BaseProgress` reporter, and uses `BaseLogger`.  
+**Logic Flow** –  
+1. Store `modules` tuple as list; instantiate `BaseLogger`.  
+2. `generate_doc(info, model, progress)`  
+   - Initialise `output = ""`.  
+   - `progress.create_new_subtask("Generate parts", len(self.modules))`.  
+   - Iterate `module` in `self.modules`:  
+     - Call `module.generate(info, model)` → `module_result`.  
+     - Append `module_result + "\n\n"` to `output`.  
+     - Log informational messages with `InfoLog`.  
+     - `progress.update_task()`.  
+   - End loop → `progress.remove_subtask()`.  
+   - Return aggregated `output`.  
 
 **Data Contract**
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `print("ADG")` | Side‑effect (stdout) | Simple visual cue confirming package import | No return value |
-| `BaseLogger` | Class (import) | Core logging orchestrator | Imported from `.ui.logging` |
-| `BaseLoggerTemplate` | Class (import) | Concrete logging template/handler | Imported from `.ui.logging` |
-| `logger` | Instance of `BaseLogger` | Global logger used across the package | Created at import time |
-| `logger.set_logger(...)` | Method call | Binds a `BaseLoggerTemplate` to `logger` | Must be called before any log emission |
+| `info` | `dict` | Input data (code snippets, language, etc.) | Keys accessed via `info.get(...)` in modules. |
+| `model` | `Model` | LLM interface used by modules | Passed unchanged to post‑processor calls. |
+| `progress` | `BaseProgress` | Progress tracking object | Must implement `create_new_subtask`, `update_task`, `remove_subtask`. |
+| `module_result` | `str` | Partial documentation fragment | Concatenated into final `output`. |
+| `self.logger` | `BaseLogger` | Logging sink | Emits `InfoLog` entries. |
 
-> **Assumption** – The imported logging classes behave as typical logger factories; no further details are available in the provided fragment.  
-
-**Implications for Consumers**  
-Any module that does `from autodocgenerator import logger` will receive a ready‑to‑use logger already configured with the default template, eliminating the need for repetitive logger setup. The initial `print` may be removed or silenced in production if console noise is undesired. 
-<a name="logging-component"></a> Logging Component
-The logging component is responsible for handling log messages in the system. It includes several classes, including `BaseLog`, `ErrorLog`, `WarningLog`, and `InfoLog`, which represent different types of log messages.
-
-#### 
-<a name="log-classes"></a> Log Classes
-The following log classes are available:
-* `BaseLog`: The base class for all log messages.
-* `ErrorLog`: Represents an error log message.
-* `WarningLog`: Represents a warning log message.
-* `InfoLog`: Represents an information log message.
-
-#### 
-<a name="logger-classes"></a> Logger Classes
-The following logger classes are available:
-* `BaseLoggerTemplate`: The base class for all loggers.
-* `FileLoggerTemplate`: A logger that logs messages to a file.
-* `BaseLogger`: A singleton logger that can be used to log messages.
-
-### 
-<a name="progress-tracking-component"></a> Progress Tracking Component
-The progress tracking component is responsible for tracking the progress of tasks in the system. It includes several classes, including `BaseProgress`, `LibProgress`, `ConsoleTask`, and `ConsoleGtiHubProgress`, which represent different types of progress trackers.
-
-#### 
-<a name="progress-classes"></a> Progress Classes
-The following progress classes are available:
-* `BaseProgress`: The base class for all progress trackers.
-* `LibProgress`: A progress tracker that uses the `rich.progress` library.
-* `ConsoleTask`: A progress tracker that logs progress to the console.
-* `ConsoleGtiHubProgress`: A progress tracker that logs progress to the console in a GitHub-style format.
-
-### 
-<a name="config-reader-read-config"></a>  
-## `read_config` – YAML‑Based Configuration Loader  
+> **Note:** `DocFactory` does not perform any validation of `info` keys; missing keys may cause `None` to be passed downstream. 
+<a name="parent-model"></a>
+## `ParentModel` – Shared configuration & model rotation  
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `file_data` | `str` | Raw YAML content | Must be UTF‑8 decoded before call |
-| `config` | `Config` | Central project configuration object | Populated via setters |
-| `custom_modules` | `list[CustomModule]` | User‑defined documentation extensions | `%`‑prefixed entries become `CustomModuleWithOutContext` |
-| `structure_settings_object` | `StructureSettings` | Controls documentation layout | Defaults are overridden by `structure_settings` key |
+| `api_key` | `str` | API credential | Defaults to `API_KEY` from `autodocgenerator.engine.config.config` |
+| `history` | `History` | Message buffer | Injected or created on‑demand |
+| `use_random` | `bool` | Randomise model order | `True` enables `random.shuffle` |
+| `regen_models_name` | `list[str]` | Rotation list | Copied from `MODELS_NAME` then shuffled if `use_random` |
+| `current_model_index` | `int` | Cursor in `regen_models_name` | Starts at 0 |
 
-> **Assumption** – `yaml.safe_load` returns a dictionary matching the expected schema; no validation beyond key existence is performed.
+> **Assumption** – `MODELS_NAME` and `API_KEY` are defined in the imported config module.  
 
-**Logic Flow**  
-1. Parse `file_data` with `yaml.safe_load`.  
-2. Instantiate a fresh `Config`.  
-3. Extract `ignore_files`, `language`, `project_name`, and `project_additional_info` from the dict, applying defaults where missing.  
-4. Load build‑time options into a `ProjectBuildConfig` (`pcs`) and attach it to `config` via `set_pcs`.  
-5. Populate `config.ignore_files` and additional info using `add_ignore_file` / `add_project_additional_info`.  
-6. Build `custom_modules` list: each entry is a two‑element sequence; if the first element is `"%"` the second element is wrapped in `CustomModuleWithOutContext`, otherwise in `CustomModule`.  
-7. Create a `StructureSettings` instance, overwrite its attributes with any supplied `structure_settings` dict.  
-8. Return the triple `(config, custom_modules, structure_settings_object)`.
-
-**Visible Interactions**  
-- Relies on `CustomModule`, `CustomModuleWithOutContext` from `autodocgenerator.factory.modules.general_modules`.  
-- Consumes `Config` and `ProjectBuildConfig` from `autodocgenerator.config.config`.  
-- No side‑effects beyond object construction.
+The class stores credentials, a shared `History`, and prepares a shuffled list of model identifiers for fail‑over usage.
 
 --- 
-<a name="run-file-gen-doc"></a>  
-## `gen_doc` – Orchestrator for Automated Documentation Generation  
+<a name="gpt-model"></a>
+## `GPTModel` – Synchronous Groq client wrapper  
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `project_path` | `str` | Root directory of target project | Passed to `Manager` |
-| `config` | `Config` | Project‑wide settings | Supplied by `read_config` |
-| `custom_modules` | `list[CustomModule\|CustomModuleWithOutContext]` | Extensible documentation hooks | Injected into `DocFactory` |
-| `structure_settings` | `StructureSettings` | Layout directives (e.g., `max_doc_part_size`) | Controls ordering and intro links |
-| Return value | `str` | Final assembled documentation | Retrieved via `Manager.read_file_by_file_key("output_doc")` |
+| `client` | `Groq` | Sends sync chat requests | Instantiated with `self.api_key` |
+| `logger` | `BaseLogger` | Emits runtime logs | Same log types as async variant |
+| `generate_answer` | `def` | Returns LLM reply | Same signature as async version |
 
-> **Assumption** – `Manager` methods (`generate_code_file`, `generete_doc_parts`, `factory_generate_doc`, `order_doc`, `clear_cache`) perform I/O and caching internally; their signatures are not exposed here.
+**Logic Flow** mirrors `AsyncGPTModel` but uses the synchronous `self.client.chat.completions.create` call and returns the extracted `result` directly.
+
+Both wrappers expose the same public contract, differing only in async vs sync execution. 
+<a name="async-gpt-model"></a>
+## `AsyncGPTModel` – Asynchronous Groq client wrapper  
+
+| Entity | Type | Role | Notes |
+|--------|------|------|-------|
+| `client` | `AsyncGroq` | Sends async chat requests | Instantiated with `self.api_key` |
+| `logger` | `BaseLogger` | Emits runtime logs | Uses `InfoLog`, `WarningLog`, `ErrorLog` |
+| `generate_answer` | `async def` | Returns LLM reply | Parameters: `with_history: bool = True`, `prompt: str = None` |
 
 **Logic Flow**  
-1. Initialise synchronous (`GPTModel`) and asynchronous (`AsyncGPTModel`) language‑model clients using the global `API_KEY`.  
-2. Construct a `Manager` with the project path, configuration, both models, and a console progress bar (`ConsoleGtiHubProgress`).  
-3. Invoke `manager.generate_code_file()` to collect source files.  
-4. Split generated content into chunks respecting `structure_settings.max_doc_part_size` via `manager.generete_doc_parts`.  
-5. Feed the `custom_modules` into a `DocFactory` and generate documentation (`manager.factory_generate_doc`).  
-6. If `include_order` is true, reorder sections (`manager.order_doc`).  
-7. If `include_intro_links` is true, prepend intro links using an `IntroLinks` factory instance.  
-8. Flush temporary data (`manager.clear_cache`).  
-9. Return the assembled document text.
+1. Log start of generation.  
+2. Select `messages` from `self.history.history` or the supplied `prompt`.  
+3. Loop until a model succeeds:  
+   - If `regen_models_name` empty → log error & raise `ModelExhaustedException`.  
+   - Pick `model_name` from `regen_models_name[current_model_index]`.  
+   - Call `await self.client.chat.completions.create(messages=messages, model=model_name)`.  
+   - On exception → log warning, advance `current_model_index` (wrap‑around).  
+4. Extract `result = chat_completion.choices[0].message.content`.  
+5. Log the selected model and the answer (level 2).  
+6. Return `result`.
 
-**Visible Interactions**  
-- Imports `DocFactory`, `IntroLinks`, `ConsoleGtiHubProgress`, `GPTModel`, `AsyncGPTModel`, and `API_KEY`.  
-- Delegates all heavy lifting to `Manager`; this function solely wires components together.  
+**Interactions** – Relies on `AsyncGroq` for network I/O, `History` for context, and the shared logger. No file I/O.
 
 --- 
-<a name="autodoc-configuration-options"></a>
-The autodocconfig.yml file has several options available. The file is used to configure the Auto Doc Generator project. The available options include:
-- project_name: This is used to specify the name of the project.
-- language: This option is used to specify the language of the project.
-- build_settings: This has two sub-options: 
-  - save_logs: This is a boolean value that determines whether to save logs or not.
-  - log_level: This is used to set the log level, with higher values indicating more detailed logging.
-- structure_settings: This has three sub-options: 
-  - include_intro_links: This is a boolean value that determines whether to include intro links or not.
-  - include_order: This is a boolean value that determines whether to include order or not.
-  - max_doc_part_size: This is used to set the maximum size of a documentation part.
-- project_additional_info: This has one sub-option: 
-  - global idea: This is used to provide a global idea or description of the project.
-- custom_descriptions: This is a list of custom descriptions that can be used to provide additional information about the project. 
-<a name="manager-class-usage-and-methods"></a>
-The Manager class is used to manage the generation of documents. To use the Manager class, you need to create an instance of it, passing in the project path, config, sync model, async model, and progress bar. 
-
-Here is an example of how to use the Manager class:
-```python
-manager = Manager(
-    project_path, 
-    config=config,
-    sync_model=sync_model,
-    async_model=async_model,
-    progress_bar=ConsoleGtiHubProgress(), 
-)
-```
-The Manager class has the following methods available:
-- `generate_code_file()`: This method is used to generate the code file.
-```python
-manager.generate_code_file()
-```
-- `generete_doc_parts(max_symbols)`: This method is used to generate the doc parts. It takes one argument, `max_symbols`, which specifies the maximum number of symbols.
-```python
-manager.generete_doc_parts(max_symbols=structure_settings.max_doc_part_size)
-```
-- `factory_generate_doc(doc_factory)`: This method is used to generate the doc using a doc factory. It takes one argument, `doc_factory`, which is an instance of the DocFactory class.
-```python
-manager.factory_generate_doc(DocFactory(*custom_modules))
-```
-- `order_doc()`: This method is used to order the doc.
-```python
-manager.order_doc()
-```
-- `clear_cache()`: This method is used to clear the cache.
-```python
-manager.clear_cache()
-```
-- `read_file_by_file_key(key)`: This method is used to read a file by its key. It takes one argument, `key`, which specifies the key of the file to read.
-```python
-output_doc = manager.read_file_by_file_key("output_doc")
-``` 
-<a name="manager-factory"></a>
-## `Manager.factory_generate_doc` – Modular Post‑Processing  
+<a name="semantic-ordering-llm"></a>
+## Semantic Title Ordering (LLM Interaction)  
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `doc_factory` | `DocFactory` | Container of `BaseModule` instances | Provides `modules` attribute |
-| Return | `None` | Appends factory‑generated text to existing doc | Writes back to cache |
+| `model` | `Model` | Input | Must expose `get_answer_without_history`. |
+| `chanks` | `dict[str,str]` | Input | Mapping from anchor links to text chunks. |
+| `logger` | `BaseLogger` | Side‑effect | Emits `InfoLog` entries at various levels. |
+| `prompt` | `list[dict]` | Local | Single user‑role message requesting a comma‑separated ordering. |
+| `result` | `str` | Output (raw LLM reply) | Expected list of `#anchor` titles. |
+| `new_result` | `list[str]` | Local | Stripped titles from `result`. |
+| `order_output` | `str` | Return | Concatenated chunk texts in LLM‑provided order. |
 
 **Logic Flow**  
-1. Load current output and code‑mix.  
-2. Assemble `info` dict (`language`, `full_data`, `code_mix`).  
-3. Log start with module list and input sizes.  
-4. Call `doc_factory.generate_doc(info, sync_model, progress_bar)`.  
-5. Prepend result to existing document, write file, log completion, update progress.  
+1. Initialise `BaseLogger`; log start and input keys/values.  
+2. Build `prompt` containing the titles (`list(chanks.keys())`).  
+3. Call `model.get_answer_without_history(prompt)`; capture raw string.  
+4. Split on commas, strip whitespace → `new_result`.  
+5. Iterate `new_result`; for each anchor retrieve its chunk via `chanks.get(el)` and append to `order_output` (newline‑separated).  
+6. Log each addition; return the assembled `order_output`.  
 
-**Visible Interactions** – Relies on `DocFactory` and its modules (e.g., `IntroLinks`, `CustomModule`).  
-
---- 
-<a name="manager-orchestration"></a>
-## `Manager` – Core Orchestration  
+> **Warning** – If the model returns a malformed list (missing titles or extra commas), mismatches may lead to `None` values in the final output. 
+<a name="html-link-extraction"></a>
+## HTML Link Extraction (`get_all_html_links`)
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `project_directory` | `str` | Root path of the target project | Provided to ctor |
-| `config` | `Config` | Runtime configuration (languages, logging, ignore rules) | Stored as `self.config` |
-| `sync_model` / `async_model` | `Model` / `AsyncModel` | LLM interfaces for synchronous / asynchronous calls | Optional |
-| `progress_bar` | `BaseProgress` | UI progress feedback | Defaults to a fresh instance |
-| `logger` | `BaseLogger` | Centralised file logger | Writes to `logs` cache file |
+| `data` | `str` | Input | Raw documentation text. |
+| `links` | `list[str]` | Output | Anchor links prefixed with `#`. |
+| `logger` | `BaseLogger` | Side‑effect | Logs progress at INFO level. |
+| `pattern` | `str` | Internal | Regex `\<a name=["']?(.*?)["']?\>\</a\>` . |
 
-**Logic Flow**  
-1. Store ctor arguments, create a **FileLoggerTemplate** bound to `self.get_file_path("logs")`.  
-2. Ensure a hidden cache directory ```.auto_doc_cache``` exists under `project_directory`.  
-
-> **Note**: All side‑effects (directory creation, logger setup) occur in `__init__`.
-
---- 
-<a name="manager-read-file"></a>
-## `Manager.read_file_by_file_key` – Cached File Reader  
+The function scans `data` for `<a name=…></a>` anchors, captures the name when longer than five characters, prefixes it with `#`, logs the count and the list, then returns `links`. No file I/O occurs. 
+<a name="anchor-extraction-chunk-splitting"></a>
+## Anchor Extraction & Chunk Splitting  
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `file_key` | `str` | Identifier from `FILE_NAMES` | Maps to a concrete filename |
-| Return | `str` | Full file contents | UTF‑8 read |
+| `chunks` | `list[str]` | Input (raw HTML fragments) | Passed to **extract_links_from_start**. |
+| `pattern` (in `extract_links_from_start`) | `str` | Constant | `r'^<a name=["\']?(.*?)["\']?></a>'` matches a leading anchor. |
+| `anchor_name` | `str` | Local | Captured name; processed only if `len > 5`. |
+| `links` | `list[str]` | Output (prefixed anchors) | Each stored as `#` + name. |
+| `text` | `str` | Input (full doc) | Split by **split_text_by_anchors**. |
+| `result_chanks` | `list[str]` | Output | Trimmed, non‑empty chunks after `re.split`. |
+| `all_links` | `list[str]` | Output | Result of **extract_links_from_start** on the chunks. |
+| `result` | `dict[str,str]` | Output | Mapping `#anchor → chunk`. Returns `None` on size mismatch. |
 
 **Logic Flow**  
-1. Resolve absolute path via `self.get_file_path(file_key)`.  
-2. Open the file in read mode, return its text.  
+1. `extract_links_from_start` iterates `chunks`; regex anchors at start are captured.  
+2. If an anchor’s name exceeds five characters, `"#"+name` is appended to `links`.  
+3. `split_text_by_anchors` builds a look‑ahead pattern (`(?=<a name=…>)`) to split the full text into `chunks`.  
+4. Whitespace‑trimmed chunks become `result_chanks`.  
+5. `extract_links_from_start` processes these chunks; if the count of anchors ≠ chunks, the function aborts (`None`).  
+6. Otherwise a dict `result` maps each `#anchor` to its associated chunk.  
 
-**Visible Interactions** – Uses Python `open`, relies on the cache layout created by `__init__`.
-
---- 
-<a name="manager-generate-code"></a>
-## `Manager.generate_code_file` – Repository Code‑Mix Builder  
+> **Assumption** – No file I/O occurs; the functions only transform in‑memory strings. 
+<a name="gen-doc"></a>
+## `gen_doc` – End‑to‑End Documentation Generation Pipeline  
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| None | – | Triggers `CodeMix` to produce a combined source dump | Output stored at ``code_mix.txt`` |
+| `project_path` | `str` | Root of the source project | Supplied by caller |
+| `config` | `Config` | Project‑wide settings | From `read_config` |
+| `custom_modules` | `list[...]` | Extension hooks for doc factories | Passed to `DocFactory` |
+| `structure_settings` | `StructureSettings` | Controls ordering & intro links | Determines size & optional steps |
+| `sync_model` / `async_model` | `GPTModel` / `AsyncGPTModel` | Language model back‑ends | Instantiated with global `API_KEY` |
+| `manager` | `Manager` | Orchestrates parsing, generation, caching | Core engine object |
+| Return value | `str` | Final assembled documentation | Read from manager’s output cache |
 
 **Logic Flow**  
-1. Log start (`InfoLog`).  
-2. Instantiate `CodeMix(project_directory, config.ignore_files)`.  
-3. Call `cm.build_repo_content(self.get_file_path("code_mix"))`.  
-4. Log completion, advance `progress_bar`.  
+1. Create `GPTModel` and `AsyncGPTModel` using the shared `API_KEY`.  
+2. Initialise `Manager` with `project_path`, `config`, both models, and a console progress bar.  
+3. Invoke `manager.generate_code_file()` → extracts source code.  
+4. Call `manager.generete_doc_parts(...)` → splits docs per `structure_settings.max_doc_part_size`.  
+5. Run `manager.factory_generate_doc(DocFactory(*custom_modules))` → applies user‑defined modules.  
+6. If `include_order` is true, `manager.order_doc()` reorders sections.  
+7. If `include_intro_links` is true, generate intro links via `IntroLinks()` factory.  
+8. Clear temporary caches with `manager.clear_cache()`.  
+9. Return the assembled document read by `manager.read_file_by_file_key("output_doc")`.
 
-**Visible Interactions** – Imports `CodeMix` (pre‑processor) and `InfoLog` (logging).  
+**Interactions** – `gen_doc` ties together configuration (`Config`), custom processing (`CustomModule*`), the GPT backend, and the `Manager` orchestration. No external I/O occurs beyond the initial YAML read (handled elsewhere).  
 
---- 
-<a name="manager-gen-parts"></a>
-## `Manager.generete_doc_parts` – Synchronous Chunked Documentation  
+> **Warning** – The function assumes `API_KEY` is defined in `autodocgenerator.engine.config.config`; absence raises an import error. 
+<a name="gen-doc-parts"></a>
+## `gen_doc_parts` – Orchestrated Multi‑Chunk Documentation  
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `max_symbols` | `int` | Upper bound per chunk (default 5 000) | Passed to `gen_doc_parts` |
-| Return | `None` | Writes assembled markdown to ``output_doc.md`` | Side‑effect only |
+| `full_code_mix` | `str` | Input | Complete source to be documented. |
+| `max_symbols` | `int` | Input | Symbol limit passed to `split_data`. |
+| `model` | `Model` | Input | Same contract as above. |
+| `project_settings` | `ProjectSettings` | Input | Supplies global prompts. |
+| `language` | `str` | Input | Target language for docs. |
+| `progress_bar` | `BaseProgress` | Side‑effect | Tracks per‑chunk progress. |
+| `global_info` | `str` / `None` | Optional | Extra project context. |
+| `all_result` | `str` | Output | Concatenated documentation. |
+| `logger` | `BaseLogger` | Side‑effect | Logs orchestration milestones. |
 
 **Logic Flow**  
-1. Load full code‑mix via `read_file_by_file_key`.  
-2. Log start, invoke `gen_doc_parts` with code, model, settings, language, and `progress_bar`.  
-3. Write returned string to the output cache file.  
-4. Log finish, update progress.  
-
-**Visible Interactions** – Calls `gen_doc_parts` (pre‑processor) and `BaseLogger`.  
-
---- 
-<a name="manager-order"></a>
-## `Manager.order_doc` – Anchor‑Based Reordering  
+1. Split source via `split_data`.  
+2. Create a sub‑task on `progress_bar` for the number of chunks.  
+3. For each chunk `el`:  
+   - Call `write_docs_by_parts` passing the previous result as `prev_info`.  
+   - Append returned text and two newlines to `all_result`.  
+   - Retain only the last 3000 characters of `result` for the next iteration (context window).  
+   - Update progress bar.  
+4. Remove sub‑task, log final length, and return `all_result`. 
+<a name="write-docs-by-parts"></a>
+## `write_docs_by_parts` – Per‑Chunk Documentation Generation  
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| None | – | Splits document by ``<a name=...>`` anchors, reorders via LLM | Uses `split_text_by_anchors` then `get_order` |
+| `part` | `str` | Input | Text fragment to document. |
+| `model` | `Model` | Input | Must implement `get_answer_without_history(prompt)`. |
+| `project_settings` | `ProjectSettings` | Input | Provides `prompt` for system context. |
+| `prev_info` | `str` / `None` | Optional | Previously generated doc fragment. |
+| `language` | `str` | Input | Language code (default `"en"`). |
+| `global_info` | `str` / `None` | Optional | Additional project‑wide context. |
+| `answer` | `str` | Output | Raw LLM response, possibly wrapped in markdown fences. |
+| `logger` | `BaseLogger` | Side‑effect | Logs generation steps. |
 
 **Logic Flow**  
-1. Read current output.  
-2. Split into anchor blocks; abort if `None`.  
-3. Pass blocks to `get_order` with `sync_model`.  
-4. Overwrite output file with ordered content.  
+1. Initialise logger and base system prompts (language, global project info, static `BASE_PART_COMPLITE_TEXT`).  
+2. Append optional `global_info` and `prev_info` prompts.  
+3. Append user prompt containing `part`.  
+4. Call `model.get_answer_without_history(prompt=prompt)`.  
+5. Strip leading/trailing ````` fences if present and return cleaned text.  
 
-**Visible Interactions** – Imports `split_text_by_anchors` and `get_order` (post‑processor).  
-
---- 
-<a name="manager-clear"></a>
-## `Manager.clear_cache` – Conditional Log Cleanup  
+> **Warning** – The function assumes the LLM returns a string; non‑string answers would raise a type error. 
+<a name="custom-description-template"></a>
+## Template‑Based Custom Description Generation (`generete_custom_discription_without`)
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| None | – | Removes ``report.txt`` unless `config.pbc.save_logs` is `True` | Uses `os.remove` |
+| `model` | `Model` | Input | LLM interface. |
+| `custom_description` | `str` | Input | Desired description task. |
+| `language` | `str` | Input (default `"en"`) | Language hint. |
+| `result` | `str` | Output | LLM answer respecting strict tag rules. |
 
-**Logic Flow**  
-1. Check `self.config.pbc.save_logs`.  
-2. If falsy, delete the log file via its cached path.  
-
-**Visible Interactions** – Direct filesystem operation; no external module calls.  
-
-## Auto Doc Generator: Custom Introduction Module
-### Overview of Custom Introduction Generation
-
-The provided code snippet is part of the Auto Doc Generator project, specifically within the `custom_intro.py` file. This module is responsible for generating custom introductions for documentation, including extracting HTML links, creating introductions with links, and generating custom descriptions.
-
-### Entity Relationship Table
+Constructs a prompt that enforces a single opening ` 
+<a name="custom-description-iterative"></a>
+## Iterative Custom Description Generation (`generete_custom_discription`)
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `data` | `str` | Input data for link extraction | String containing HTML links |
-| `links` | `list[str]` | Extracted HTML links | List of anchor names |
-| `model` | `Model` | Language model for introduction generation | Instance of `GPTModel` or other language models |
-| `language` | `str` | Language for introduction generation | Default language is "en" |
-| `global_data` | `str` | Input data for introduction generation | String containing global data |
-| `custom_description` | `str` | Custom description for generation | String describing the task |
+| `splited_data` | `str` (iterable) | Input | Segments of documentation. |
+| `model` | `Model` | Input | LLM interface. |
+| `custom_description` | `str` | Input | Task description for the LLM. |
+| `language` | `str` | Input (default `"en"`) | Language hint. |
+| `result` | `str` | Output | First non‑error description. |
 
-### Logic Flow
-
-The custom introduction module follows this logic flow:
-
-1. **Link Extraction**: The `get_all_html_links` function extracts HTML links from the input data using regular expressions.
-2. **Introduction with Links**: The `get_links_intro` function generates an introduction with links using the extracted links and a language model.
-3. **Introduction Generation**: The `get_introdaction` function generates an introduction based on the global data and language model.
-4. **Custom Description Generation**: The `generete_custom_discription` and `generete_custom_discription_without` functions generate custom descriptions based on the input data and language model.
-
-### Visible Interactions
-
-The custom introduction module interacts with the following external components:
-
-* `GPTModel`: A language model used for introduction generation.
-* `BaseLogger`: A logging module used for logging events.
-* `InfoLog`: A logging module used for logging information.
-
-### Context Lock
-
-The custom introduction module operates within the context of the Auto Doc Generator project, using only the provided code snippet and explicit global context. No external knowledge or assumptions are made.
-
-### Technical Requirements
-
-The custom introduction module requires the following technical components:
-
-* Python 3.x
-* `re` module for regular expressions
-* `GPTModel` or other language models for introduction generation
-* `BaseLogger` and `InfoLog` modules for logging
-
-### Content Requirements
-
-The custom introduction module generates content based on the input data and language model. The generated content includes introductions with links, custom descriptions, and other documentation-related text. The content is generated in a technical and professional tone, targeting developers who need to understand the documentation instantly.
-
-## 
-<a name="base-module"></a>
-## `BaseModule` – Abstract Generation Primitive  
+Iterates over `splited_data`, sending a prompt that includes the segment, `BASE_CUSTOM_DISCRIPTIONS`, and the task. Breaks when the LLM response does **not** contain `"!noinfo"` or `"No information found"` early in the text; otherwise continues. Returns the final `result`. 
+<a name="repository-mixer"></a>
+## Repository Structure Packing (CodeMix)  
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `generate` | `abstractmethod` | Produce a documentation fragment | Receives `info: dict` and a concrete `Model` instance |
-| `__init__` | `def` | Base constructor (no state) | May be extended by subclasses |
+| `root_dir` | `Path` | Input | Base directory for scanning. |
+| `ignore_patterns` | `list[str]` | Input | Glob patterns to exclude files/dirs. |
+| `logger` | `BaseLogger` | Side‑effect | Logs ignored paths. |
+| `should_ignore` | `method` | Local | Returns `True` if a path matches any ignore pattern. |
+| `output_file` | `str` | Input | Destination text file for the mix. |
+| `out` | file handle | Side‑effect | Receives repository tree and file contents. |
 
-> **Assumption:** Subclasses must implement `generate`; the base class provides no default behavior.
+**Logic Flow**  
+1. Resolve `root_dir`; instantiate `BaseLogger`.  
+2. `should_ignore` converts a `Path` to a relative string, then checks against each glob pattern (full path, basename, and any path part).  
+3. `build_repo_content` opens `output_file` for writing.  
+4. First pass: iterate sorted `rglob("*")`; for each non‑ignored path write an indented tree line (`dir/` or `file`).  
+5. Write a separator line (`"="*20`).  
+6. Second pass: iterate again; for each non‑ignored **file**, write a `<file path="…">` tag, then the file’s text (read with UTF‑8, errors ignored). Errors are captured and written as plain text.  
 
---- 
-<a name="custom-module"></a>
-## `CustomModule` – Context‑Aware Description Generator  
+> **Critical** – No network or external service calls; all operations are local filesystem reads/writes. 
+<a name="compressor-core-function"></a>
+## `compress` – Core LLM‑driven Compression  
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `discription` | `str` | User‑provided narrative seed | Stored on init |
-| `generate` | `def` → `str` | Calls `generete_custom_discription` | Splits `info["code_mix"]` (max 5000 symbols) before passing to post‑processor |
+| `data` | `str` | Input | Raw source text to be compressed. |
+| `project_settings` | `ProjectSettings` | Input | Supplies system prompt via its **`prompt`** property. |
+| `model` | `Model` | Input | Must implement `get_answer_without_history(prompt)`. |
+| `compress_power` | `int` | Input | Determines compression intensity; passed to helper text. |
+| `prompt` | `list[dict]` | Local | System‑user message stack fed to the LLM. |
+| `answer` | `str` | Output | LLM’s compressed response. |
 
 **Logic Flow**  
-1. Retrieve `code_mix` from `info`, split via `split_data`.  
-2. Invoke `generete_custom_discription` with split code, `model`, stored description, and `info["language"]`.  
-3. Return the produced string.
+1. Assemble a three‑message `prompt`: project‑level system prompt, a dynamically built “base compress” text (`get_BASE_COMPRESS_TEXT`), and the user‑provided `data`.  
+2. Invoke `model.get_answer_without_history(prompt=prompt)`.  
+3. Return the LLM’s reply unchanged.  
 
-**Visible Interactions**  
-- Imports `split_data` (pre‑processor) and `generete_custom_discription` (post‑processor).  
-
---- 
-<a name="custom-module-no-context"></a>
-## `CustomModuleWithOutContext` – Stand‑Alone Description Generator  
+> **Assumption** – No file I/O; transformation occurs entirely in‑memory. 
+<a name="batch-compression-compare"></a>
+## `compress_and_compare` – Batch Compression with Progress  
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `discription` | `str` | Narrative seed | Stored on init |
-| `generate` | `def` → `str` | Calls `generete_custom_discription_without` | No code context required |
+| `data` | `list[str]` | Input | Collection of text fragments. |
+| `model` | `Model` | Input | Same requirements as above. |
+| `project_settings` | `ProjectSettings` | Input | Shared prompt source. |
+| `compress_power` | `int` | Input (default 4) | Max fragments per batch. |
+| `progress_bar` | `BaseProgress` | Side‑effect | Visual sub‑task tracking. |
+| `compress_and_compare_data` | `list[str]` | Local | Holds concatenated compressed batches. |
 
 **Logic Flow**  
-1. Directly call `generete_custom_discription_without` with `model`, description, and language.  
-2. Return the result.
-
-**Visible Interactions**  
-- Uses only the post‑processor `generete_custom_discription_without`.  
-
---- 
-<a name="doc-factory"></a>
-## `DocFactory` – Orchestrator of Module Pipeline  
+1. Initialise `compress_and_compare_data` sized to `ceil(len(data)/compress_power)`.  
+2. Create a sub‑task on `progress_bar` for the full length of `data`.  
+3. Iterate `data` with index `i`; compute batch index `curr_index = i // compress_power`.  
+4. Call `compress` on each element, appending the result plus a newline to the appropriate batch slot.  
+5. Update the progress bar after each element; finally remove the sub‑task.  
+6. Return the list of batched compressed strings. 
+<a name="iterative-full-compression"></a>
+## `compress_to_one` – Recursive Full‑Document Collapse  
 
 | Entity | Type | Role | Notes |
 |--------|------|------|-------|
-| `modules` | `list[BaseModule]` | Ordered collection of generation units | Supplied via `*modules` at instantiation |
-| `logger` | `BaseLogger` | Centralised log sink | Instantiated internally |
-| `generate_doc` | `def` → `str` | Executes each module, aggregates output | Accepts `info`, a `Model`, and a `BaseProgress` tracker |
+| `data` | `list[str]` | Input/Output | Shrinks each iteration until a single string remains. |
+| `model` | `Model` | Input | Same LLM contract. |
+| `project_settings` | `ProjectSettings` | Input | Provides prompt context. |
+| `compress_power` | `int` | Input (default 4) | Base batch size; may be reduced to 2 for small tails. |
+| `progress_bar` | `BaseProgress` | Side‑effect | Propagated to inner calls. |
+| `count_of_iter` | `int` | Local | Iteration counter (for potential logging). |
 
 **Logic Flow**  
-1. Initialise progress sub‑task “Generate parts” with length `len(self.modules)`.  
-2. Iterate `module` in `self.modules`:  
-   a. Call `module.generate(info, model)`.  
-   b. Append result plus double newline to `output`.  
-   c. Log module completion (`InfoLog`) at default and level 2.  
-   d. Advance progress via `progress.update_task()`.  
-3. Remove the sub‑task and return the concatenated `output`.
+1. Loop while `len(data) > 1`.  
+2. Adjust `new_compress_power`: if remaining items are fewer than `compress_power + 1`, set to 2 to avoid a final singleton batch.  
+3. Replace `data` with the result of `compress_and_compare(data, …, new_compress_power, progress_bar)`.  
+4. Increment `count_of_iter`.  
+5. Once reduced to a single element, return `data[0]`.  
 
-**Visible Interactions**  
-- Relies on `BaseModule` subclasses from `autodocgenerator.factory.modules`.  
-- Uses `BaseProgress` for UI feedback.  
-- Emits logs through `BaseLogger` (`InfoLog`).  
-
---- 
-<a name="gpt-model"></a>  
-## `GPTModel` – Synchronous Groq Model Wrapper  
+> **Warning** – The function assumes `compress_and_compare` always returns a non‑empty list; an empty return would raise an `IndexError`. 
+<a name="split-data-loop"></a>
+## `split_data` – Symbol‑Based Chunking Loop  
 
 | Entity | Type | Role | Notes |
-|-------|------|------|------|
-| `api_key` | `str` | API credential | Defaults to `API_KEY` |
-| `history` | `History` | Message history | Inherited |
-| `use_random` | `bool` | Randomize model order | Default `True` |
-| `client` | `Groq` | Groq sync client | Instantiated in `__init__` |
-| `logger` | `BaseLogger` | Log sink | Instantiated in `__init__` |
-| `with_history` | `bool` | Include history flag | Default `True` |
-| `prompt` | `str` | Optional prompt | Used when `with_history=False` |
-| `generate_answer` | `def` → `str` | Returns model answer | May raise `ModelExhaustedException` |
+|--------|------|------|-------|
+| `splited_by_files` | `list[str]` | Local | Initial list of file‑level fragments (source not shown). |
+| `max_symbols` | `int` | Input | Upper bound for symbols per chunk. |
+| `split_objects` | `list[str]` | Local | Accumulates final chunks respecting `max_symbols`. |
+| `logger` | `BaseLogger` | Side‑effect | Emits progress messages. |
 
 **Logic Flow**  
-1. Call parent `Model` constructor (stores API key, history, shuffles model list).  
-6. In `generate_answer`, pick messages from history or the supplied prompt.  
-5. Loop: select `model_name` from `regen_models_name`.  
-6. Attempt `client.chat.completions.create(messages=…, model=model_name)`.  
-7. On exception, log a warning and move to the next model index.  
-9. If the list is exhausted, log an error and raise `ModelExhaustedException`.  
-10. Return the first choice’s message content after logging.  
+1. Log start.  
+2. **Refinement loop** – while any element exceeds `1.5 × max_symbols`, split it at `max_symbols/2` and insert the second half right after the original.  
+3. **Packing loop** – iterate `splited_by_files`; create a new `split_objects` entry when adding the element would breach `1.25 × max_symbols`. Otherwise, concatenate with a newline.  
+4. Log final chunk count and return `split_objects`.  
 
-**Visible Interactions**  
-- Extends `Model` from *engine/models/model.py*.  
-- Uses `Groq` from the `groq` package.  
-- Logs through `BaseLogger` with `InfoLog`, `ErrorLog`, `WarningLog`.  
-- Raises `ModelExhaustedException` when no model remains. 
-<a name="async-gpt-model"></a>  
-## `AsyncGPTModel` – Asynchronous Groq Model Wrapper  
-
-| Entity | Type | Role | Notes |
-|-------|------|------|------|
-| `api_key` | `str` | API credential | Defaults to module‑level `API_KEY` |
-| `history` | `History` | Message history store | Initialized with system prompt |
-| `use_random` | `bool` | Randomize model order | Default `True` |
-| `client` | `AsyncGroq` | Groq async client | Created in `__init__` |
-| `logger` | `BaseLogger` | Log sink | Created in `__init__` |
-| `with_history` | `bool` | Flag to include history | Default `True` |
-| `prompt` | `str` | Optional override prompt | Used when `with_history=False` |
-| `generate_answer` | `async def` → `str` | Returns model answer | May raise `ModelExhaustedException` |
-
-**Logic Flow**  
-1. Initialise parent `AsyncModel` (stores `api_key`, `history`, shuffles `MODELS_NAME`).  
-2. Create an `AsyncGroq` client with the supplied API key.  
-3. In `generate_answer`, optionally use the stored history or a single prompt.  
-4. Loop until a model succeeds: select the current model from `regen_models_name`.  
-5. Call `await client.chat.completions.create(messages=…, model=model_name)`.  
-6. On failure, log a warning and advance `current_model_index` (wrap to 0).  
-7. If no models remain, log an error and raise `ModelExhaustedException`.  
-8. Extract the answer from `chat_completion.choices[0].message.content`.  
-9. Log the result at level 2 and return the string.  
-
-**Visible Interactions**  
-- Inherits from `AsyncModel` (defined in *engine/models/model.py*).  
-- Uses `AsyncGroq` from the `groq` package.  
-- Catches generic `Exception`; logs via `BaseLogger` with `InfoLog`, `ErrorLog`, `WarningLog`.  
-- Propagates `ModelExhaustedException` from `autodocgenerator.exceptions`.  
-
---- 
-<a name="data-splitting-mechanism"></a>
-## Data Splitting Mechanism
-The `split_data` function is responsible for dividing a large input string into smaller chunks based on a specified maximum symbol count.
-
-### Function Signature
-```python
-def split_data(data: str, max_symbols: int) -> list[str]:
-```
-### Parameters
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `data` | str | Input | The input string to be split. |
-| `max_symbols` | int | Input | The maximum number of symbols per chunk. |
-| `split_objects` | list[str] | Output | The list of split strings. |
-
-### Technical Logic Flow
-1. The function takes in two parameters: `data` and `max_symbols`.
-2. It initializes an empty list `split_objects` to store the split strings.
-3. The input `data` is split into chunks based on the `max_symbols` limit.
-
-### Visible Interactions
-This function interacts with the `ProjectSettings` module indirectly through the import of other modules.
-
-### Specific Component Responsibility
-The `split_data` function is responsible for preprocessing the input data by splitting it into manageable chunks, which can then be processed by other components of the Auto Doc Generator system.
-
-### Data Contract
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `data` | str | Input | The input string to be split. |
-| `max_symbols` | int | Input | The maximum number of symbols per chunk. |
-| `split_objects` | list[str] | Output | The list of split strings. |
-
-Note: The implementation details of the `split_data` function are not fully provided in the given code snippet, so the technical logic flow and data contract are based on the available information.
-
-## 
-<a name="split-data-function"></a> Split Data Function
-The `split_data` function is responsible for preprocessing the input data by splitting it into manageable chunks.
-
-### 
-<a name="write-docs-by-parts-function"></a> Write Docs By Parts Function
-The `write_docs_by_parts` function generates documentation for a given part of the code.
-
-### 
-<a name="async-write-docs-by-parts-function"></a> Async Write Docs By Parts Function
-The `async_write_docs_by_parts` function asynchronously generates documentation for a given part of the code.
-
-### 
-<a name="gen-doc-parts-function"></a> Gen Doc Parts Function
-The `gen_doc_parts` function generates documentation for the given code by splitting it into parts.
-
-### 
-<a name="async-gen-doc-parts-function"></a> Async Gen Doc Parts Function
-The `async_gen_doc_parts` function asynchronously generates documentation for the given code by splitting it into parts.
-
-### 
-<a name="sorting-module-functionality"></a> Sorting Module Functionality
-The sorting module is responsible for ordering the documentation fragments based on their semantic meaning. It takes a dictionary of fragments as input, where each key is a unique identifier (anchor name) and the value is the corresponding fragment text.
-
-### 
-<a name="code-mix-module-functionality"></a> Code Mix Module Functionality
-The code mix module is responsible for building the repository content by traversing the directory tree and writing the file contents to an output file.
-
-### 
-<a name="compressor-module-functionality"></a> Compressor Module Functionality
-The compressor module is responsible for compressing input data using a provided model and project settings.
-
-### 
-<a name="visible-interactions"></a> Visible Interactions
-The logging component interacts with the `BaseLogger` class to log messages. The progress tracking component interacts with the `BaseProgress` class to track progress. The installation scripts interact with the file system to create the necessary files and directories.
-
-## 
-<a name="visible-interactions-1"></a> Visible Interactions
-The code mix module interacts with the following components:
-
-* **Logger**: The code mix module uses the `BaseLogger` class to log information about the repository structure and file contents.
-
-### 
-<a name="visible-interactions-2"></a> Visible Interactions
-This function interacts with the `Model` and `ProjectSettings` modules.
-
-### 
-<a name="visible-interactions-3"></a> Visible Interactions
-This function interacts with the `AsyncModel` and `global_info` modules.
-
-### 
-<a name="visible-interactions-4"></a> Visible Interactions
-This function interacts with the `Model`, `ProjectSettings`, and `BaseProgress` modules.
-
-### 
-<a name="visible-interactions-5"></a> Visible Interactions
-This function interacts with the `AsyncModel`, `global_info`, and `BaseProgress` modules.
-
-### 
-<a name="technical-logic-flow"></a> Technical Logic Flow
-1. The user runs the installation script to create the necessary files and directories.
-2. The logging component is used to log messages in the system.
-3. The progress tracking component is used to track the progress of tasks in the system.
-4. The user can configure the logging and progress tracking components using the `autodocconfig.yml` file.
-
-### 
-<a name="technical-logic-flow-1"></a> Technical Logic Flow
-The technical logic flow of the code mix module can be described as follows:
-
-1. The `CodeMix` class initializes the root directory and ignore patterns.
-2. The `should_ignore` method checks if a file or directory should be ignored based on the ignore patterns.
-3. The `build_repo_content` method traverses the directory tree and writes the file contents to an output file.
-4. The repository structure and file contents are written to the output file.
-
-### 
-<a name="technical-logic-flow-2"></a> Technical Logic Flow
-1. The function takes in several parameters: `part`, `model`, `project_settings`, `prev_info`, and `language`.
-2. It initializes a prompt for the model, including the language and project settings.
-3. The function generates documentation for the given part using the model.
-
-### 
-<a name="technical-logic-flow-3"></a> Technical Logic Flow
-1. The function takes in several parameters: `part`, `async_model`, `global_info`, `semaphore`, `prev_info`, `language`, and `update_progress`.
-2. It initializes a prompt for the model, including the language and global information.
-3. The function generates documentation for the given part using the async model.
-
-### 
-<a name="technical-logic-flow-4"></a> Technical Logic Flow
-1. The function takes in several parameters: `full_code_mix`, `max_symbols`, `model`, `project_settings`, `language`, and `progress_bar`.
-2. It splits the input code into parts based on the `max_symbols` limit.
-3. The function generates documentation for each part using the `write_docs_by_parts` function.
-
-### 
-<a name="technical-logic-flow-5"></a> Technical Logic Flow
-1. The function takes in several parameters: `full_code_mix`, `global_info`, `max_symbols`, `model`, `language`, and `progress_bar`.
-2. It splits the input code into parts based on the `max_symbols` limit.
-3. The function generates documentation for each part using the `async_write_docs_by_parts` function.
-
-### 
-<a name="data-contract"></a> Data Contract
-The following data contract is available:
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `log_message` | str | Input | The log message to be logged. |
-| `log_level` | int | Input | The log level of the message. |
-| `task_name` | str | Input | The name of the task. |
-| `total_length` | int | Input | The total length of the task. |
-| `progress` | int | Output | The progress of the task. |
-
-### 
-<a name="data-contract-1"></a> Data Contract
-The data contract of the code mix module can be described in the following table:
-
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `root_dir` | str | Input | The root directory of the repository. |
-| `ignore_patterns` | list[str] | Input | A list of patterns to ignore when traversing the directory tree. |
-| `output_file` | str | Output | The file path where the repository content will be written. |
-
-### 
-<a name="data-contract-2"></a> Data Contract
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `part` | str | Input | The part of the code to generate documentation for. |
-| `model` | Model | Input | The model used to generate documentation. |
-| `project_settings` | ProjectSettings | Input | The project settings used to generate documentation. |
-| `prev_info` | str | Input | The previous documentation generated. |
-| `language` | str | Input | The language used to generate documentation. |
-| `answer` | str | Output | The generated documentation. |
-
-## 
-<a name="data-contract-3"></a> Data Contract
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `part` | str | Input | The part of the code to generate documentation for. |
-| `async_model` | AsyncModel | Input | The async model used to generate documentation. |
-| `global_info` | str | Input | The global information used to generate documentation. |
-| `semaphore` | Semaphore | Input | The semaphore used to control the async process. |
-| `prev_info` | str | Input | The previous documentation generated. |
-| `language` | str | Input | The language used to generate documentation. |
-| `update_progress` | Function | Input | The function used to update the progress. |
-| `answer` | str | Output | The generated documentation. |
-
-## 
-<a name="data-contract-4"></a> Data Contract
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `full_code_mix` | str | Input | The input code to generate documentation for. |
-| `max_symbols` | int | Input | The maximum number of symbols per chunk. |
-| `model` | Model | Input | The model used to generate documentation. |
-| `project_settings` | ProjectSettings | Input | The project settings used to generate documentation. |
-| `language` | str | Input | The language used to generate documentation. |
-| `progress_bar` | BaseProgress | Input | The progress bar used to track the progress. |
-| `result` | str | Output | The generated documentation. |
-
-## 
-<a name="data-contract-5"></a> Data Contract
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `full_code_mix` | str | Input | The input code to generate documentation for. |
-| `global_info` | str | Input | The global information used to generate documentation. |
-| `max_symbols` | int | Input | The maximum number of symbols per chunk. |
-| `model` | AsyncModel | Input | The async model used to generate documentation. |
-| `language` | str | Input | The language used to generate documentation. |
-| `progress_bar` | BaseProgress | Input | The progress bar used to track the progress. |
-| `result` | str | Output | The generated documentation. |
-
-
+> **Assumption** – `splited_by_files` is pre‑populated; no I/O occurs here. 

@@ -25,6 +25,14 @@ $currentFolderName = (Get-Item .).Name
 $configContent = @"
 project_name: "$currentFolderName"
 language: "en"
+build_settings:
+  save_logs: false 
+  log_level: 2
+
+structure_settings:
+  include_intro_links: true
+  include_order: true
+  max_doc_part_size: 5000
 "@
 $configContent | Out-File -FilePath autodocconfig.yml -Encoding utf8
 

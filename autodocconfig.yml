@@ -1,5 +1,9 @@
 project_name: "Auto Doc Generator"  
 language: "en"
+
+ignore_files:
+  - "dist"
+
 build_settings:
   save_logs: true 
   log_level: 2

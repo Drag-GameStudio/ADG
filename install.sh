@@ -17,8 +17,20 @@ jobs:
       GROCK_API_KEY: \${{ secrets.GROCK_API_KEY }}
 EOF
 
+echo "✅ Done! .github/workflows/autodoc.yml has been created."
+
+
 cat <<EOF > autodocconfig.yml
 project_name: "$(basename "$PWD")"
 language: "en"
+
+build_settings:
+  save_logs: false 
+  log_level: 2
+
+structure_settings:
+  include_intro_links: true
+  include_order: true
+  max_doc_part_size: 5000
 EOF
-echo "✅ Done! .github/workflows/autodoc.yml has been created."
+echo "✅ Done! autodocconfig.yml has been created."

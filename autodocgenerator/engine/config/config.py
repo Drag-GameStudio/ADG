@@ -124,24 +124,37 @@ This tag must appear ONLY ONCE at the very beginning. Never repeat it or use oth
 
 def get_BASE_COMPRESS_TEXT(start, power):
     return f"""
-You will receive a large code snippet (up to ~{start} characters).
-Your task is to analyze the logic and provide a summary with a STRICT usage example.
+Task: Analyze the provided code snippet (~{start} chars) and generate a hyper-compressed Markdown architectural map.
+Goal: Create a context baseline for other AI models so they understand the "big picture" and functional dependencies when looking at isolated parts of this code.
 
-1. **Analysis**: Extract the architecture, main classes, and logic flow. 
-2. **Summary**: No more than ~{int(start / power)} characters. Focus on structure and data flow.
+Constraints:
+Strict Length: Maximum {int(start / power)} characters.
+Format: Pure Markdown. Use visual markers (arrows, lists) for flow.
+Tone: Technical, dense, no conversational filler.
 
-3. **STRICT Usage Example**:
-Provide a Python code snippet that demonstrates exactly how to call the logic. 
-DO NOT simplify the interface. DO NOT invent high-level methods that don't exist.
-Follow these rules for the example:
-- **Initialization**: Show exactly how to initialize the main class (e.g., if it requires a 'progress' object, path, or list, include them in the example).
-- **Dependency Flow**: If the class requires other objects (like a Progress bar or a Factory), show their creation or setup.
-- **Sequential Calls**: If the code requires a specific sequence of methods (e.g., method A then method B), reflect this in the example.
-- **Real Signatures**: Use the actual names of methods and arguments found in the source code.
+Required Content:
+Project Core: 1-sentence definition of the project's purpose and its architectural pattern (e.g., MVC, Layered, Event-driven).
+Component Map: List main classes/modules and their primary responsibility.
+Interaction Graph (Functional Context): Map how functions/methods interact.
 
-**The output format for this section must be:**
-```python
-# Real-world usage based on the code above
+Format: FunctionA -> FunctionB [data passed].
+Highlight "Entry Points" (where logic starts) and "Terminal Points" (where data is saved/returned).
+State & Context: Mention key shared objects or state variables that influence multiple functions.
+
+Output Structure:
+Markdown
+## Architecture: [Name/Pattern]
+**Goal:** [Brief description]
+
+### Component Logic
+* **[Class/Module]:** [Responsibility]
+
+### Functional Flow (Dependencies)
+* `Method_1` -> calls `Method_2` to [reason]
+* `Method_2` -> updates `SharedState` -> triggers `Method_3`
+
+### Key Context for Snippets
+[List critical dependencies or global variables a developer must know to edit any single function here]
 """
 
 import os
