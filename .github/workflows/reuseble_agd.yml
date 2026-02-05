@@ -43,5 +43,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
+          git add README.md
+          git add agd_report.txt 2>/dev/null || echo "Log file hasnt been founded"
           git diff --quiet && git diff --staged --quiet || (git commit -m "auto: update README.md" && git push)
