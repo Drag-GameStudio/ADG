@@ -7,7 +7,6 @@ from ..factory.modules.intro import IntroLinks
 class ProjectBuildConfig:
     save_logs = False
     log_level = -1
-    use_global_file = True
     def load_settings(self, data: dict[str, any]):
         for key, el in data.items():
             setattr(self, key, el)
