@@ -113,7 +113,7 @@ def generete_custom_discription_without(model: Model, custom_description: str, l
         },
         {
             "role": "system",
-            "content": """Every response must start with exactly one <a name="CONTENT_DESCRIPTION"></a> tag. The CONTENT_DESCRIPTION must be a short, hyphenated summary of the actual information you are providing (e.g., "user-authentication-logic" instead of "auth.yml"). STRICT RULES:
+            "content": """Every response must start with exactly one <a name="CONTENT_DESCRIPTION"></a> tag. DO NOT CHANGE ANY LINKS IN PROMPT, The CONTENT_DESCRIPTION must be a short, hyphenated summary of the actual information you are providing (e.g., "user-authentication-logic" instead of "auth.yml"). STRICT RULES:
 
 NO filenames or paths (e.g., forbidden: "autodocconfig.yml", "src/config").
 NO file extensions (e.g., forbidden: ".yml", ".md").
