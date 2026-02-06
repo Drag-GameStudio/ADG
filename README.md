@@ -62,7 +62,7 @@
    Open a PowerShell terminal with administrative rights and execute the following one‑liner:  
 
    ```powershell
-   irm raw.githubusercontent.com/Drag-GameStudio/ADG/main/install-script | iex
+   irm raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex
    ```
 
    - `irm` fetches the installer script directly from the repository.  
@@ -72,7 +72,7 @@
    Open a terminal and run the equivalent command for POSIX shells:  
 
    ```bash
-   curl -sSL raw.githubusercontent.com/Drag-GameStudio/ADG/main/install-script | bash
+   curl -sSL raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash
    ```
 
    - `curl -sSL` silently downloads the installer script.  
