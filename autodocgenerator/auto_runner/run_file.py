@@ -26,7 +26,7 @@ def gen_doc(project_path: str,
 
 
     manager.generate_code_file()
-    if config.pbc.use_global_file:
+    if structure_settings.use_global_file:
         manager.generate_global_info(compress_power=4)
         
     manager.generete_doc_parts(max_symbols=structure_settings.max_doc_part_size, with_global_file=structure_settings.use_global_file)
