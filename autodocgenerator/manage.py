@@ -86,7 +86,7 @@ class Manager:
         self.logger.log(InfoLog("Starting synchronous documentation generation by parts..."))
         result = gen_doc_parts(full_code_mix,
                                 max_symbols, self.sync_model, self.config.get_project_settings(),
-                                self.config.language, self.progress_bar)
+                                self.config.language, self.progress_bar, global_info=global_file)
             
         self.logger.log(InfoLog("Documentation generation by parts completed."))
 

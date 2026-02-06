@@ -63,10 +63,11 @@ ignore_files:
 build_settings:
   save_logs: false 
   log_level: 2
-  use_global_file: true
+  
 
 structure_settings:
   include_intro_links: true
+  use_global_file: true
   include_order: true
   max_doc_part_size: 5000
 EOF

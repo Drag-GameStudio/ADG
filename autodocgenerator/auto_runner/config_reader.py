@@ -6,6 +6,7 @@ from ..config.config import Config, ProjectBuildConfig
 class StructureSettings:
     include_intro_links = True
     include_order = True
+    use_global_file = True
     max_doc_part_size = 5_000
 
     def load_settings(self, data: dict[str, any]):
