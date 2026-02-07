@@ -69,8 +69,10 @@ build_settings:
 
 structure_settings:
   include_intro_links: true
-  use_global_file: true
+  include_intro_text: true
   include_order: true
+  
+  use_global_file: true
   max_doc_part_size: 5000
 "@
 $configContent | Out-File -FilePath autodocconfig.yml -Encoding utf8

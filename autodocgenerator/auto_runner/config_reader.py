@@ -8,6 +8,7 @@ class StructureSettings:
     include_order = True
     use_global_file = True
     max_doc_part_size = 5_000
+    include_intro_text = True
 
     def load_settings(self, data: dict[str, any]):
         for key, el in data.items():

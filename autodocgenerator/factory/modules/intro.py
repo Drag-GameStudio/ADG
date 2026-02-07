@@ -13,5 +13,5 @@ class IntroLinks(BaseModule):
 
 class IntroText(BaseModule):
     def generate(self, info: dict, model: Model):
-        intro = get_introdaction(info.get("global_data"), model, info.get("language"))
+        intro = get_introdaction(info.get("global_info"), model, info.get("language"))
         return intro

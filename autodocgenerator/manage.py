@@ -98,11 +98,14 @@ class Manager:
     def factory_generate_doc(self, doc_factory: DocFactory):
         curr_doc = self.read_file_by_file_key("output_doc")
         code_mix = self.read_file_by_file_key("code_mix")
+        global_info = self.read_file_by_file_key("global_info")
+
 
         info = {
             "language": self.config.language,
             "full_data": curr_doc,
-            "code_mix": code_mix
+            "code_mix": code_mix,
+            "global_info": global_info
         }
 
         self.logger.log(InfoLog(f"""Starting factory documentation generation \n

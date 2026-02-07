@@ -1,7 +1,7 @@
 from autodocgenerator.manage import Manager
 from autodocgenerator.factory.base_factory import DocFactory
 from autodocgenerator.factory.modules.general_modules import CustomModule, CustomModuleWithOutContext
-from autodocgenerator.factory.modules.intro import IntroLinks
+from autodocgenerator.factory.modules.intro import IntroLinks, IntroText
 from autodocgenerator.ui.progress_base import ConsoleGtiHubProgress
 from autodocgenerator.auto_runner.config_reader import Config, read_config, StructureSettings
 from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel
@@ -34,8 +34,17 @@ def gen_doc(project_path: str,
     if structure_settings.include_order:
         manager.order_doc()
     
+    additionals_modules = []
+
+    if structure_settings.include_intro_text:
+        additionals_modules.append((IntroText()))
+
+
     if structure_settings.include_intro_links:
-        manager.factory_generate_doc(DocFactory(IntroLinks()))
+        additionals_modules.append(IntroLinks())
+
+    
+    manager.factory_generate_doc(DocFactory(*additionals_modules))
     manager.clear_cache()
 
     return manager.read_file_by_file_key("output_doc")
