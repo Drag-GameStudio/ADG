@@ -52,8 +52,11 @@ class Manager:
             os.mkdir(cache_path)
 
     def read_file_by_file_key(self, file_key: str):
-        with open(self.get_file_path(file_key), "r", encoding="utf-8") as file:
-            data = file.read()
+        try:
+            with open(self.get_file_path(file_key), "r", encoding="utf-8") as file:
+                data = file.read()
+        except:
+            data = None
         return data
 
     def get_file_path(self, file_key: str):
