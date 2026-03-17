@@ -16,7 +16,7 @@ def extract_links_from_start(chunks):
     return links
 
 
-def split_text_by_anchors(text):
+def split_text_by_anchors(text) -> dict | None:
     pattern = r'(?=<a name=["\']?[^"\'>\s]{6,200}["\']?></a>)'
     chunks = re.split(pattern, text)
     result_chanks = [chunk.strip() for chunk in chunks if chunk.strip()]
@@ -31,14 +31,14 @@ def split_text_by_anchors(text):
     return result
 
 
-def get_order(model: Model, chanks: dict[str, str]):
+def get_order(model: Model, chanks: dict[str, str]) -> list:
     logger = BaseLogger()
     logger.log(InfoLog("Start ordering"))
     logger.log(InfoLog(f"chanks name: {list(chanks.keys())}", level=1))
     logger.log(InfoLog(f"chanks: {chanks}", level=2))
 
 
-    prompt = [
+    prompt = [ #TODO tranport promt to prompts
         {
             "role": "user",
             "content": f"""Sort the following titles semantically (group related topics together). 
@@ -55,12 +55,9 @@ def get_order(model: Model, chanks: dict[str, str]):
     new_result = list(map(lambda x: x.strip(), result.split(",")))
     logger.log(InfoLog(f"End ordering result list {new_result}"))
 
-    order_output = ""
-    for el in new_result:
-        order_output += f"{chanks.get(el)} \n"
-        logger.log(InfoLog(f"Add to {chanks.get(el)}", level=2))
+    
         
-    return order_output
+    return new_result
 
 
 if __name__ == "__main__":
