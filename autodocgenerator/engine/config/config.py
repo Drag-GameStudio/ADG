@@ -176,6 +176,8 @@ from dotenv import load_dotenv
 load_dotenv() 
 GROQ_API_KEYS = os.getenv("GROQ_API_KEYS", "").split(",")
 GOOGLE_EMBEDDING_API_KEY = os.getenv("GOOGLE_EMBEDDING_API_KEY", "")
+GITHUB_EVENT_NAME = os.getenv("GITHUB_EVENT_NAME", "")
+
 
 if len(GROQ_API_KEYS) == 0:
     raise Exception("API_KEY is not set in environment variables.")

@@ -43,6 +43,7 @@ ignore_files:
 build_settings:
   save_logs: false 
   log_level: 2
+  threshold_changes: 20000
 
 structure_settings:
   include_intro_links: true

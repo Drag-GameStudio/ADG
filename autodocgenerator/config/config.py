@@ -7,6 +7,7 @@ from typing import Any
 class ProjectBuildConfig:
     save_logs = False
     log_level = -1
+    threshold_changes = 20000
     def load_settings(self, data: dict[str, Any]):
         for key, el in data.items():
             setattr(self, key, el)

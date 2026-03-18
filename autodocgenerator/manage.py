@@ -20,7 +20,8 @@ class Manager:
         "global_info": "global_info.md",
         "logs": "report.txt",
         "output_doc": "output_doc.md",
-        "info": "info.json"
+        "info": "info.json",
+        ".auto_doc_cache_file": ".auto_doc_cache_file.json"
     }
 
 
@@ -43,7 +44,12 @@ class Manager:
         self.logger = BaseLogger()
         self.logger.set_logger(FileLoggerTemplate(self.get_file_path("logs"), log_level=self.config.pbc.log_level))
 
-        cache_path = os.path.join(self.project_directory, self.CACHE_FOLDER_NAME)
+        self.init_folder_system(self.project_directory)
+        
+
+    @classmethod
+    def init_folder_system(cls, project_directory):
+        cache_path = os.path.join(project_directory, cls.CACHE_FOLDER_NAME)
 
         if not os.path.isdir(cache_path):
             os.mkdir(cache_path)
@@ -56,6 +62,7 @@ class Manager:
             data = None
         return data
 
+    
     def get_file_path(self, file_key: str):
         return os.path.join(self.project_directory, self.CACHE_FOLDER_NAME, self.FILE_NAMES[file_key]) 
 

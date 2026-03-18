@@ -1,4 +1,4 @@
-from autodocgenerator.manage import Manager, split_text_by_anchors, DocContent
+from autodocgenerator.manage import Manager
 from autodocgenerator.factory.base_factory import DocFactory
 from autodocgenerator.factory.modules.general_modules import CustomModule, CustomModuleWithOutContext
 from autodocgenerator.factory.modules.intro import IntroLinks, IntroText, BaseModule
@@ -7,6 +7,7 @@ from autodocgenerator.auto_runner.config_reader import Config, read_config, Stru
 from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel
 from autodocgenerator.engine.config.config import GROQ_API_KEYS, GOOGLE_EMBEDDING_API_KEY
 from autodocgenerator.postprocessor.embedding import Embedding
+from autodocgenerator.auto_runner.check_git_status import check_git_status
 
 
 def gen_doc(project_path: str, 
@@ -17,6 +18,7 @@ def gen_doc(project_path: str,
     sync_model = GPTModel(GROQ_API_KEYS, use_random=False)
     embedding_model = Embedding(GOOGLE_EMBEDDING_API_KEY)
     
+    print(check_git_status(10, None))
     
     manager = Manager(
         project_path, 
@@ -56,12 +58,12 @@ def gen_doc(project_path: str,
     return manager.doc_info.doc.get_full_doc()
 
 if __name__ == "__main__":
-    with open(r"C:\Users\huina\Python Projects\Impotant projects\Libs\Enigma\autodocconfig.yml", "r", encoding="utf-8") as file:
+    with open("autodocconfig.yml", "r", encoding="utf-8") as file:
         config_data = file.read()
     config, custom_modules, structure_settings = read_config(config_data)
 
     output_doc = gen_doc(
-        r"C:\Users\huina\Python Projects\Impotant projects\Libs\Enigma\sealpy",
+        ".",
         config,
         custom_modules,
         structure_settings
