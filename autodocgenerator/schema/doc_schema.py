@@ -1,8 +1,14 @@
 from pydantic import BaseModel, Field
 import random
+from ..postprocessor.embedding import Embedding
+from typing import Any
 
 class DocContent(BaseModel):
     content: str
+    embedding_vector: list | None = None
+
+    def init_embedding(self, embedding_model: Embedding):
+        self.embedding_vector = embedding_model.get_vector(self.content)
 
 class DocHeadSchema(BaseModel):
     content_orders: list[str] = []

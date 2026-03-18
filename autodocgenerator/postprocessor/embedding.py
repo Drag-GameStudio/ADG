@@ -13,7 +13,7 @@ def bubble_sort_by_dist(arr: list) -> list:
     return arr
 
 def get_len_btw_vectors(vector1, vector2) -> float:
-    diff = np.linalg.norm(vector1, vector2)
+    diff = np.linalg.norm(vector1 - vector2)
     return float(diff)
 
 def sort_vectors(root_vector, other: dict[str, Any]) -> list[str]:
@@ -32,7 +32,7 @@ class Embedding:
     def __init__(self, api_key: str):
         self.client = genai.Client(api_key=api_key)
 
-    def get_vector(self, prompt: str):
+    def get_vector(self, prompt: str) -> list:
         text_response = self.client.models.embed_content(
             model='gemini-embedding-2-preview',
             contents=prompt,
@@ -42,7 +42,7 @@ class Embedding:
         if text_response.embeddings is None:
             raise Exception("promblem with embedding")
 
-        return np.array(list(text_response.embeddings[0])[0][1])
+        return list(text_response.embeddings[0])[0][1]
     
 
 

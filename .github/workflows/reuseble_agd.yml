@@ -3,7 +3,9 @@ name: Create Documentation
 on:
   workflow_call:
     secrets:
-      GROCK_API_KEY:
+      GROQ_API_KEYS:
+        required: true
+      GOOGLE_EMBEDDING_API_KEY:
         required: true
 
 jobs:
@@ -26,10 +28,11 @@ jobs:
       - name: Run doc gen
         run: python -m autodocgenerator.auto_runner.run_file
         env:
-          API_KEY: ${{ secrets.GROCK_API_KEY }} 
+          GROQ_API_KEYS: ${{ secrets.GROQ_API_KEYS }} 
+          GOOGLE_EMBEDDING_API_KEY: ${{ secrets.GOOGLE_EMBEDDING_API_KEY }}
           PYTHONUNBUFFERED: "1"
-          FORCE_COLOR: "1"        # Принудительно включаем цвета Rich
-          TERM: "xterm-256color"  # Эмулируем продвинутый терминал
+          FORCE_COLOR: "1"        
+          TERM: "xterm-256color"  
 
       - name: Copy output to README
         run: cat .auto_doc_cache/output_doc.md > README.md

@@ -10,7 +10,7 @@ from .postprocessor.sorting import get_order, split_text_by_anchors
 from .config.config import Config
 from .schema.doc_schema import DocContent, DocHeadSchema, DocInfoSchema
 from .postprocessor.embedding import Embedding
-
+import json
 
 class Manager:
     CACHE_FOLDER_NAME = ".auto_doc_cache"
@@ -19,7 +19,8 @@ class Manager:
         "code_mix": "code_mix.txt",
         "global_info": "global_info.md",
         "logs": "report.txt",
-        "output_doc": "output_doc.md"
+        "output_doc": "output_doc.md",
+        "info": "info.json"
     }
 
 
@@ -128,6 +129,10 @@ class Manager:
 
         self.progress_bar.update_task()
 
+    def create_embedding_layer(self) -> None:
+        for el in self.doc_info.doc.parts:
+            self.doc_info.doc.parts[el].init_embedding(self.embedding_model)
+
     def order_doc(self):
         result = get_order(self.llm_model, self.doc_info.doc.content_orders)
         self.doc_info.doc.content_orders = result
@@ -139,3 +144,6 @@ class Manager:
     def save(self) -> None:
         with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
             file.write(self.doc_info.doc.get_full_doc())
+
+        with open(self.get_file_path("info"), "w", encoding="utf-8") as file:
+            file.write(self.doc_info.model_dump_json())

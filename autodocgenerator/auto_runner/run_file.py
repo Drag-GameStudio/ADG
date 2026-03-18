@@ -49,18 +49,19 @@ def gen_doc(project_path: str,
 
     
     manager.factory_generate_doc(DocFactory(*additionals_modules, with_splited=False), to_start=True)
+    manager.create_embedding_layer()
     manager.clear_cache()
 
     manager.save()
     return manager.doc_info.doc.get_full_doc()
 
 if __name__ == "__main__":
-    with open("autodocconfig.yml", "r", encoding="utf-8") as file:
+    with open(r"C:\Users\huina\Python Projects\Impotant projects\Libs\Enigma\autodocconfig.yml", "r", encoding="utf-8") as file:
         config_data = file.read()
     config, custom_modules, structure_settings = read_config(config_data)
 
     output_doc = gen_doc(
-        ".",
+        r"C:\Users\huina\Python Projects\Impotant projects\Libs\Enigma\sealpy",
         config,
         custom_modules,
         structure_settings
