@@ -9,6 +9,7 @@ from .ui.logging import BaseLogger, InfoLog, ErrorLog, WarningLog, FileLoggerTem
 from .postprocessor.sorting import get_order, split_text_by_anchors
 from .config.config import Config
 from .schema.doc_schema import DocContent, DocHeadSchema, DocInfoSchema
+from .postprocessor.embedding import Embedding
 
 
 class Manager:
@@ -25,6 +26,7 @@ class Manager:
     def __init__(self, project_directory: str, 
                  config: Config, 
                  llm_model: Model,
+                 embedding_model: Embedding,
                  progress_bar: BaseProgress = BaseProgress()):
         
     
@@ -35,6 +37,7 @@ class Manager:
         self.progress_bar = progress_bar
 
         self.llm_model = llm_model
+        self.embedding_model = embedding_model
 
         self.logger = BaseLogger()
         self.logger.set_logger(FileLoggerTemplate(self.get_file_path("logs"), log_level=self.config.pbc.log_level))

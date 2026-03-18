@@ -5,7 +5,8 @@ from autodocgenerator.factory.modules.intro import IntroLinks, IntroText, BaseMo
 from autodocgenerator.ui.progress_base import ConsoleGtiHubProgress
 from autodocgenerator.auto_runner.config_reader import Config, read_config, StructureSettings
 from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel
-from autodocgenerator.engine.config.config import API_KEYS
+from autodocgenerator.engine.config.config import GROQ_API_KEYS, GOOGLE_EMBEDDING_API_KEY
+from autodocgenerator.postprocessor.embedding import Embedding
 
 
 def gen_doc(project_path: str, 
@@ -13,12 +14,15 @@ def gen_doc(project_path: str,
             custom_modules: list[BaseModule], 
             structure_settings: StructureSettings) -> str:
     
-    sync_model = GPTModel(API_KEYS, use_random=False)
+    sync_model = GPTModel(GROQ_API_KEYS, use_random=False)
+    embedding_model = Embedding(GOOGLE_EMBEDDING_API_KEY)
+    
     
     manager = Manager(
         project_path, 
         config=config,
         llm_model=sync_model,
+        embedding_model=embedding_model,
         progress_bar=ConsoleGtiHubProgress(), 
     )
   
