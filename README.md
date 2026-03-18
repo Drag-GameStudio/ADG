@@ -1,1426 +1,1226 @@
-**Project Title**  
-Auto‑Doc Generator
+**Project Title:** Auto Doc Generator - Orchestrated Pipeline
 
----
+**Project Goal:** 
+The Auto Doc Generator project aims to automate the process of creating project documentation by leveraging Large Language Models (LLMs) for source code analysis and post-processing the output. This innovative approach streamlines the documentation process, reducing manual effort and enhancing overall efficiency. By automating project documentation, this software solves the problem of tedious and time-consuming manual documentation, allowing developers to focus on core development tasks.
 
-### 1. Project Goal  
-To automate the creation of comprehensive, Markdown‑style documentation for any codebase.  
-Given a repository, the tool asks a Groq LLM to generate natural‑language sections, optionally enriches those sections with vector embeddings, and emits a single, ready‑to‑publish document. It supports custom sections, ordering, and fine‑grained control over the output through a YAML configuration file.
+**Core Logic & Principles:**
+The Auto Doc Generator operates on a layered architecture, comprising multiple components that work in harmony to produce high-quality documentation. The pipeline is orchestrated by the `Manager` component, which holds shared state and configuration. The process begins with the `CodeMix` component, which preprocesses source code into a unified string. This output is then fed into the `DocFactory` component, which utilizes LLMs to generate documentation. The `Embedding` component wraps the generated documentation parts with vector embeddings, while the `Config` component stores global settings and cache metadata. The project employs various technologies, including LLMs, vector embeddings, and caching mechanisms, to ensure efficient and accurate documentation generation.
 
----
+**Key Features:**
+* Automated project documentation generation
+* Utilization of Large Language Models (LLMs) for source code analysis
+* Post-processing of LLM output for enhanced documentation quality
+* Vector embedding for document parts
+* Caching mechanism for intermediate artifacts
+* Support for multiple entry points and terminal points
+* Layered architecture with clear component boundaries
 
-### 2. Core Logic & Principles  
-| Layer | Responsibility | How It Works |
-|-------|-----------------|--------------|
-| **CLI / UI** | Entry point (`run_file.py`) and progress display (`ConsoleGitHubProgress`) | Parses arguments, loads the configuration file (`autodocconfig.yml`), and starts a `Manager`. |
-| **Configuration** | `Config`, `StructureSettings`, and custom module imports | Defines ignore lists, language, metadata, chunk sizes, and which introductory modules to render. |
-| **Manager** | Orchestrates the whole pipeline | 1️⃣ Pre‑processes source code: splits and compresses into ≤ *max_symbols* chunks. 2️⃣ Uses the LLM wrapper (`GPTModel`) to summarise or render each chunk. 3️⃣ Passes the resulting text through a `DocFactory` that creates an ordered list of `BaseModule` subclasses, each rendering a Markdown fragment into a shared `DocSchema`. 4️⃣ Optionally produces embeddings with the Google Gemini API. 5️⃣ Re‑orders and finalises the document before writing `output_doc.md` or returning the string. |
-| **Factory** | `DocFactory` | Instantiates `BaseModule` objects (e.g., `IntroText`, `IntroLinks`, user‑supplied modules) and calls their `render()` methods in a defined sequence. |
-| **LLM Layer** | `GPTModel` / `AsyncGPTModel` | Thin wrapper around the Groq API that handles key rotation, request batching, and history‑based conversation context. |
-| **Post‑processing** | Embedding, semantic re‑ordering, anchor splitting | Stores 768‑dim vectors per doc part and can reorder sections based on semantic similarity. |
-| **Schema** | `DocSchema` | A typed in‑memory representation of the document (headers, parts, global sections) that all modules manipulate before final output. |
-| **Utilities** | Splitters, compressors, settings helpers | Deterministic text chunking (`split_text_by_anchors`) and iterative LLM compression (`compress_to_one`). |
-
-The architecture follows a **Layered + Factory** pattern: UI → Service (Manager) → Model → Post‑processor, ensuring that every component has a single, well‑defined responsibility and can be swapped independently.
-
----
-
-### 3. Key Features  
-
-* **CLI and API Entry Points** – run the generator from the command line or import `gen_doc` in Python code.  
-* **Configurable Workflow** – `autodocconfig.yml` controls ignore patterns, language, metadata, chunk size, and custom module injection.  
-* **Dynamic Sectioning** – `DocFactory` creates any number of markdown sections; users can add new `BaseModule` subclasses for bespoke documentation blocks.  
-* **LLM‑Driven Content** – utilizes Groq for natural‑language generation; supports both synchronous and asynchronous operation.  
-* **Embedding Layer** – optional vector embeddings via Google Gemini API for semantic indexing or future search features.  
-* **Compression and Chunking** – source files are split into manageable chunks, optionally compressed using iterative LLM summarisation.  
-* **Progress Reporting** – Rich progress bars (`ConsoleGitHubProgress`) provide real‑time feedback during long runs.  
-* **Extensibility** – easy addition of new modules, change of LLM provider, or disabling embeddings without touching the core pipeline.  
-
----
-
-### 4. Dependencies  
-
-| Category | Package / Tool | Purpose |
-|----------|----------------|---------|
-| **LLM** | `groq` (Python SDK) | Communicates with Groq APIs. |
-| **Embeddings** | `googleai` (or relevant Google Gemini SDK) | Generates 768‑dim vector embeddings. |
-| **CLI/Progress** | `rich`, `typer` | Rich console output and progress bars. |
-| **Configuration** | `pyyaml` | Reads `autodocconfig.yml`. |
-| **Data Structures** | `pydantic` / `typing` | Defines schema types (`DocSchema`, `DocContent`, etc.). |
-| **Utilities** | `tqdm`, `textwrap` | Optional progress helpers and text formatting. |
-| **Environment** | `dotenv` (optional) | Loads API keys from `.env`. |
-
-> **Environment Variables**  
-> * `GROQ_API_KEYS` – comma‑separated list of Groq API keys.  
-> * `GOOGLE_EMBEDDING_API_KEY` – key for the Google Gemini embedding endpoint.
-
-> **Python ≥ 3.10** is required for type annotations and pattern matching used in the code.
-
----
-
-**In short**, Auto‑Doc Generator is a modular, LLM‑powered tool that turns raw source code into a polished, Markdown README‑style document, all driven by a clear, layered architecture and a user‑configurable pipeline.
+**Dependencies:**
+* Large Language Models (LLMs) APIs (e.g., OpenAI, GROQ)
+* Vector embedding libraries
+* Caching libraries
+* Python 3.x (for script execution)
+* Required libraries: `ui.logging`, `ui.progress_base`, `engine.models`
+* Environment variables: `OPENAI_API_KEY`, `GROQ_API_KEY` (for LLM API access)
 ## Executive Navigation Tree
+* 📂 Project Settings
+  * [Project Settings Class](#project-settings-class)
+  * [Project Settings Attributes](#project-settings-attributes)
+  * [Project Settings Methods](#project-settings-methods)
+  * [Project Info](#project-info)
+  * [Project Metadata](#project-metadata)
+  * [Project Overview](#project-overview)
+* ⚙️ Installation and Configuration
+  * [Installation Workflow Description](#installation-workflow-description)
+  * [Install Script](#install-script)
+  * [Current Code Base](#current-code-base)
+  * [Config Class](#config-class)
+  * [Autodoc Config Structure and Options](#autodocconfig-structure-and-options)
+  * [Read Config](#read-config)
+* 📄 Documentation Generation
+  * [Data Contract](#data-contract)
+  * [Doc Schema](#doc-schema)
+  * [Code Example Doc Schema](#code-example-doc-schema)
+  * [Gen Doc](#gen-doc)
+  * [Gen Doc Parts Functionality](#gen-doc-parts-functionality)
+  * [Gen Doc Parts Parameters](#gen-doc-parts-parameters)
+  * [Gen Doc Parts Return Value](#gen-doc-parts-return-value)
+  * [Code Example Gen Doc Parts](#code-example-gen-doc-parts)
+  * [Write Docs by Parts Functionality](#write-docs-by-parts-functionality)
+  * [Write Docs by Parts Parameters](#write-docs-by-parts-parameters)
+  * [Write Docs by Parts Return Value](#write-docs-by-parts-return-value)
+  * [Code Example Write Docs by Parts](#code-example-write-docs-by-parts)
+* 📊 Code Examples and Utilities
+  * [Autodoc Generator Project Documentation](#autodocgenerator-project-documentation)
+  * [Code Example](#code-example)
+  * [Code Example 2](#code-example-2)
+  * [Code Example 3](#code-example-3)
+  * [Code Example Split Data](#code-example-split-data)
+  * [Code Example Logging](#code-example-logging)
+  * [Code Example Progress Bar](#code-example-progress-bar)
+* 📈 Git and Version Control
+  * [Check Git Status](#check-git-status)
+* 🤖 AI and Machine Learning
+  * [GPT Model Class](#gpt-model-class)
+  * [Manager Class](#manager-class)
+  * [Manager Class Usage](#manager-class-usage)
+* ⚖️ Compression and Data Processing
+  * [Compressor Component](#compressor-component)
+  * [Compress Function](#compress-function)
+  * [Compress and Compare Function](#compress-and-compare-function)
+  * [Compress to One Function](#compress-to-one-function)
+  * [Split Data Function](#split-data-function)
+  * [Split Data Parameters](#split-data-parameters)
+  * [Split Data Return Value](#split-data-return-value)
+  * [Split Data Functionality](#split-data-functionality)
+* 📊 Technical Logic and Flow
+  * [Technical Logic Flow](#technical-logic-flow)
+  * [Functional Flow](#functional-flow)
+  * [Component Logic](#component-logic)
+  * [Key Context for Snippets](#key-context-for-snippets)
+* 📝 Logging and Progress
+  * [Logger Functionality](#logger-functionality)
+  * [Progress Bar Functionality](#progress-bar-functionality)
+<a name="project-settings-class"></a> Project Settings Class
+The `ProjectSettings` class is used to store project-specific settings, including the prompt and other configuration.
 
-- 📘 Overview
-  * [module-initializer](#module-initializer)
-  * [project-context](#project-context)
-  * [code-organization](#code-organization)
-  * [key-components-and-responsibilities](#key-components-and-responsibilities)
-  * [functional-flow](#functional-flow)
-  * [technical-logic-flow](#technical-logic-flow)
-  * [critical-constraints](#critical-constraints)
-  * [next-steps](#next-steps)
-  * [CONTENT_DESCRIPTION](#CONTENT_DESCRIPTION)
+###
+<a name="project-settings-attributes"></a> Project Settings Attributes
 
-- ⚙️ Configuration
-  * [pyproject](#pyproject)
-  * [data-contract](#data-contract)
-  * [gpt-model-documentation](#gpt-model-documentation)
-  * [async-gpt-model-documentation](#async-gpt-model-documentation)
-  * [module-documentation](#module-documentation)
-  * [base-module](#base-module)
-  * [doc-factory](#doc-factory)
-  * [schema-doc_schema](#schema-doc_schema)
-  * [autodocconfig-structure-explanation](#autodocconfig-structure-explanation)
-  * [custom-module](#custom-module)
-  * [custom-module-without-context](#custom-module-without-context)
-  * [postprocessor-custom_intro](#postprocessor-custom_intro)
-  * [custom-intro-utilities](#custom-intro-utilities)
-  * [example-usage](#example-usage)
-  * [integration-highlights](#integration-highlights)
-  * [intro-links](#intro-links)
-  * [intro-text](#intro-text)
+* `project_name`: The name of the project
+* `info`: A dictionary of additional project information
 
-- 🧩 Manager
-  * [manager-class](#manager-class)
-  * [manager-parameters](#manager-parameters)
-  * [manager-methods](#manager-methods)
-  * [manager-attributes](#manager-attributes)
-  * [manager-data-contract](#manager-data-contract)
-  * [manager-data-contract-extensions](#manager-data-contract-extensions)
-  * [manager-class-methods](#manager-class-methods)
+###
+<a name="project-settings-methods"></a> Project Settings Methods
 
-- 🔧 Preprocessor
-  * [preprocessor-code-mix-module](#preprocessor-code-mix-module)
-  * [preprocessor-code-mix-class](#preprocessor-code-mix-class)
-  * [preprocessor-code-mix-should-ignore](#preprocessor-code-mix-should-ignore)
-  * [preprocessor-code-mix-build-repo-content](#preprocessor-code-mix-build-repo-content)
-  * [preprocessor-code-mix-ignore-list](#preprocessor-code-mix-ignore-list)
-  * [preprocessor-code-mix-main](#preprocessor-code-mix-main)
-  * [preprocessor-code-mix-data-contract](#preprocessor-code-mix-data-contract)
-  * [preprocessor-settings](#preprocessor-settings)
+* `add_info(key, value)`: Adds a new key-value pair to the `info` dictionary
+* `prompt`: Returns the project prompt, which includes the project name and additional information
 
-- 📦 Postprocessor
-  * [postprocessor-embedding](#postprocessor-embedding)
-  * [postprocessor-sorting-module](#postprocessor-sorting-module)
-  * [postprocessor-sorting-main](#postprocessor-sorting-main)
-  * [postprocessor-sorting-usage](#postprocessor-sorting-usage)
-  * [sorting-extract-links-from-start](#sorting-extract-links-from-start)
-  * [sorting-split-text-by-anchors](#sorting-split-text-by-anchors)
-  * [sorting-get-order](#sorting-get-order)
+###
+<a name="project-info"></a> Project Info
+Project Name: Auto Doc Generator 
+Project Parameters: 
+- global_idea: This project was created to help developers make documentations for them projects 
+- target_audience: Developers
+- tech_stack: Python, LLMs, Markdown
 
-- 🛠️ Utilities
-  * [embedding-helpers](#embedding-helpers)
-  * [embedding-class](#embedding-class)
-  * [compressor-module](#compressor-module)
-  * [compressor-compress](#compressor-compress)
-  * [compressor-compress-and-compare](#compressor-compress-and-compare)
-  * [compressor-compress-to-one](#compressor-compress-to-one)
-  * [spliter-module](#spliter-module)
-  * [spliter-split-data](#spliter-split-data)
-  * [spliter-write_docs_by_parts](#spliter-write_docs_by_parts)
-  * [spliter-gen_doc_parts](#spliter-gen_doc_parts)
+##
+<a name="project-metadata"></a> Project Metadata
+The project metadata is defined in the `pyproject.toml` file. 
 
-- ⚙️ Settings & Logging
-  * [settings-projectsettings](#settings-projectsettings)
-  * [logging-infrastructure](#logging-infrastructure)
-  * [progress-tracking](#progress-tracking)
+### Project Information
+* **Name:** autodocgenerator
+* **Version:** 1.0.5.0
+* **Description:** This Project helps you to create docs for your projects
+* **Authors:** dima-on <sinica911@gmail.com>
+* **License:** MIT
+* **Readme:** README.md
+* **Python Version:** >=3.11,<4.0
 
-- 📦 Installation
-  * [install-ps1](#install-ps1)
-  * [install-bash](#install-bash)
-<a name="module-initializer"></a>
-## autodocgenerator Module Initializer  
+### Dependencies
+The project dependencies are listed in the `dependencies` section of the `pyproject.toml` file. Some of the notable dependencies include:
+* annotated-types
+* pyyaml
+* anyio
+* CacheControl
+* certifi
+* charset-normalizer
+* cleo
+* colorama
+* crashtest
+* distlib
+* distro
+* dulwich
+* fastjsonschema
+* filelock
+* findpython
+* google-auth
+* google-genai
+* groq
+* h11
+* httpcore
+* httpx
+* idna
+* installer
+* jaraco.classes
+* jaraco.context
+* jaraco.functools
+* jiter
+* keyring
+* markdown-it-py
+* mdurl
+* more-itertools
+* msgpack
+* openai
+* packaging
+* pbs-installer
+* pkginfo
+* platformdirs
+* pyasn1
+* pyasn1_modules
+* pydantic
+* pydantic_core
+* Pygments
+* pyproject_hooks
+* python-dotenv
+* pywin32-ctypes
+* RapidFuzz
+* requests
+* requests-toolbelt
+* rich
+* rich_progress
+* rsa
+* shellingham
+* sniffio
+* tenacity
+* tomlkit
+* tqdm
+* trove-classifiers
+* typing_extensions
+* typing-inspection
+* urllib3
+* virtualenv
+* websockets
+* zstandard
+* numpy
 
-**Functional Role**  
-Bootstraps the *Auto‑Doc Generator* library on import. Prints a styled ASCII banner and exposes the central logging singleton (`logger`) for the entire package.
+### Build System
+The build system is defined in the `build-system` section of the `pyproject.toml` file. 
+* **Requires:** poetry-core>=2.0.0
+* **Build Backend:** poetry.core.masonry.api
 
-**Visible Interactions**  
-- Calls `BaseLogger` from `autodocgenerator.ui.logging`.  
-- Invokes `BaseLoggerTemplate` to configure log handlers.  
-- No I/O beyond stdout; does not touch the filesystem or external services.
+##
+<a name="project-overview"></a> Project Overview
+The AutoDocGenerator project is designed to automate the process of generating documentation for source code repositories. The project uses a layered architecture, with components responsible for pre-processing, engine, post-processing, and utility functions.
 
-**Logic Flow**  
-1. Define `_print_welcome()` – builds colour constants, assembles an ASCII logo, prints banner and version line.  
-2. Immediately execute `_print_welcome()` at import time.  
-3. Import `BaseLogger`, `BaseLoggerTemplate`, `InfoLog`, `ErrorLog`, `WarningLog`.  
-4. Instantiate `logger = BaseLogger()`.  
-5. Attach a template via `logger.set_logger(BaseLoggerTemplate())`.  
-6. Export `logger` (module‑level singleton) for downstream modules.
+###
+<a name="installation-workflow-description"></a>
+The installation process utilizes two scripts, install.ps1 for PowerShell and install.sh for Linux-based systems, which are downloaded and executed directly from a GitHub repository. To install using PowerShell, the command `irm https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex` is used, while Linux-based systems rely on `curl -sSL https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash`. Additionally, to successfully implement this workflow within GitHub Actions, a secret variable named `GROCK_API_KEY` must be defined, containing the user's API key from the Grock documentation found at https://grockdocs.com. This API key is crucial for the installation process to function correctly, enabling the interaction with the Grock service as outlined in their documentation. 
 
-**Data Contract**  
+Here is a step-by-step guide on how to accomplish this:
 
+1. **For PowerShell Users:**
+   - Open PowerShell.
+   - Use the command `irm https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex` to download and execute the install script.
+
+2. **For Linux-Based Systems:**
+   - Open your terminal.
+   - Run the command `curl -sSL https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash` to download and execute the installation script.
+
+3. **Configuring GitHub Actions:**
+   - Navigate to your GitHub repository.
+   - Go to Settings > Actions > Secrets.
+   - Click on "New repository secret".
+   - Name the secret `GROCK_API_KEY`.
+   - Enter your Grock API key as the value.
+   - Click "Add secret" to save.
+
+By following these steps and ensuring the `GROCK_API_KEY` secret is correctly set up in your GitHub repository, you will have successfully set up the installation workflow using the provided scripts and enabled integration with the Grock service.
+<a name="install-script"></a> Install Script
+The install script is defined in the `install.sh` file. 
+### Script Functionality
+The script creates the following files and directories:
+* `.github/workflows/autodoc.yml`
+* `autodocconfig.yml`
+
+### Autodoc Configuration
+The `autodocconfig.yml` file contains the following configuration settings:
+* **Project Name:** The name of the project, which is set to the basename of the current working directory.
+* **Language:** The language of the project, which is set to "en".
+* **Ignore Files:** A list of files and directories to ignore, including:
+	+ Python bytecode and cache files
+	+ Environment and IDE settings files
+	+ Database and binary data files
+	+ Log and coverage report files
+	+ Version control and asset files
+	+ Miscellaneous files
+* **Build Settings:**
+	+ **Save Logs:** A boolean value indicating whether to save logs, which is set to `false`.
+	+ **Log Level:** An integer value representing the log level, which is set to `2`.
+* **Structure Settings:**
+	+ **Include Intro Links:** A boolean value indicating whether to include intro links, which is set to `true`.
+	+ **Include Intro Text:** A boolean value indicating whether to include intro text, which is set to `true`.
+	+ **Include Order:** A boolean value indicating whether to include order, which is set to `true`.
+	+ **Use Global File:** A boolean value indicating whether to use a global file, which is set to `true`.
+	+ **Max Doc Part Size:** An integer value representing the maximum size of a doc part, which is set to `5000`.
+
+##
+<a name="current-code-base"></a> Current Code Base
+The current code base includes the following files:
+- `autodocgenerator/ui/logging.py`: This file contains classes for logging, including `BaseLog`, `ErrorLog`, `WarningLog`, `InfoLog`, `BaseLoggerTemplate`, `FileLoggerTemplate`, and `BaseLogger`.
+- `autodocgenerator/ui/progress_base.py`: This file contains classes for progress bars, including `BaseProgress`, `LibProgress`, `ConsoleTask`, and `ConsoleGtiHubProgress`.
+- `install.ps1`: This file is a PowerShell script that creates a directory and files for GitHub workflows and configurations.
+
+##
+<a name="config-class"></a>
+## Config Class
+The `Config` class is responsible for storing and managing the configuration settings for the Auto Doc Generator project.
+
+### Parameters
 | Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `_print_welcome` | function → `None` | Side‑effect: prints banner | Executes on import; no return. |
-| `logger` | `BaseLogger` instance | Central logging hub | Shared across package; configured with `BaseLoggerTemplate`. |
-| `BaseLogger`, `BaseLoggerTemplate` | classes (from `ui.logging`) | Provide logging API | Imported but not instantiated beyond `logger`. |
-| `InfoLog`, `ErrorLog`, `WarningLog` | classes | Log‑level helpers | Imported for external use; not instantiated here. |
+| --- | --- | --- | --- |
+| `ignore_files` | `list[str]` | Input | List of file patterns to ignore |
+| `language` | `str` | Input | Language of the project |
+| `project_name` | `str` | Input | Name of the project |
+| `project_additional_info` | `dict` | Input | Additional information about the project |
+| `pbc` | `ProjectBuildConfig` | Input | Project build configuration |
 
-> **Assumption** – The banner display is purely cosmetic; it does not affect documentation generation logic.  
+### Technical Logic Flow
+1. Initialize the `Config` object with default values.
+2. Set the language of the project using the `set_language` method.
+3. Set the project name using the `set_project_name` method.
+4. Add additional information about the project using the `add_project_additional_info` method.
+5. Add file patterns to ignore using the `add_ignore_file` method.
+6. Get the project settings using the `get_project_settings` method.
 
-**Usage**  
+### Methods
+* `set_language(language: str)`: Sets the language of the project.
+* `set_pcs(pcs: ProjectBuildConfig)`: Sets the project build configuration.
+* `set_project_name(name: str)`: Sets the name of the project.
+* `add_project_additional_info(key: str, value: str)`: Adds additional information about the project.
+* `add_ignore_file(pattern: str)`: Adds a file pattern to ignore.
+* `get_project_settings()`: Gets the project settings.
+
+### Code
 ```python
-import autodocgenerator as adg
-adg.logger.info("Library loaded")
-```  
+class Config:
+    def __init__(self):
+        self.ignore_files: list[str] = ["*.pyo", "*.pyd", "*.pdb", "*.pkl", "*.log", "*.sqlite3", "*.db", "data",
+                                         "venv", "env", ".venv", ".env", ".vscode", ".idea", "*.iml", ".gitignore", ".ruff_cache", ".auto_doc_cache",
+                                         "*.pyc", "__pycache__", ".git", ".coverage", "htmlcov", "migrations", "*.md", "static", "staticfiles", ".mypy_cache"]
+        self.language: str = "en"
+        self.project_name: str = ""
+        self.project_additional_info: dict = {}
+        self.pbc: ProjectBuildConfig = ProjectBuildConfig()
 
-The module performs no conditional checks; any import will emit the welcome banner and prepare `logger` for immediate use.
+    def set_language(self, language: str):
+        self.language = language
+        return self
 
-###
-<a name="project-context"></a>Project Context: Auto Doc Generator
+    def set_pcs(self, pcs: ProjectBuildConfig):
+        self.pbc = pcs
+        return self
 
-The provided code snippets are part of the **Auto Doc Generator** project, which aims to help developers generate documentation for their projects. The project utilizes a layered architecture, incorporating components such as a config reader, a manager for the documentation generation pipeline, and various modules for customizing the output.
+    def set_project_name(self, name: str):
+        self.project_name = name
+        return self
 
-###
-<a name="code-organization"></a>Code Organization
+    def add_project_additional_info(self, key: str, value: str):
+        self.project_additional_info[key] = value
+        return self
 
-The code is organized into several modules and submodules, including:
+    def add_ignore_file(self, pattern: str):
+        self.ignore_files.append(pattern)
+        return self
 
-* `autodocgenerator.auto_runner`: Contains the `config_reader` and `run_file` modules, responsible for reading configuration files and generating documentation, respectively.
-* `autodocgenerator.config`: Defines the `Config` and `ProjectBuildConfig` classes, which store project settings and build configurations.
-* `autodocgenerator.engine`: Includes the `GPTModel` and `AsyncGPTModel` classes, which interact with the Groq API for language modeling tasks.
-* `autodocgenerator.factory`: Contains the `DocFactory` class and various module classes (e.g., `CustomModule`, `IntroLinks`, `IntroText`) that contribute to the documentation generation process.
-* `autodocgenerator.postprocessor`: Includes the `Embedding` class, which handles embedding generation for the documentation.
-* `autodocgenerator.preprocessor`: Contains modules for preprocessing and splitting code files (not shown in the provided snippets).
-* `autodocgenerator.ui`: Defines the `ConsoleGtiHubProgress` class, which displays progress updates during the documentation generation process.
-
-###
-<a name="key-components-and-responsibilities"></a>Key Components and Responsibilities
-
-The following components play crucial roles in the Auto Doc Generator project:
-
-* **Config Reader**: Reads configuration files (e.g., `autodocconfig.yml`) and populates the `Config` object with project settings.
-* **Manager**: Orchestrates the documentation generation pipeline, utilizing various modules and models to produce the final output.
-* **Doc Factory**: Instantiates and coordinates the rendering of custom modules, including intro text and links.
-* **GPT Model**: Interacts with the Groq API to generate language model outputs for the documentation.
-* **Embedding**: Generates embeddings for the documentation using the Google Gemini API.
-
-###
-<a name="functional-flow"></a>Functional Flow
-
-The documentation generation process involves the following steps:
-
-1. **Config Reading**: The `config_reader` module reads the configuration file and populates the `Config` object.
-2. **Manager Initialization**: The `Manager` class is instantiated with the `Config` object, project path, and other necessary components (e.g., `GPTModel`, `Embedding`).
-3. **Code File Generation**: The `Manager` generates code files based on the project path and configuration settings.
-4. **Custom Module Rendering**: The `DocFactory` renders custom modules, including intro text and links, using the `Manager` instance.
-5. **Language Model Interaction**: The `GPTModel` interacts with the Groq API to generate language model outputs for the documentation.
-6. **Embedding Generation**: The `Embedding` class generates embeddings for the documentation using the Google Gemini API.
-7. **Final Output**: The `Manager` saves the generated documentation to a file (e.g., `output_doc.md`).
-
-###
-<a name="technical-logic-flow"></a>Technical Logic Flow
-
-The technical logic flow involves the following steps:
-
-1. **Config Loading**: The `config_reader` module loads the configuration file and populates the `Config` object.
-2. **Manager Initialization**: The `Manager` class is instantiated with the `Config` object, project path, and other necessary components.
-3. **Code File Generation**: The `Manager` generates code files based on the project path and configuration settings.
-4. **Custom Module Rendering**: The `DocFactory` renders custom modules, including intro text and links, using the `Manager` instance.
-5. **Language Model Interaction**: The `GPTModel` interacts with the Groq API to generate language model outputs for the documentation.
-6. **Embedding Generation**: The `Embedding` class generates embeddings for the documentation using the Google Gemini API.
-7. **Final Output**: The `Manager` saves the generated documentation to a file.
-
-###
-<a name="critical-constraints"></a>Critical Constraints
-
-The following constraints are critical to the Auto Doc Generator project:
-
-* **Layered Architecture**: The project follows a layered architecture, with separate components for configuration, documentation generation, and embedding generation.
-* **Modular Design**: The project uses a modular design, with separate modules for custom documentation components, language modeling, and embedding generation.
-* **Configurability**: The project allows for configuration settings to be loaded from a file, enabling users to customize the documentation generation process.
-
-###
-<a name="next-steps"></a>Next Steps
-
-To further develop the Auto Doc Generator project, the following steps can be taken:
-
-* **Implement Additional Custom Modules**: Develop new custom modules for specific documentation needs, such as code snippets or diagrams.
-* **Integrate with Other Tools**: Integrate the Auto Doc Generator with other development tools, such as IDEs or version control systems.
-* **Enhance Configurability**: Expand the configuration settings to allow for more customization options, such as output formats or styling.
-
-###
-<a name="CONTENT_DESCRIPTION"></a>install-workflow-using-remote-scripts-and-github-secret  
-
-To set up the project you can run a remote installer that pulls the required files straight from the repository’s main branch.  
-**PowerShell (Windows)** – execute the command  
-
+    def get_project_settings(self):
+        settings = ProjectSettings(self.project_name)
+        for key in self.project_additional_info:
+            settings.add_info(key, self.project_additional_info[key])
+        return settings
 ```
-irm raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex
-```
+<a name="autodocconfig-structure-and-options"></a>
+The autodocconfig.yml file has several options available for configuration. The main sections include:
+- project_name: This is where the name of the project is specified.
+- language: This option specifies the language of the project.
+- ignore_files: This section allows specifying files or directories to be ignored during the documentation generation process. Examples of ignored files include:
+  - "dist"
+  - Python bytecode and cache files like "*.pyc", "*.pyo", "*.pyd", "__pycache__", ".ruff_cache", ".mypy_cache", ".auto_doc_cache"
+  - Environment and IDE settings like "venv", "env", ".venv", ".env", ".vscode", ".idea", "*.iml"
+  - Databases and binary data like "*.sqlite3", "*.db", "*.pkl", "data"
+  - Logs and coverage reports like "*.log", ".coverage", "htmlcov"
+  - Version control and assets like ".git", ".gitignore", "migrations", "static", "staticfiles"
+  - Miscellaneous files like "*.pdb", "*.md"
+- build_settings: This section includes options for the build process:
+  - save_logs: A boolean option to specify whether logs should be saved.
+  - log_level: An option to set the level of logging, with a value of 2 in the provided example.
+  - threshold_changes: An option to set a threshold for changes, with a value of 20000 in the provided example.
+- structure_settings: This section includes options for customizing the structure of the generated documentation:
+  - include_intro_links: A boolean option to include introduction links.
+  - include_intro_text: A boolean option to include introduction text.
+  - include_order: A boolean option to include order.
+  - use_global_file: A boolean option to use a global file.
+  - max_doc_part_size: An option to set the maximum size of a documentation part, with a value of 5000 in the provided example.
+- project_additional_info: This section allows adding additional information about the project.
+- custom_descriptions: This section allows adding custom descriptions for the project.
+<a name="read-config"></a>
+## Read Config
+The `read_config` function is responsible for parsing the configuration file and returning the configuration objects. It takes a string containing the configuration data as input and returns a tuple of `Config`, `custom_modules`, and `structure_settings` objects.
 
-This invokes the PowerShell script that performs all necessary installations and configuration steps.  
-**Bash (Linux/Unix)** – run  
-
-```
-curl -sSL raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash
-```
-
-This downloads the shell script and pipes it directly into the shell interpreter.  
-
-Both scripts expect an API key from the Grock service. To supply this key in a GitHub Actions workflow, create a repository secret named **GROCK_API_KEY** and paste the key obtained from the Grock documentation site. The workflow can then reference this secret using `${{ secrets.GROCK_API_KEY }}` so the installer can authenticate with Grock during automated runs.
-<a name="pyproject"></a>
-## Pyproject.toml – Package Metadata  
-
-### Purpose  
-Defines the packaging, dependencies, and build configuration for the `autodocgenerator` project, enabling `poetry` or `pip` to install the library in an isolated environment.
-
-### Data Contract  
-
-| Section | Key | Value | Notes |
-|---------|-----|-------|-------|
-| `[project]` | `name` | `"autodocgenerator"` | Package identifier. |
-| | `version` | `"1.0.3.5"` | Semantic versioning. |
-| | `description` | `"This Project helps you to create docs for your projects"` | Short package description. |
-| | `authors` | list | Maintainer contact. |
-| | `license` | `"MIT"` | License identifier. |
-| | `readme` | `"README.md"` | Documentation entry. |
-| | `requires-python` | `">=3.11,<4.0"` | Python runtime constraint. |
-| | `dependencies` | list | Runtime libraries (e.g., `groq`, `google-genai`, `rich`). |
-| `[build-system]` | `requires` | `["poetry-core>=2.0.0"]` | Build backend requirement. |
-| | `build-backend` | `"poetry.core.masonry.api"` | Build backend implementation. |
-
-### Key Dependencies  
-
-- **LLM & Embedding**: `groq`, `google-genai`, `openai`.  
-- **I/O & Caching**: `CacheControl`, `filelock`, `zstandard`.  
-- **Logging & UI**: `rich`, `rich_progress`.  
-- **Configuration**: `pyyaml`, `python-dotenv`.  
-- **Type Checking**: `pydantic`, `typing_extensions`.  
-
-> **Side effect**: This file is read during packaging and installation; any missing or incompatible dependency will prevent the library from running.  
-
---- 
-
-These documents provide a concise, accurate view of the installation helper script and package configuration, aligned with the Auto‑Doc Generator architecture.
-<a name="data-contract"></a>Data Contract
-
-The following data entities are exchanged between components:
-
+### Parameters
 | Entity | Type | Role | Notes |
 | --- | --- | --- | --- |
-| `Config` | Object | Project settings | Stores project name, language, ignore files, and additional information. |
-| `ProjectBuildConfig` | Object | Build settings | Stores settings for the build process, such as log level and save logs. |
-| `CustomModule` | Object | Custom documentation module | Represents a custom module, such as intro text or links. |
-| `GPTModel` | Object | Language model | Interacts with the Groq API for language modeling tasks. |
-| `Embedding` | Object | Embedding generator | Generates embeddings for the documentation using the Google Gemini API. |
-| `DocFactory` | Object | Documentation factory | Instantiates and coordinates the rendering of custom modules. |
-
-###
-<a name="gpt-model-documentation"></a>GPT Model Documentation
-
-#### Overview of GPT Model
-
-The GPT Model is a core component of the Auto Doc Generator project, responsible for generating answers to user prompts using the Groq API. The model is designed to handle multiple APIs and models, allowing for flexibility and fault tolerance.
-
-#### Technical Logic Flow
-
-The technical logic flow of the GPT Model involves the following steps:
-
-1. **Initialization**: The GPT Model is initialized with an API key, history, and a list of models.
-2. **Prompt Processing**: The model receives a prompt, which can be either a list of dictionaries or a single string.
-3. **History Management**: The model checks if it should use the history or not. If it should, it retrieves the history from the `History` class.
-4. **Model Selection**: The model selects a model from the list of available models. If a model fails, it tries the next one.
-5. **API Call**: The model makes an API call to the selected model using the Groq API.
-6. **Answer Generation**: The model generates an answer based on the API response.
-7. **History Update**: The model updates the history with the user's prompt and the generated answer.
-
-#### Data Contract
-
-The following data entities are exchanged between the GPT Model and other components:
-
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `api_key` | str | API key | Used to authenticate with the Groq API |
-| `history` | `History` | History | Stores the conversation history |
-| `models_list` | list[str] | List of models | List of available models to use |
-| `prompt` | list[dict[str, str]] or str | Prompt | User's prompt to generate an answer for |
-| `answer` | str | Answer | Generated answer to the user's prompt |
-
-#### Critical Constraints
-
-The following constraints are critical to the GPT Model:
-
-* **Model Availability**: The model must be able to handle multiple models and APIs, allowing for flexibility and fault tolerance.
-* **History Management**: The model must be able to manage the conversation history, including adding and retrieving entries.
-* **API Call**: The model must be able to make API calls to the selected model using the Groq API.
-
-#### Next Steps
-
-To further develop the GPT Model, the following steps can be taken:
-
-* **Improve Model Selection**: Improve the model selection logic to choose the best model based on the prompt and conversation history.
-* **Add More Models**: Add more models to the list of available models, allowing for greater flexibility and fault tolerance.
-* **Enhance History Management**: Enhance the history management logic to store and retrieve more context, allowing for better answer generation.
-
-###
-<a name="async-gpt-model-documentation"></a>Async GPT Model Documentation
-
-The Async GPT Model is an asynchronous version of the GPT Model, designed to handle asynchronous API calls and improve performance.
-
-#### Technical Logic Flow
-
-The technical logic flow of the Async GPT Model involves the following steps:
-
-1. **Initialization**: The Async GPT Model is initialized with an API key, history, and a list of models.
-2. **Prompt Processing**: The model receives a prompt, which can be either a list of dictionaries or a single string.
-3. **History Management**: The model checks if it should use the history or not. If it should, it retrieves the history from the `History` class.
-4. **Model Selection**: The model selects a model from the list of available models. If a model fails, it tries the next one.
-5. **API Call**: The model makes an asynchronous API call to the selected model using the Groq API.
-6. **Answer Generation**: The model generates an answer based on the API response.
-7. **History Update**: The model updates the history with the user's prompt and the generated answer.
-
-#### Data Contract
-
-The following data entities are exchanged between the Async GPT Model and other components:
-
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `api_key` | str | API key | Used to authenticate with the Groq API |
-| `history` | `History` | History | Stores the conversation history |
-| `models_list` | list[str] | List of models | List of available models to use |
-| `prompt` | list[dict[str, str]] or str | Prompt | User's prompt to generate an answer for |
-| `answer` | str | Answer | Generated answer to the user's prompt |
-
-#### Critical Constraints
-
-The following constraints are critical to the Async GPT Model:
-
-* **Model Availability**: The model must be able to handle multiple models and APIs, allowing for flexibility and fault tolerance.
-* **History Management**: The model must be able to manage the conversation history, including adding and retrieving entries.
-* **API Call**: The model must be able to make asynchronous API calls to the selected model using the Groq API.
-
-#### Next Steps
-
-To further develop the Async GPT Model, the following steps can be taken:
-
-* **Improve Model Selection**: Improve the model selection logic to choose the best model based on the prompt and conversation history.
-* **Add More Models**: Add more models to the list of available models, allowing for greater flexibility and fault tolerance.
-* **Enhance History Management**: Enhance the history management logic to store and retrieve more context, allowing for better answer generation.
-
-###
-<a name="module-documentation"></a>Module Documentation
-
-The module documentation provides an overview of the various modules used in the Auto Doc Generator project.
-
-####
-<a name="base-module"></a>Base Module
-
-The `BaseModule` is an abstract base class that defines the interface for all modules.
-
-##### Technical Logic Flow
-
-The technical logic flow of the `BaseModule` involves the following steps:
-
-1. **Initialization**: The `BaseModule` is initialized with no parameters.
-2. **Generation**: The `generate` method is called with an `info` dictionary and a `model` object.
-3. **Result**: The `generate` method returns a result, which is a string or a dictionary.
-
-##### Data Contract
-
-The following data entities are exchanged between the `BaseModule` and other components:
-
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `info` | dict | Information | Dictionary containing information about the project |
-| `model` | Model | Model | Model object used for generation |
-| `result` | str or dict | Result | Result of the generation process |
-
-####
-<a name="doc-factory"></a>Doc Factory
-
-The `DocFactory` is a class that manages the generation of documentation using multiple modules.
-
-##### Technical Logic Flow
-
-The technical logic flow of the `DocFactory` involves the following steps:
-
-1. **Initialization**: The `DocFactory` is initialized with a list of modules and a boolean flag `with_splited`.
-2. **Generation**: The `generate_doc` method is called with an `info` dictionary, a `model` object, and a `progress` object.
-3. **Result**: The `generate_doc` method returns a `DocHeadSchema` object.
-
-##### Data Contract
-
-The following data entities are exchanged between the `DocFactory` and other components:
-
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `info` | dict | Information | Dictionary containing information about the project |
-| `model` | Model | Model | Model object used for generation |
-| `progress` | BaseProgress | Progress | Progress object used to track the generation process |
-| `result` | DocHeadSchema | Result | Result of the generation process |
-
-####
-<a name="schema-doc_schema"></a>
-## `DocContent`, `DocHeadSchema`, `DocInfoSchema` – In‑Memory Document Model
-
-**Purpose**  
-Represent generated documentation as structured data, enabling embedding association, ordering, and merging.
-
-| Class | Role | Key Methods |
-|-------|------|-------------|
-| `DocContent` | Leaf node | `init_embedding(Embedding)` |
-| `DocHeadSchema` | Container of parts | `add_parts(name, DocContent)`, `get_full_doc()`, `__add__` |
-| `DocInfoSchema` | Root schema | Holds `global_info`, `code_mix`, and `doc` |
-
-**DocContent**
-
-- `content: str` – Raw markdown snippet.  
-- `embedding_vector: Any | None` – Optional vector produced by `Embedding.get_vector`.  
-- `init_embedding` – Stores the vector for future similarity searches.
-
-**DocHeadSchema**
-
-- Maintains `content_orders` (preserved order) and `parts` (name → `DocContent`).  
-- `add_parts` ensures unique names by suffixing incremented integers.  
-- `get_full_doc` concatenates parts in order using a specified separator.  
-- `__add__` merges another `DocHeadSchema`, appending its ordered parts.
-
-**DocInfoSchema**
-
-- Holds a consolidated view: project metadata, the raw code mix, and the final `DocHeadSchema`.
-
-**Usage Context**
-
-- The `Manager` builds a `DocInfoSchema` during pipeline execution.  
-- After LLM generation, each part is wrapped in a `DocContent`, added to `DocHeadSchema`, and optionally embedded.
-
----
-
-> **Note**: All classes reside under `autodocgenerator.schema.doc_schema`.  
-> No external validation beyond Pydantic’s `BaseModel` is performed; the code relies on the correctness of upstream utilities (`Embedding`, `Model`, `ProjectSettings`).
-<a name="autodocconfig-structure-explanation"></a>  
-The document is organized into several top‑level fields that control different aspects of the generator:
-
-- **project-name** – short text identifying the project.
-- **language** – language code used for the generated documentation.
-- **ignore-files** – list of glob patterns telling the tool which files or directories to exclude. Typical entries include build outputs, caches, virtual environments, IDE settings, binary data, and log directories.  
-- **build-settings** – controls runtime behaviour:
-  - **save-logs** – flag to keep the internal logs of the generation process.
-  - **log-level** – numeric level controlling verbosity of output.
-- **structure-settings** – dictates how the final document is assembled:
-  - **include-intro-links** – whether a link to the introductory section is added.
-  - **include-intro-text** – whether the introductory text itself is inserted.
-  - **include-order** – whether a section order is generated.
-  - **use-global-file** – whether a single global file is used for all content.
-  - **max-doc-part-size** – maximum size in characters for each generated document fragment.
-- **project-additional-info** – free‑text field for a high‑level description or tagline of the project.
-- **custom-descriptions** – a sequence of strings that can be used to override or supplement the autogenerated text. These may reference installation scripts and instructions for using the manager class or configuring the generator.
-
-Each of these sections is optional, but the generator expects the keys in the shown form to correctly parse the settings. Adjust the patterns in **ignore-files** and the booleans in **structure-settings** to tailor the output to the repository’s layout and documentation style.
-<a name="custom-module"></a>Custom Module
-
-The `CustomModule` is a class that generates custom documentation based on a description.
-
-##### Technical Logic Flow
-
-The technical logic flow of the `CustomModule` involves the following steps:
-
-1. **Initialization**: The `CustomModule` is initialized with a description.
-2. **Generation**: The `generate` method is called with an `info` dictionary and a `model` object.
-3. **Result**: The `generate` method returns a result, which is a string.
-
-##### Data Contract
-
-The following data entities are exchanged between the `CustomModule` and other components:
-
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `info` | dict | Information | Dictionary containing information about the project |
-| `model` | Model | Model | Model object used for generation |
-| `result` | str | Result | Result of the generation process |
-
-####
-<a name="custom-module-without-context"></a>Custom Module Without Context
-
-The `CustomModuleWithOutContext` is a class that generates custom documentation without context.
-
-##### Technical Logic Flow
-
-The technical logic flow of the `CustomModuleWithOutContext` involves the following steps:
-
-1. **Initialization**: The `CustomModuleWithOutContext` is initialized with a description.
-2. **Generation**: The `generate` method is called with an `info` dictionary and a `model` object.
-3. **Result**: The `generate` method returns a result, which is a string.
-
-##### Data Contract
-
-The following data entities are exchanged between the `CustomModuleWithOutContext` and other components:
-
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `info` | dict | Information | Dictionary containing information about the project |
-| `model` | Model | Model | Model object used for generation |
-| `result` | str | Result | Result of the generation process |
-
-####
-<a name="postprocessor-custom_intro"></a>  
-## `autodocgenerator/postprocessor/custom_intro.py`
-
-**Purpose**  
-Collects and enriches introductory documentation fragments.  
-The module contains helper functions that
-
-* extract anchor links from a markdown string,
-* generate an introduction section via an LLM,
-* produce link lists for a navigation header,
-* create custom descriptions for arbitrary code snippets.
-
-All interactions with the LLM are performed through the `Model` interface passed to each helper.
-
----
-<a name="custom-intro-utilities"></a>### Core Functions
-
-| Function | Inputs | Outputs | Notes |
-| -------- | ------ | ------- | ----- |
-| `get_all_html_links(data: str) -> list[str]` | `data`: markdown document | `links`: list of `#anchor` strings | Uses regex `<a name="…">` to capture anchors longer than five characters. Logs extraction steps via `BaseLogger`. |
-| `get_links_intro(links: list[str], model: Model, language: str = "en") -> str` | `links`: list of anchor strings, `model`: LLM wrapper, `language`: optional | `intro_links`: generated markdown section | Builds a 3‑message prompt, sends it to `model.get_answer_without_history`. Logs before/after. |
-| `get_introdaction(global_data: str, model: Model, language: str = "en") -> str` | `global_data`: project‑wide summary, `model`, `language` | `intro`: introductory markdown | Prompt contains `BASE_INTRO_CREATE` template. |
-| `generete_custom_discription(splited_data: str, model: Model, custom_description: str, language: str = "en") -> str` | `splited_data`: iterable of code or text chunks, `model`, `custom_description`, `language` | `result`: description or empty string | Iterates over chunks; stops when result contains “!noinfo” or “No information found” is absent. |
-| `generete_custom_discription_without(model: Model, custom_description: str, language: str = "en") -> str` | `model`, `custom_description`, `language` | `result`: tagged description | Enforces a strict tag format at the beginning of the LLM response. |
-
-#### Internal Prompt Flow
-
-```
-system → "use language X"
-system → specific instruction template
-user   → data or task text
-```
-
-The LLM response is returned directly; no post‑processing occurs in this module.
-
----
-<a name="example-usage"></a>Example Usage
-
+| `file_data` | `str` | Input | Configuration file data |
+
+### Technical Logic Flow
+1. Load the configuration data from the input string using YAML.
+2. Create a `Config` object and set its properties based on the configuration data.
+3. Create a list of `custom_modules` based on the configuration data.
+4. Create a `structure_settings` object and set its properties based on the configuration data.
+5. Return the `config`, `custom_modules`, and `structure_settings` objects.
+
+### Code
 ```python
-from autodocgenerator.manage import Manager
-from autodocgenerator.config import Config
-from autodocgenerator.engine.models import Model
-from autodocgenerator.postprocessor.embedding import Embedding
-from autodocgenerator.ui.progress_base import BaseProgress
+def read_config(file_data: str) -> tuple[Config, list[BaseModule], StructureSettings]:
+    data = yaml.safe_load(file_data)
+    config : Config = Config()
 
-# Create a configuration object
-config = Config()
+    ignore_files = data.get("ignore_files", [])
+    language = data.get("language", "en")
 
-# Create an LLM model
-llm_model = Model()
+    project_name = data.get("project_name")
+    project_additional_info = data.get("project_additional_info", {})
 
-# Create an embedding model
-embedding_model = Embedding()
+    project_settings = data.get("build_settings", {})
+    pcs = ProjectBuildConfig()
+    pcs.load_settings(project_settings)
+    
+    config.set_language(language).set_project_name(project_name).set_pcs(pcs)
 
-# Create a progress bar
+    for pattern in ignore_files:
+        config.add_ignore_file(pattern)
+
+    for key in project_additional_info:
+        config.add_project_additional_info(key, project_additional_info[key])
+
+    custom_discriptions = data.get("custom_descriptions", [])
+
+    custom_modules: list[BaseModule] = [CustomModuleWithOutContext(custom_discription[1:])  if custom_discription[0] == "%" else CustomModule(custom_discription) for custom_discription in custom_discriptions]
+
+    structure_settings = data.get("structure_settings", {})
+    structure_settings_object = StructureSettings()
+    structure_settings_object.load_settings(structure_settings)
+
+    return config, custom_modules, structure_settings_object
+```
+<a name="data-contract"></a> Data Contract
+The data contract includes the following entities:
+* **Log:** A log entry with a message and a level.
+* **Task:** A task with a name and a total length.
+* **Progress:** A progress bar with a current task and a total length.
+
+##
+<a name="doc-schema"></a> Doc Schema
+The doc schema is defined using Pydantic models. The schema includes the following models:
+* **`DocContent`**: Represents the content of a doc part, including the content and embedding vector.
+* **`DocHeadSchema`**: Represents the schema of a doc head, including the content orders and parts.
+* **`DocInfoSchema`**: Represents the schema of a doc info, including the global info, code mix, and doc.
+
+###
+<a name="code-example-doc-schema"></a> Code Example: Doc Schema
+```python
+from autodocgenerator.schema.doc_schema import DocContent, DocHeadSchema, DocInfoSchema
+
+# Create a doc content object
+doc_content = DocContent(content="This is a sample string.")
+
+# Create a doc head schema object
+doc_head_schema = DocHeadSchema()
+
+# Add a part to the doc head schema
+doc_head_schema.add_parts("part1", doc_content)
+
+# Create a doc info schema object
+doc_info_schema = DocInfoSchema(global_info="This is a sample global info.")
+
+# Print the doc info schema
+print(doc_info_schema)
+```
+
+##
+<a name="gen-doc"></a>
+## Gen Doc
+The `gen_doc` function is responsible for generating the documentation for a project. It takes the project path, configuration, custom modules, and structure settings as input and returns the generated documentation as a string.
+
+### Parameters
+| Entity | Type | Role | Notes |
+| --- | --- | --- | --- |
+| `project_path` | `str` | Input | Project path |
+| `config` | `Config` | Input | Configuration object |
+| `custom_modules` | `list[BaseModule]` | Input | List of custom modules |
+| `structure_settings` | `StructureSettings` | Input | Structure settings object |
+
+### Technical Logic Flow
+1. Create a `Manager` instance with the project path, configuration, and custom modules.
+2. Check the git status using the `check_git_status` function. If the documentation should not be updated, return an empty string.
+3. Generate the code file using the `generate_code_file` method of the `Manager` instance.
+4. Generate the global information using the `generate_global_info` method of the `Manager` instance.
+5. Generate the documentation parts using the `generete_doc_parts` method of the `Manager` instance.
+6. Generate the documentation using the `factory_generate_doc` method of the `Manager` instance.
+7. Create an embedding layer using the `create_embedding_layer` method of the `Manager` instance.
+8. Save the documentation using the `save` method of the `Manager` instance.
+9. Return the generated documentation as a string.
+
+### Code
+```python
+def gen_doc(project_path: str, 
+            config: Config, 
+            custom_modules: list[BaseModule], 
+            structure_settings: StructureSettings) -> str:
+    
+    sync_model = GPTModel(GROQ_API_KEYS, use_random=False)
+    embedding_model = Embedding(GOOGLE_EMBEDDING_API_KEY)
+    
+    
+    manager = Manager(
+        project_path, 
+        config=config,
+        llm_model=sync_model,
+        embedding_model=embedding_model,
+        progress_bar=ConsoleGtiHubProgress(), 
+    )
+
+    should_change = check_git_status(manager)
+    if not should_change:
+        return ""
+    
+
+    
+    manager.generate_code_file()
+    if structure_settings.use_global_file:
+        manager.generate_global_info(compress_power=4)
+    
+    manager.generete_doc_parts(max_symbols=structure_settings.max_doc_part_size, with_global_file=structure_settings.use_global_file)
+   
+
+    manager.factory_generate_doc(DocFactory(*custom_modules))
+    if structure_settings.include_order:
+        manager.order_doc()
+    
+    additionals_modules: list[BaseModule] = []
+
+    if structure_settings.include_intro_text:
+        additionals_modules.append(IntroText())
+
+    if structure_settings.include_intro_links:
+        additionals_modules.append(IntroLinks())
+
+    
+    manager.factory_generate_doc(DocFactory(*additionals_modules, with_splited=False), to_start=True)
+    manager.create_embedding_layer()
+    manager.clear_cache()
+
+    manager.save()
+    return manager.doc_info.doc.get_full_doc()
+```
+<a name="gen-doc-parts-functionality"></a> Gen Doc Parts Functionality
+###
+<a name="gen-doc-parts-parameters"></a> Gen Doc Parts Parameters
+The `gen_doc_parts` function takes the following parameters:
+* `full_code_mix`: The full code mix string.
+* `max_symbols`: The maximum number of symbols in each chunk.
+* `model`: The language model used for generating documentation.
+* `project_settings`: The project settings, including the prompt and other configuration.
+* `language`: The language used for generating documentation.
+* `progress_bar`: The progress bar object.
+* `global_info`: The global information, if any.
+
+###
+<a name="gen-doc-parts-return-value"></a> Gen Doc Parts Return Value
+The `gen_doc_parts` function returns the generated documentation as a string.
+
+###
+<a name="code-example-gen-doc-parts"></a> Code Example: Gen Doc Parts
+```python
+from autodocgenerator.preprocessor import gen_doc_parts
+
+# Create a project settings object
+project_settings = ProjectSettings("My Project")
+
+# Create a language model object
+model = Model()
+
+# Preprocess the input data
+full_code_mix = "This is a sample string."
+
+# Create a progress bar object
 progress_bar = BaseProgress()
 
-# Create a manager object
-manager = Manager(project_directory="path/to/project", config=config, llm_model=llm_model, embedding_model=embedding_model, progress_bar=progress_bar)
+# Generate documentation for the parts
+documentation = gen_doc_parts(full_code_mix, max_symbols=10, model=model, project_settings=project_settings, language="en", progress_bar=progress_bar)
 
-# Generate the code mix file
-manager.generate_code_file()
-
-# Generate the global information file
-manager.generate_global_info()
-
-# Generate the documentation parts
-manager.generete_doc_parts()
-
-# Generate the documentation using the factory
-manager.factory_generate_doc(DocFactory())
-
-# Create the embedding layer
-manager.create_embedding_layer()
-
-# Order the documentation
-manager.order_doc()
-
-# Save the documentation
-manager.save()
+# Print the documentation
+print(documentation)
 ```
 
-### <a name="notes"></a>Notes
-
-* The `Manager` class is responsible for orchestrating the entire documentation generation process.
-* The `Manager` class takes in several parameters, including the project directory, configuration, LLM model, embedding model, and progress bar.
-* The `Manager` class has several methods that are used to perform different tasks, such as generating the code mix file, global information file, documentation parts, and documentation using the factory.
-* The `Manager` class has several attributes that are used to store information, such as the documentation information, configuration, project directory, progress bar, LLM model, and embedding model.
-* The `Manager` class exchanges several data entities with other components, such as the code mix, global information, documentation parts, factory documentation, and embedding.
-<a name="integration-highlights"></a>  
-## Interaction Flow in the Pipeline
-
-1. **Anchor Extraction** – `manager.generete_doc_parts()` produces `doc_parts`; `get_all_html_links` pulls anchors → feeds to `get_links_intro`.
-2. **Introduction Generation** – `global_info` is supplied to `get_introdaction`; custom sections are rendered via `generete_custom_discription`.
-3. **Vector Embedding** – `manager.create_embedding_layer()` creates an `Embedding` instance; `get_vector` is called per doc chunk to build semantic indices.
-4. **Sorting** – `sort_vectors` is used downstream in post‑processing to order sections by similarity to a root vector.
-
-All LLM prompts are built from constants in `engine.config.config` and executed through the `Model` interface, ensuring a single point for API interaction. Logging is performed through `BaseLogger` for traceability.
-<a name="intro-links"></a>Intro Links
-
-The `IntroLinks` is a class that generates introduction links.
-
-##### Technical Logic Flow
-
-The technical logic flow of the `IntroLinks` involves the following steps:
-
-1. **Generation**: The `generate` method is called with an `info` dictionary and a `model` object.
-2. **Result**: The `generate` method returns a result, which is a string.
-
-##### Data Contract
-
-The following data entities are exchanged between the `IntroLinks` and other components:
-
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `info` | dict | Information | Dictionary containing information about the project |
-| `model` | Model | Model | Model object used for generation |
-| `result` | str | Result | Result of the generation process |
-
-####
-<a name="intro-text"></a>Intro Text
-
-The `IntroText` is a class that generates introduction text.
-
-##### Technical Logic Flow
-
-The technical logic flow of the `IntroText` involves the following steps:
-
-1. **Generation**: The `generate` method is called with an `info` dictionary and a `model` object.
-2. **Result**: The `generate` method returns a result, which is a string.
-
-##### Data Contract
-
-The following data entities are exchanged between the `IntroText` and other components:
-
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `info` | dict | Information | Dictionary containing information about the project |
-| `model` | Model | Model | Model object used for generation |
-| `result` | str | Result | Result of the generation process |
+##
+<a name="write-docs-by-parts-functionality"></a> Write Docs by Parts Functionality
+###
+<a name="write-docs-by-parts-parameters"></a> Write Docs by Parts Parameters
+The `write_docs_by_parts` function takes the following parameters:
+* `part`: The string data to be used for generating documentation.
+* `model`: The language model used for generating documentation.
+* `project_settings`: The project settings, including the prompt and other configuration.
+* `prev_info`: The previous documentation information, if any.
+* `language`: The language used for generating documentation.
+* `global_info`: The global information, if any.
 
 ###
-<a name="manager-class"></a>Manager Class
-
-The `Manager` class is responsible for orchestrating the entire documentation generation process. It takes in several parameters, including the project directory, configuration, LLM model, embedding model, and progress bar.
-
-####
-<a name="manager-parameters"></a>Manager Parameters
-
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `project_directory` | str | Project directory | The directory where the project is located |
-| `config` | Config | Configuration | The configuration object containing project settings |
-| `llm_model` | Model | LLM model | The LLM model used for generation |
-| `embedding_model` | Embedding | Embedding model | The embedding model used for generating embeddings |
-| `progress_bar` | BaseProgress | Progress bar | The progress bar used to track the generation process |
-
-####
-<a name="manager-methods"></a>Manager Methods
-
-The `Manager` class has several methods that are used to perform different tasks:
-
-1. **`generate_code_file`**: Generates the code mix file.
-2. **`generate_global_info`**: Generates the global information file.
-3. **`generete_doc_parts`**: Generates the documentation parts.
-4. **`factory_generate_doc`**: Generates the documentation using the factory.
-5. **`create_embedding_layer`**: Creates the embedding layer.
-6. **`order_doc`**: Orders the documentation.
-7. **`clear_cache`**: Clears the cache.
-8. **`save`**: Saves the documentation.
-
-####
-<a name="manager-attributes"></a>Manager Attributes
-
-The `Manager` class has several attributes that are used to store information:
-
-1. **`doc_info`**: Stores the documentation information.
-2. **`config`**: Stores the configuration.
-3. **`project_directory`**: Stores the project directory.
-4. **`progress_bar`**: Stores the progress bar.
-5. **`llm_model`**: Stores the LLM model.
-6. **`embedding_model`**: Stores the embedding model.
-7. **`logger`**: Stores the logger.
-
-####
-<a name="manager-data-contract"></a>Manager Data Contract
-
-The following data entities are exchanged between the `Manager` and other components:
-
-| Entity | Type | Role | Notes |
-| --- | --- | --- | --- |
-| `code_mix` | str | Code mix | The code mix generated by the `CodeMix` class |
-| `global_info` | str | Global information | The global information generated by the `compress_to_one` function |
-| `doc_parts` | str | Documentation parts | The documentation parts generated by the `gen_doc_parts` function |
-| `factory_doc` | str | Factory documentation | The documentation generated by the factory |
-| `embedding` | Embedding | Embedding | The embedding generated by the `Embedding` class |
+<a name="write-docs-by-parts-return-value"></a> Write Docs by Parts Return Value
+The `write_docs_by_parts` function returns the generated documentation as a string.
 
 ###
-<a name="manager-data-contract-extensions"></a>  
-### Manager Data Contract – Relevance to Custom Intro & Embedding
-
-The `Manager` orchestration layer passes the following entities to the functions described above:
-
-| Entity | Type | Role | Notes |
-| ------ | ---- | ---- | ----- |
-| `code_mix` | `str` | Source mix | Handed to `generete_custom_discription` for content extraction. |
-| `global_info` | `str` | Project overview | Used with `get_introdaction`. |
-| `doc_parts` | `str` | Chunked docs | Input for `get_all_html_links` and `get_links_intro`. |
-| `factory_doc` | `str` | Rendered intro blocks | May contain anchor tags extracted by `get_all_html_links`. |
-| `embedding` | `Embedding` | Vector provider | Created by Manager for `sort_vectors` usage. |
-
-> **Warning**  
-> The `generete_custom_discription` function assumes that `splited_data` is iterable over chunk strings; passing a single string will iterate character‑by‑character, causing erroneous prompts. Ensure `splited_data` is a list of meaningful code or documentation fragments.
-
----
-<a name="manager-class-methods"></a>  
-The **Manager** class is the central orchestrator for generating documentation.  
-Its constructor requires a project root path and a set of dependencies – a language‑model instance (`llm_model`), an embedding model (`embedding_model`), a progress bar object, and a `Config` instance that holds ignore patterns, language, project name, and additional metadata.
-
+<a name="code-example-write-docs-by-parts"></a> Code Example: Write Docs by Parts
 ```python
-# Example: basic Manager instantiation and workflow
-from autodocgenerator.manage import Manager
-from autodocgenerator.engine.models.gpt_model import GPTModel
-from autodocgenerator.postprocessor.embedding import Embedding
+from autodocgenerator.preprocessor import write_docs_by_parts
+
+# Create a project settings object
+project_settings = ProjectSettings("My Project")
+
+# Create a language model object
+model = Model()
+
+# Preprocess the input data
+part = "This is a sample string."
+
+# Generate documentation for the part
+documentation = write_docs_by_parts(part, model, project_settings)
+
+# Print the documentation
+print(documentation)
+```
+
+##
+<a name="autodocgenerator-project-documentation"></a> AutoDocGenerator Project Documentation
+###
+<a name="code-example"></a> Code Example
+```python
+from autodocgenerator.preprocessor import compressor
+from autodocgenerator.preprocessor import settings
+
+# Create a project settings object
+project_settings = settings.ProjectSettings("My Project")
+
+# Create a language model object
+model = Model()
+
+# Preprocess the input data
+data = "This is a sample string."
+
+# Compress the preprocessed data
+compressed_data = compressor.compress(data, project_settings, model, compress_power=4)
+
+# Print the compressed data
+print(compressed_data)
+```
+
+##
+<a name="code-example-2"></a> Code Example
+```python
+from autodocgenerator.preprocessor import settings
+
+# Create a project settings object
+project_settings = settings.ProjectSettings("My Project")
+
+# Add additional project information
+project_settings.add_info("author", "John Doe")
+
+# Print the project prompt
+print(project_settings.prompt)
+```
+
+##
+<a name="code-example-3"></a> Code Example
+```python
+from autodocgenerator.preprocessor import spliter
+
+# Preprocess the input data
+data = "This is a sample string."
+
+# Split the preprocessed data into chunks
+chunks = spliter.split_data(data, max_symbols=10)
+
+# Print the chunks
+print(chunks)
+```
+
+##
+<a name="code-example-split-data"></a> Code Example: Split Data
+```python
+from autodocgenerator.preprocessor import split_data
+
+# Preprocess the input data
+data = "This is a sample string."
+
+# Split the preprocessed data into chunks
+chunks = split_data(data, max_symbols=10)
+
+# Print the chunks
+print(chunks)
+```
+
+##
+<a name="code-example-logging"></a> Code Example: Logging
+```python
+from autodocgenerator.ui.logging import BaseLogger, InfoLog
+
+# Create a logger
+logger = BaseLogger()
+
+# Create a log entry
+log = InfoLog("This is a sample log message.")
+
+# Log the message
+logger.log(log)
+```
+
+##
+<a name="code-example-progress-bar"></a> Code Example: Progress Bar
+```python
 from autodocgenerator.ui.progress_base import ConsoleGtiHubProgress
 
-# create required sub‑systems
-llm = GPTModel(GROQ_API_KEYS, use_random=False)
-embedder = Embedding(GOOGLE_EMBEDDING_API_KEY)
+# Create a progress bar
+progress = ConsoleGtiHubProgress()
 
-# project path and configuration supplied elsewhere
-project_path = "./myproject"
-config = ...          # Config instance produced by read_config
+# Create a new subtask
+progress.create_new_subtask("Sample Task", 10)
 
+# Update the task
+progress.update_task()
+
+# Remove the subtask
+progress.remove_subtask()
+```
+<a name="check-git-status"></a>
+## Check Git Status
+The `check_git_status` function is responsible for determining whether the git repository has changed since the last documentation generation. It takes a `Manager` instance as input and returns a boolean indicating whether the documentation should be updated.
+
+### Parameters
+| Entity | Type | Role | Notes |
+| --- | --- | --- | --- |
+| `manager` | `Manager` | Input | Instance of the `Manager` class |
+| `GITHUB_EVENT_NAME` | `str` | Global | GitHub event name |
+| `cache_settings` | `CacheSettings` | Input | Cache settings object |
+
+### Technical Logic Flow
+1. Check if the GitHub event name is "workflow_dispatch". If so, return `True`.
+2. Load the cache settings from the `.auto_doc_cache_file`.
+3. Get the diff between the current commit and the last commit stored in the cache settings.
+4. If the diff is greater than the threshold changes or the last commit is empty, update the cache settings and return `True`.
+5. Otherwise, return `False`.
+
+### Code
+```python
+def check_git_status(manager: Manager) -> bool:
+    print("GIT EVENT:", GITHUB_EVENT_NAME)
+    if GITHUB_EVENT_NAME == "workflow_dispatch":
+        return True
+    
+    cache_settings = CacheSettings.model_validate_json(manager.read_file_by_file_key(".auto_doc_cache_file", is_outside=True))
+
+    if len(get_diff_by_hash(cache_settings.last_commit)) > manager.config.pbc.threshold_changes or cache_settings.last_commit == "":
+        cache_settings.last_commit = get_git_revision_hash()
+        with open(manager.get_file_path(".auto_doc_cache_file", is_outside=True), "w", encoding="utf-8") as file:
+            file.write(cache_settings.model_dump_json())
+        return True
+    
+    return False
+```
+<a name="gpt-model-class"></a>
+## GPT Model Class
+The `GPTModel` class is responsible for generating answers using the GPT model.
+
+### Parameters
+| Entity | Type | Role | Notes |
+| --- | --- | --- | --- |
+| `api_key` | `str` | Input | API key for the GPT model |
+| `history` | `History` | Input | History of previous conversations |
+| `models_list` | `list[str]` | Input | List of available GPT models |
+| `use_random` | `bool` | Input | Whether to use a random model |
+
+### Technical Logic Flow
+1. Initialize the `GPTModel` object with the API key, history, models list, and use random flag.
+2. Set up the GPT client using the API key.
+3. Generate an answer using the `generate_answer` method.
+
+### Methods
+* `generate_answer(with_history: bool = True, prompt: list[dict[str, str]] | None = None)`: Generates an answer using the GPT model.
+
+### Code
+```python
+class GPTModel(Model):
+    def __init__(self, api_key=GROQ_API_KEYS, history=History(), 
+                 models_list: list[str] = ["openai/gpt-oss-120b",  "llama-3.3-70b-versatile",  "openai/gpt-oss-safeguard-20b"], 
+                 use_random: bool = True):
+        super().__init__(api_key, history, models_list, use_random)
+        self.client = Groq(api_key=self.api_keys[self.current_key_index])
+        self.logger = BaseLogger()
+
+    def generate_answer(self, with_history: bool = True, prompt: list[dict[str, str]] | None = None) -> str:
+        self.logger.log(InfoLog("Generating answer..."))
+        if with_history:
+            messages = self.history.history
+        elif prompt is not None:
+            messages = prompt
+        
+        chat_completion = None
+        model_name = None
+
+        while True:
+            if len(self.regen_models_name) <= 0:
+                self.logger.log(ErrorLog("No models available for use."))
+                raise ModelExhaustedException("No models available for use.")
+            
+            model_name = self.regen_models_name[self.current_model_index]
+            try:
+                chat_completion = self.client.chat.completions.create(
+                    messages=messages, #type: ignore
+                    model=model_name,
+
+                )
+                break
+            except Exception as e:
+                print(e)
+                self.logger.log(WarningLog(f"Model {model_name} failed with error: {str(e)}. Trying next model..."))
+                self.current_key_index = 0 if self.current_key_index + 1 >= len(self.api_keys) else self.current_key_index + 1
+                if self.current_key_index == 0:
+                    self.current_model_index = 0 if self.current_model_index + 1 >= len(self.regen_models_name) else self.current_model_index + 1
+                    
+                self.client = Groq(api_key=self.api_keys[self.current_key_index])
+
+        result = chat_completion.choices[0].message.content
+        self.logger.log(InfoLog(f"Generated answer with model {model_name}."))
+        self.logger.log(InfoLog(f"Answer: {result}", level=2))
+        if result is None:
+            return ""
+        
+        return result
+```
+
+## Auto Doc Generator: Model and Factory Components
+### Overview of Model Components
+
+The **Model** components are responsible for generating answers using the GPT model. The `ParentModel` class serves as an abstract base class, defining the interface for models. The `Model` and `AsyncModel` classes implement the synchronous and asynchronous versions of the model, respectively.
+
+### Model Contract
+
+The model contract specifies the interface for models, which includes the following methods:
+
+* `generate_answer`: generates an answer using the model
+* `get_answer_without_history`: generates an answer without using the conversation history
+* `get_answer`: generates an answer using the provided prompt
+
+### Factory Components
+
+The **Factory** components are responsible for generating documentation using the model. The `DocFactory` class serves as the main entry point for generating documentation. It takes a list of modules, each responsible for generating a specific part of the documentation.
+
+### Factory Modules
+
+The factory modules are responsible for generating specific parts of the documentation. The following modules are available:
+
+* `CustomModule`: generates a custom description for the documentation
+* `CustomModuleWithOutContext`: generates a custom description without using the context
+* `IntroLinks`: generates an introduction to the links in the documentation
+* `IntroText`: generates an introduction to the documentation
+
+### Technical Logic Flow
+
+The technical logic flow for the model and factory components is as follows:
+
+1. The `DocFactory` class is initialized with a list of modules.
+2. The `generate_doc` method is called, which generates the documentation using the modules.
+3. Each module generates its part of the documentation using the `generate` method.
+4. The `generate` method uses the model to generate an answer, which is then processed and added to the documentation.
+
+### Data Contract
+
+The data contract for the model and factory components specifies the input and output formats for the methods. The following table summarizes the data contract:
+
+| Entity | Type | Role | Notes |
+| --- | --- | --- | --- |
+| `info` | `dict` | Input | Dictionary containing information about the documentation |
+| `model` | `Model` | Input | Model used to generate answers |
+| `module_result` | `str` | Output | Result generated by a module |
+| `doc_head` | `DocHeadSchema` | Output | Documentation head schema |
+
+### Code Examples
+
+The following code examples demonstrate how to use the model and factory components:
+```python
+# Initialize the DocFactory
+factory = DocFactory(CustomModule("Custom description"))
+
+# Generate the documentation
+doc_head = factory.generate_doc({"code_mix": "code"}, Model())
+
+# Print the documentation
+print(doc_head.parts)
+```
+Note that this is a simplified example and you may need to add more modules and customize the factory to suit your specific use case.
+
+## Manager Class Documentation
+<a name="manager-class"></a>
+
+The `Manager` class is responsible for orchestrating the pipeline, holding shared state and configuration. It provides methods for generating code files, global information, documentation parts, and ordering the documentation.
+
+### Attributes
+| Entity | Type | Role | Notes |
+| --- | --- | --- | --- |
+| `doc_info` | `DocInfoSchema` | Stores documentation information |  |
+| `config` | `Config` | Stores configuration settings |  |
+| `project_directory` | `str` | Project directory path |  |
+| `llm_model` | `Model` | LLM model instance |  |
+| `embedding_model` | `Embedding` | Embedding model instance |  |
+| `logger` | `BaseLogger` | Logger instance |  |
+| `progress_bar` | `BaseProgress` | Progress bar instance |  |
+
+### Methods
+#### `init_folder_system`
+ Initializes the folder system by creating the cache directory if it does not exist.
+
+#### `read_file_by_file_key`
+ Reads a file by its key.
+
+#### `get_file_path`
+ Gets the file path by its key.
+
+#### `generate_code_file`
+ Generates the code file by building the repository content.
+
+#### `generate_global_info`
+ Generates global information by compressing the code mix.
+
+#### `generete_doc_parts`
+ Generates documentation parts by splitting the code mix and generating documentation for each part.
+
+#### `factory_generate_doc`
+ Generates documentation using a doc factory.
+
+#### `create_embedding_layer`
+ Creates an embedding layer for the documentation parts.
+
+#### `order_doc`
+ Orders the documentation parts.
+
+#### `clear_cache`
+ Clears the cache by removing the logs file if save logs is disabled.
+
+#### `save`
+ Saves the documentation to a file.
+
+### Usage
+To use the `Manager` class, create an instance and call the desired methods. For example:
+```python
+manager = Manager(project_directory, config, llm_model, embedding_model)
+manager.generate_code_file()
+manager.generate_global_info()
+manager.generete_doc_parts()
+manager.factory_generate_doc(doc_factory)
+manager.create_embedding_layer()
+manager.order_doc()
+manager.save()
+```
+Note: This documentation is based on the provided code snippet and may not be comprehensive. Additional functionality and details may be present in the complete codebase.
+
+## Custom Introduction and Embedding
+### Overview of Introduction Generation
+
+The introduction generation process involves multiple steps, including extracting HTML links from the documentation, generating an introduction with links, and creating a custom description.
+
+#### Introduction Generation Process
+1. **Extracting HTML Links**: The `get_all_html_links` function extracts HTML links from the documentation using a regular expression. It logs the number of extracted links and the links themselves.
+2. **Generating Introduction with Links**: The `get_links_intro` function generates an introduction with links using a language model. It takes the extracted links, a language model, and a language as input and returns the generated introduction.
+3. **Generating Custom Description**: The `generete_custom_discription` function generates a custom description using a language model. It takes the split data, a language model, a custom description, and a language as input and returns the generated description.
+
+#### Embedding Process
+The embedding process involves sorting vectors by distance.
+
+#### Sorting Vectors
+1. **Bubble Sort**: The `bubble_sort_by_dist` function sorts a list of vectors by distance using the bubble sort algorithm.
+2. **Getting Vector Length**: The `get_len_btw_vectors` function calculates the length between two vectors using the Euclidean norm.
+3. **Sorting Vectors**: The `sort_vectors` function sorts a dictionary of vectors by distance from a root vector.
+
+### Embedding Class
+The `Embedding` class encapsulates the embedding functionality.
+
+#### Embedding Initialization
+The `__init__` method initializes the embedding client with an API key.
+
+#### Getting Vector
+The `get_vector` method gets a vector for a given prompt using the Gemini embedding model.
+
+### Usage
+To use the introduction generation and embedding functionality, create an instance of the `Embedding` class and use its methods.
+
+```python
+embedding = Embedding(api_key)
+vector = embedding.get_vector(prompt)
+```
+
+### Data Contract
+
+| Entity | Type | Role | Notes |
+| --- | --- | --- | --- |
+| links | list[str] | Input | Extracted HTML links |
+| model | Model | Input | Language model |
+| language | str | Input | Language for introduction generation |
+| intro_links | str | Output | Generated introduction with links |
+| custom_description | str | Input | Custom description for generation |
+| root_vector | list | Input | Root vector for sorting |
+| other | dict[str, Any] | Input | Dictionary of vectors for sorting |
+| sorted_list | list[str] | Output | Sorted list of vector names |
+
+### Technical Logic Flow
+
+1. Extract HTML links from documentation using `get_all_html_links`.
+2. Generate introduction with links using `get_links_intro`.
+3. Generate custom description using `generete_custom_discription`.
+4. Initialize embedding client with API key using `Embedding`.
+5. Get vector for prompt using `get_vector`.
+6. Sort vectors by distance using `sort_vectors`.
+
+### Notes
+* The introduction generation process uses a language model to generate text.
+* The embedding process uses the Gemini embedding model to get vectors.
+* The sorting process uses the bubble sort algorithm to sort vectors by distance.
+
+## CodeMix and Sorting Components
+The `CodeMix` and `Sorting` components are crucial parts of the AutoDocGenerator system. 
+
+### CodeMix Component
+The `CodeMix` component is responsible for preprocessing the source code, creating a unified string representation of the repository structure and code content. This is achieved through the `build_repo_content` method, which:
+1. Iterates over all files in the repository, ignoring specified patterns.
+2. Creates a structured representation of the repository, including file names and contents.
+3. Returns the unified string representation.
+
+The `CodeMix` class also includes an `should_ignore` method to determine whether a file should be ignored based on the provided patterns.
+
+### Sorting Component
+The `Sorting` component is responsible for sorting the code chunks semantically. This is achieved through the following methods:
+1. `extract_links_from_start`: Extracts HTML links from the start of each chunk.
+2. `split_text_by_anchors`: Splits the text into chunks based on anchor tags.
+3. `get_order`: Uses a language model to sort the chunks semantically.
+
+The `get_order` method takes a list of chunk names and a language model as input, and returns a sorted list of chunk names.
+
+### Component Interactions
+The `CodeMix` and `Sorting` components interact as follows:
+1. The `CodeMix` component preprocesses the source code, creating a unified string representation.
+2. The `Sorting` component takes the preprocessed string and splits it into chunks based on anchor tags.
+3. The `Sorting` component uses a language model to sort the chunks semantically.
+
+### Data Contract
+
+| Entity | Type | Role | Notes |
+| --- | --- | --- | --- |
+| repository_path | str | Input | Path to the repository |
+| ignore_patterns | list[str] | Input | List of patterns to ignore |
+| preprocessed_string | str | Output | Unified string representation of the repository |
+| chunk_names | list[str] | Input | List of chunk names |
+| language_model | Model | Input | Language model for semantic sorting |
+| sorted_chunk_names | list[str] | Output | Sorted list of chunk names |
+
+### Technical Logic Flow
+
+1. Preprocess the source code using `CodeMix`.
+2. Split the preprocessed string into chunks based on anchor tags using `Sorting`.
+3. Sort the chunks semantically using `Sorting` and a language model.
+4. Return the sorted list of chunk names.
+
+### Notes
+* The `CodeMix` component ignores files based on specified patterns.
+* The `Sorting` component uses a language model to sort the chunks semantically.
+* The components interact to create a sorted representation of the repository structure and code content. 
+
+Here is the high-level code representation for this: 
+```python
+class CodeMix:
+    def __init__(self, root_dir=".", ignore_patterns=None):
+        # ...
+
+    def build_repo_content(self):
+        # ...
+
+class Sorting:
+    def extract_links_from_start(self, chunks):
+        # ...
+
+    def split_text_by_anchors(self, text):
+        # ...
+
+    def get_order(self, model, chunk_names):
+        # ...
+
+# Usage
+code_mix = CodeMix(root_dir="path/to/repo", ignore_patterns=["*.pyc", "__pycache__"])
+preprocessed_string = code_mix.build_repo_content()
+
+sorting = Sorting()
+chunk_names = sorting.split_text_by_anchors(preprocessed_string)
+sorted_chunk_names = sorting.get_order(model, chunk_names)
+```
+
+##
+<a name="manager-class-usage"></a>
+The Manager class is used to manage the generation of documentation. It has several methods available for this purpose. 
+
+To use the Manager class, you first need to create an instance of it, passing in the project path, config, llm model, embedding model, and progress bar as arguments. 
+
+Here's an example of how to create a Manager instance:
+```python
 manager = Manager(
-    project_path,
+    project_path, 
     config=config,
-    llm_model=llm,
-    embedding_model=embedder,
-    progress_bar=ConsoleGtiHubProgress()
+    llm_model=sync_model,
+    embedding_model=embedding_model,
+    progress_bar=ConsoleGtiHubProgress(), 
 )
 ```
 
-After the object is created, the following public methods can be called in the order shown below (the order is dictated by the typical documentation‑generation pipeline):
+The Manager class has several methods available, including:
 
-| Method | Purpose | Key parameters |
-|--------|---------|----------------|
-| `generate_code_file()` | Walks the project, collects source files, and builds an internal representation of the code structure. | None |
-| `generate_global_info(compress_power=4)` | Aggregates global project information (e.g., README, package metadata) and optionally compresses the data using the supplied power. | `compress_power` – integer compression factor |
-| `generete_doc_parts(max_symbols, with_global_file)` | Splits large documents into parts not exceeding `max_symbols`. If `with_global_file` is true, global information is included. | `max_symbols` – int, `with_global_file` – bool |
-| `factory_generate_doc(factory, to_start=False, with_splited=False)` | Uses a `DocFactory` instance to produce documentation sections from custom or built‑in modules. The `to_start` flag indicates whether the generated content should be prepended to the document. `with_splited` controls whether content should be split. | `factory` – `DocFactory` instance, `to_start` – bool, `with_splited` – bool |
-| `order_doc()` | Reorders the document sections according to a predefined or custom sequence. | None |
-| `create_embedding_layer()` | Builds an embedding representation for the entire document, useful for semantic search or summarization. | None |
-| `clear_cache()` | Removes temporary files and caches created during processing. | None |
-| `save()` | Persists the generated documentation to disk (e.g., writes a markdown file). | None |
-
-Once all transformations are complete, the full rendered document is accessible via:
-
-```python
-full_text = manager.doc_info.doc.get_full_doc()
-```
-
-**Typical usage pattern (as shown in `run_file.py`):**
-
+- `generate_code_file()`: This method generates the code file.
 ```python
 manager.generate_code_file()
-if structure_settings.use_global_file:
-    manager.generate_global_info(compress_power=4)
+```
 
-manager.generete_doc_parts(
-    max_symbols=structure_settings.max_doc_part_size,
-    with_global_file=structure_settings.use_global_file
-)
+- `generate_global_info(compress_power)`: This method generates the global info with the specified compress power.
+```python
+manager.generate_global_info(compress_power=4)
+```
 
+- `generete_doc_parts(max_symbols, with_global_file)`: This method generates the doc parts with the specified max symbols and with or without the global file.
+```python
+manager.generete_doc_parts(max_symbols=structure_settings.max_doc_part_size, with_global_file=structure_settings.use_global_file)
+```
+
+- `factory_generate_doc(DocFactory, to_start)`: This method generates the doc using the specified DocFactory and with the option to append to the start.
+```python
 manager.factory_generate_doc(DocFactory(*custom_modules))
+```
+or
+```python
+manager.factory_generate_doc(DocFactory(*additionals_modules, with_splited=False), to_start=True)
+```
 
-if structure_settings.include_order:
-    manager.order_doc()
+- `order_doc()`: This method orders the doc.
+```python
+manager.order_doc()
+```
 
-# Add introductory sections if requested
-extra_modules = []
-if structure_settings.include_intro_text:
-    extra_modules.append(IntroText())
-if structure_settings.include_intro_links:
-    extra_modules.append(IntroLinks())
-
-manager.factory_generate_doc(
-    DocFactory(*extra_modules, with_splited=False),
-    to_start=True
-)
-
+- `create_embedding_layer()`: This method creates the embedding layer.
+```python
 manager.create_embedding_layer()
+```
+
+- `clear_cache()`: This method clears the cache.
+```python
 manager.clear_cache()
+```
+
+- `save()`: This method saves the doc.
+```python
 manager.save()
-
-# retrieve the final document
-document = manager.doc_info.doc.get_full_doc()
 ```
 
-This workflow shows how the `Manager` interacts with custom modules, global file handling, ordering, and post‑processing steps to produce the final documentation output.
-<a name="preprocessor-code-mix-module"></a>## Pre‑processor: CodeMix
-
-**Purpose** – `CodeMix` compiles a repository’s file tree and content into a single markdown string suitable for LLM ingestion.
-
----
-<a name="preprocessor-code-mix-class"></a>### `CodeMix` Class
-
-| Attribute | Type | Role | Notes |
-|-----------|------|------|-------|
-| `root_dir` | `Path` | Base directory | Resolved absolute path. |
-| `ignore_patterns` | `list[str]` | Wildcards to skip | Default empty; can be overridden. |
-| `logger` | `BaseLogger` | Logging instance | Reports ignored paths. |
-
-#### Methods
-
-| Method | Parameters | Returns | Notes |
-|--------|------------|---------|-------|
-| `__init__(self, root_dir=".", ignore_patterns=None)` | `root_dir`, `ignore_patterns` | – | Stores state; creates a `BaseLogger`. |
-| `should_ignore(self, path: str) -> bool` | `path` | `bool` | Determines if a file/dir matches any ignore pattern. |
-| `build_repo_content(self) -> str` | – | `str` | Concatenates a tree view and file contents. |
-
----
-<a name="preprocessor-code-mix-should-ignore"></a>#### `should_ignore`
-
-*Logic*
-
-1. Compute `relative_path` from `root_dir`.  
-2. For each `pattern` in `ignore_patterns` check:
-   - `fnmatch` against the full relative string,
-   - against the file/directory name,
-   - against any part of the path.
-3. Return `True` on first match.
-
----
-<a name="preprocessor-code-mix-build-repo-content"></a>#### `build_repo_content`
-
-*Logic Flow*
-
-1. Start with `"Repository Structure:"`.  
-2. Recursively walk `root_dir` sorted by name.  
-3. For each item that is **not** ignored, append an indented name (`/` for directories).  
-4. Append a separator of 20 `"="`.  
-5. Second traversal: for every file (non‑ignored), append a `<file path="...">` tag, the file’s UTF‑8 content, and a newline.  
-6. If file reading fails, capture the exception string.  
-7. Join all lines with `"\n"` and return.
-
-> **Side Effect** – The method logs every ignored path at level 1.
-
----
-<a name="preprocessor-code-mix-ignore-list"></a>### `ignore_list`
-
-A module‑level list of glob patterns and directory names to exclude, such as `*.pyc`, `__pycache__`, `.git`, `venv`, etc. It is passed to `CodeMix` when instantiated.
-
----
-<a name="preprocessor-code-mix-main"></a>### `__main__` Demo
-
-Instantiates `CodeMix` on a hard‑coded project directory and prints the confirmation message `"Файл успешно создан!"`. (The message is in Russian and indicates success.)
-
----
-<a name="preprocessor-code-mix-data-contract"></a>## Data Contract – CodeMix ↔ Manager
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `repo_content` | `str` | Repository dump | Returned by `build_repo_content`. |
-| `ignore_patterns` | `list[str]` | Exclusion rules | Influences traversal and logging. |
-| `root_dir` | `Path` | Repository root | Determines relative paths. |
-
-> The Manager consumes `repo_content` as the initial source mix for downstream compression and LLM prompting. No direct interaction with `ignore_list`; it is purely configuration.
-
----
-<a name="preprocessor-settings"></a>
-## settings.py – Project Prompt Builder
-<a name="postprocessor-embedding"></a>  
-## `autodocgenerator/postprocessor/embedding.py`
-
-**Purpose**  
-Provide vector embeddings for document parts using Google Gemini, and utility helpers to sort by semantic distance.
-
----
-<a name="postprocessor-sorting-module"></a>## Post‑processor: Sorting Logic
-
-**Purpose** – The *sorting* module is responsible for extracting anchor links from a markdown document, dividing the text into named chunks, and re‑ordering those chunks using an LLM.
-
----
-<a name="postprocessor-sorting-main"></a>### `__main__` Demo
-
-The script can be executed standalone, opening a local README and printing the anchor mapping produced by `split_text_by_anchors`.
-
----
-<a name="postprocessor-sorting-usage"></a>## Integration Highlights
-
-* `extract_links_from_start` feeds `split_text_by_anchors`, which yields a dictionary of anchored sections for the post‑processor.  
-* `get_order` receives a `Model` instance from the Manager, re‑orders the extracted anchor titles, and the result is used for semantic re‑arrangement in later stages.  
-* `CodeMix.build_repo_content` supplies the `Manager` with a single string of repository structure and file bodies, which becomes `code_mix` passed to `generete_custom_discription`.
-
----
-
-**Key Dependencies**
-
-- `engine.models.model.Model` – LLM interface for ordering.  
-- `ui.logging.BaseLogger` – Unified logging for both modules.  
-- `re`, `fnmatch`, `pathlib`, `os` – Standard library utilities.
-
-All logic is strictly derived from the provided snippets; no external assumptions have been made.
-<a name="sorting-extract-links-from-start"></a>### `extract_links_from_start(chunks)`
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `chunks` | `list[str]` | Chunk collection | Input list of markdown sections. |
-| `links` | `list[str]` | Anchor URLs | Captured from leading `<a name…>` tags. |
-| `have_to_del_first` | `bool` | Indicates if the first chunk is a placeholder | Set true when no anchor is found at start of a chunk. |
-
-**Logic Flow**
-
-1. Iterate over each `chunk`.  
-2. Strip whitespace and apply regex `^<a name=["']?(.*?)["']?</a>` to find a leading anchor.  
-3. If an anchor name longer than 5 chars is found, append `#anchor` to `links`.  
-4. If no anchor is found for a chunk, flag `have_to_del_first` to true.  
-5. Return `(links, have_to_del_first)`.
-
-> **Warning** – The function assumes that anchors, if present, are strictly at the beginning of the chunk. Any leading markdown or whitespace may cause a false negative.
-
----
-<a name="sorting-split-text-by-anchors"></a>### `split_text_by_anchors(text: str)`
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `text` | `str` | Full markdown document | Input to split. |
-| `chunks` | `list[str]` | Preliminary split by anchor boundaries | Uses look‑ahead regex. |
-| `result_chanks` | `list[str]` | Stripped, non‑empty chunks | Result of split. |
-| `all_links` | `list[str]` | Anchor URLs extracted | From `extract_links_from_start`. |
-| `result` | `dict[str, str]` | Mapping of anchor → chunk | Returned value. |
-
-**Logic Flow**
-
-1. Split `text` on the pattern that precedes an anchor (`(?=<a name…>)`).  
-2. Strip each fragment, discard empty ones.  
-3. Retrieve links and flag via `extract_links_from_start`.  
-4. If the first anchor occurs far into the file (`start_link_index > 10`) or the flag is set, remove the first chunk (assumed placeholder).  
-5. Verify that the number of links matches the number of chunks; otherwise raise `Exception`.  
-6. Build a dictionary mapping each link to its corresponding chunk.  
-7. Return the mapping.
-
-> **Critical** – The function throws an exception if the anchor count diverges from the chunk count, guarding against malformed documents.
-
----
-<a name="sorting-get-order"></a>### `get_order(model: Model, chanks: list[str]) -> list`
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `model` | `Model` | LLM wrapper | Imported from `engine.models.model`. |
-| `chanks` | `list[str]` | Anchor titles | Titles to be ordered. |
-| `result` | `str` | LLM response | Raw comma‑separated titles. |
-| `new_result` | `list[str]` | Ordered list | Stripped titles. |
-
-**Logic Flow**
-
-1. Log “Start ordering” using `BaseLogger`.  
-2. Build a user prompt that requests a semantic ordering of the titles.  
-3. Call `model.get_answer_without_history(prompt)`.  
-4. Split the response on commas, strip whitespace, and log the final list.  
-5. Return the ordered list.
-
-> **Warning** – The prompt string is hard‑coded; any changes to the LLM template require editing this file.
-
----
-<a name="embedding-helpers"></a>### Utility Functions
-
-| Function | Inputs | Outputs | Notes |
-| -------- | ------ | ------- | ----- |
-| `bubble_sort_by_dist(arr: list) -> list` | `arr`: list of tuples `(key, distance)` | Sorted list by ascending distance | Implements an O(n²) bubble sort, used only for small result sets. |
-| `get_len_btw_vectors(vector1, vector2) -> float` | Two NumPy arrays | Euclidean distance | Calls `np.linalg.norm(vector1, vector2)`. |
-| `sort_vectors(root_vector, other: dict[str, Any]) -> list[str]` | `root_vector`: reference vector, `other`: mapping `id → vector` | List of keys sorted by proximity to `root_vector` | Builds a distance list, bubble sorts it, and extracts keys. |
-
----
-<a name="embedding-class"></a>### `Embedding` Class
-
-| Attribute | Type | Role | Notes |
-| --------- | ---- | ---- | ----- |
-| `client` | `genai.Client` | Google GenAI client | Initialized with an API key. |
-
-#### Methods
-
-| Method | Parameters | Returns | Notes |
-| ------ | ---------- | ------- | ----- |
-| `__init__(api_key: str)` | `api_key`: Gemini API key | – | Stores client instance. |
-| `get_vector(prompt: str)` | `prompt`: text to embed | `np.ndarray` of shape `(768,)` | Calls `self.client.models.embed_content` with model `gemini-embedding-2-preview`. Raises if embeddings are missing. |
-
-**Usage Pattern**
-
+- `get_file_path(file_name, is_outside)`: This method returns the file path for the specified file name and with the option to be outside the project path.
 ```python
-embed = Embedding(api_key="YOUR_KEY")
-vec = embed.get_vector("sample document text")
+manager.get_file_path(".auto_doc_cache_file", is_outside=True)
 ```
 
----
-<a name="compressor-module"></a>
-## compressor.py – Text Compression Pipeline
-<a name="compressor-compress"></a>
-### `compress(data: str, project_settings: ProjectSettings, model: Model, compress_power) -> str`
-
-*Purpose* – Off‑load a single large text chunk to the LLM, requesting a compressed summary of the specified *power*.
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `data` | `str` | Raw source chunk | Input to the LLM |
-| `project_settings` | `ProjectSettings` | System‑level prompt builder | Supplies `project_settings.prompt` |
-| `model` | `Model` | LLM client | Must expose `get_answer_without_history` |
-| `compress_power` | `int` | Compression factor | Influences the base prompt length |
-
-**Logic**
-
-1. Build a three‑step prompt list: system instruction from `project_settings.prompt`, a base compression hint `get_BASE_COMPRESS_TEXT(len(data), compress_power)`, then the raw `data` as user content.
-2. Call `model.get_answer_without_history(prompt=prompt)` – no history retained for this operation.
-3. Return the LLM answer as a string.
-<a name="compressor-compress-and-compare"></a>
-### `compress_and_compare(data: list, model: Model, project_settings: ProjectSettings, compress_power: int = 4, progress_bar: BaseProgress = BaseProgress()) -> list`
-
-*Purpose* – Batch‑compress a list of text fragments, concatenating every *compress_power* items into one compressed block while tracking progress.
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `data` | `list[str]` | Collection of fragments | Each element is compressed independently |
-| `model` | `Model` | LLM client | Same as in `compress` |
-| `project_settings` | `ProjectSettings` | Prompt source | |
-| `compress_power` | `int` | Chunk grouping size | Defaults to 4 |
-| `progress_bar` | `BaseProgress` | UI progress helper | Instantiated with default if not supplied |
-
-**Logic**
-
-1. Pre‑allocate `compress_and_compare_data` with a size equal to `ceil(len(data)/compress_power)`.
-2. Create a sub‑task in `progress_bar` titled “Compare all files”.
-3. For each element `el` in `data`:
-   * Determine its destination index `curr_index = i // compress_power`.
-   * Append the compressed result of `el` plus a newline to the corresponding slot.
-   * Update progress.
-4. Remove the sub‑task after iteration and return the list of compressed blocks.
-<a name="compressor-compress-to-one"></a>
-### `compress_to_one(data: list, model: Model, project_settings: ProjectSettings, compress_power: int = 4, progress_bar: BaseProgress = BaseProgress())`
-
-*Purpose* – Iteratively reduce a list of fragments into a single string by repeatedly applying `compress_and_compare`.
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `data` | `list[str]` | Initial fragments | Will be mutated each iteration |
-| `model` | `Model` | LLM client | |
-| `project_settings` | `ProjectSettings` | Prompt source | |
-| `compress_power` | `int` | Base grouping factor | If remaining items < `compress_power+1`, the power is lowered to 2 |
-| `progress_bar` | `BaseProgress` | Progress indicator | |
-
-**Logic**
-
-1. Loop while `len(data) > 1`:
-   * If the current list length is less than `compress_power+1`, set `new_compress_power=2` to force final merge.
-   * Call `compress_and_compare` with the current `data` and `new_compress_power`.
-   * Replace `data` with the returned list.
-2. Return the lone string once only one item remains.
-
----
-<a name="spliter-module"></a>
-## spliter.py – Text Partitioning
-<a name="spliter-split-data"></a>
-## `split_data` – Text Partitioning
-
-**Purpose**  
-Break a single source string into a list of smaller chunks that respect an upper symbol limit.  
-The algorithm first trims overly long fragments by repeatedly halving any piece that exceeds `max_symbols * 1.5`.  
-After that, it greedily packs fragments into *split_objects* ensuring each does not grow beyond `max_symbols * 1.25`.
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `data` | `str` | Raw source code | The text that will be partitioned |
-| `max_symbols` | `int` | Size threshold | Maximum allowed length for a chunk |
-| `split_objects` | `list[str]` | Resulting chunks | Returned to the caller |
-| `logger` | `BaseLogger` | Diagnostics | Emits split progress |
-
-**Step‑by‑Step Flow**
-
-1. **Initial split** – `splited_by_files = data.split("\n")`.  
-2. **Recursive halving** – While any fragment exceeds 150 % of `max_symbols`, it is split in half and re‑inserted.  
-3. **Packing** – Fragments are appended to the current chunk until adding one would exceed 125 % of `max_symbols`; a new chunk is started.  
-4. **Logging** – Reports the number of parts produced.
-
-**Critical Assumptions**
-
-> The algorithm assumes line‑based splitting is a suitable approximation for logical code boundaries.  
-> No external token counting is performed; length is measured in raw characters.
-<a name="spliter-write_docs_by_parts"></a>
-## `write_docs_by_parts` – LLM Chunk Documentation
-
-**Purpose**  
-Send a single code fragment (`part`) to the LLM and receive its markdown documentation, optionally attaching contextual information from preceding or global sections.
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `part` | `str` | Chunk to document | The text produced by `split_data` |
-| `model` | `Model` | LLM client | Uses `get_answer_without_history` |
-| `project_settings` | `ProjectSettings` | Prompt base | Supplies `prompt` property |
-| `prev_info` | `str | None` | Tail of previous docs | Sent as a system instruction |
-| `language` | `str` | Localization | Prepends language instruction |
-| `global_info` | `str | None` | Project‑wide context | Added as an extra system message |
-| `logger` | `BaseLogger` | Logging | Records start/end and output length |
-
-**Logic**
-
-1. Assemble a system prompt hierarchy:
-   * Language directive.
-   * Project meta‑information (`project_settings.prompt`).
-   * Base template `BASE_PART_COMPLITE_TEXT`.
-   * Optional global relations or prior documentation snippet.
-2. Append the user message containing the code `part`.  
-3. Call `model.get_answer_without_history`.  
-4. Strip leading and trailing Markdown fences (` ``` `) if present.  
-5. Return the cleaned answer string.
-
-**Warning**
-
-> The function *mutates* `answer` only when fence delimiters are detected.  
-> If the LLM returns a string without fences, it is returned unchanged.
-<a name="spliter-gen_doc_parts"></a>
-## `gen_doc_parts` – Full‑Project Documentation Assembly
-
-**Purpose**  
-Coordinate splitting and LLM generation for an entire source mix, producing a contiguous markdown document.
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `full_code_mix` | `str` | Aggregated source | Input from pre‑processor |
-| `max_symbols` | `int` | Chunk size | Passed to `split_data` |
-| `model` | `Model` | LLM client | Shared with `write_docs_by_parts` |
-| `project_settings` | `ProjectSettings` | Prompt source | Provides context |
-| `language` | `str` | Localization | e.g., `"en"` |
-| `progress_bar` | `BaseProgress` | UI helper | Optional; defaults to empty instance |
-| `global_info` | `str | None` | Project relations | Passed to each part request |
-| `logger` | `BaseLogger` | Diagnostics | Reports progress and total length |
-
-**Flow**
-
-1. **Split** `full_code_mix` via `split_data`.  
-2. **Sub‑task creation** – `progress_bar.create_new_subtask`.  
-3. **Iterative generation** – For each `el` in `splitted_data`:
-   * Call `write_docs_by_parts(el, ...)`.  
-   * Append result to `all_result`, separated by two newlines.  
-   * Truncate `result` to the last 3000 characters to preserve context for the next part.  
-   * Update progress bar.  
-4. **Cleanup** – Remove sub‑task.  
-5. **Return** the concatenated markdown string `all_result`.
-
-**Side Effects**
-
-- Emits detailed `InfoLog` entries (lengths, per‑part content at level 2).  
-- Progress bar state changes do not affect the content.
-<a name="settings-projectsettings"></a>
-### `ProjectSettings(project_name: str)`
-
-*Purpose* – Assemble a dynamic system prompt incorporating project metadata.
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `project_name` | `str` | Identifier for the target repo | Passed at construction |
-| `info` | `dict` | Arbitrary key/value pairs | Added via `add_info` |
-
-**Methods**
-
-- `add_info(key, value)` – Stores a new metadata entry.
-- `prompt` (property) – Generates a full prompt string by concatenating `BASE_SETTINGS_PROMPT`, the project name line, and every key/value pair from `info`. Each entry ends with a newline.
-
----
-<a name="logging-infrastructure"></a>
-## Logging Infrastructure – `BaseLogger` & Templates  
-
-### Purpose
-Provide a lightweight, level‑aware logging façade that can be swapped between console and file output without affecting downstream code.
-
-#### Component Overview
-
-| Class | Responsibility | Key Methods |
-|-------|-----------------|-------------|
-| `BaseLog` | Base log message holder | `format()` – string representation |
-| `ErrorLog / WarningLog / InfoLog` | Sub‑class with severity prefix | `format()` overrides |
-| `BaseLoggerTemplate` | Strategy for output (console / file) | `log()`, `global_log()` |
-| `FileLoggerTemplate` | Appends logs to a file | `log()` |
-| `BaseLogger` | Singleton façade for the rest of the system | `set_logger()`, `log()` |
-
-#### Interaction Flow
-
-1. **Instantiate** a concrete `BaseLoggerTemplate` (`Console` via `print` or `FileLoggerTemplate`).  
-2. **Inject** it into the singleton `BaseLogger` (`set_logger`).  
-3. **Generate** a log instance (`ErrorLog(...)`, etc.).  
-4. **Route** through `BaseLogger.log()` → `logger_template.global_log()` → `print` or file write.  
-
-> **Note:** `global_log` enforces the configured `log_level`.  
-> If `log_level < 0`, all messages are printed.
-
-#### Data Contract
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `log` | `BaseLog` | Input to `BaseLogger.log` | `message: str`, `level: int` |
-| `log_level` | `int` | Configurable threshold | `>=` message level triggers output |
-| `file_path` | `str` | Destination for file logs | Optional; defaults to console |
-
-#### Example Usage
-
+- `read_file_by_file_key(file_name, is_outside)`: This method reads the file by the file key with the option to be outside the project path.
 ```python
-logger = BaseLogger()
-logger.set_logger(FileLoggerTemplate("my.log"))
-logger.log(InfoLog("Process started", level=1))
+manager.read_file_by_file_key(".auto_doc_cache_file", is_outside=True)
 ```
+<a name="compressor-component"></a> Compressor Component
+The compressor component is responsible for compressing the preprocessed data into a unified string representation. This is achieved through the `compress` and `compress_and_compare` functions.
 
----
-<a name="progress-tracking"></a>
-## Progress Tracking – Rich and Console Back‑ends  
+###
+<a name="compress-function"></a> Compress Function
+The `compress` function takes in the following parameters:
+* `data`: The preprocessed string data to be compressed
+* `project_settings`: The project settings, including the prompt and other configuration
+* `model`: The language model used for compression
+* `compress_power`: The power of compression, which determines the level of compression
 
-### Purpose
-Offer a minimal progress interface that can be replaced by a rich terminal bar or a simple console printout, enabling UI‑agnostic task progress reporting.
+The function creates a prompt for the language model, which includes the project settings and the data to be compressed. The prompt is then used to get an answer from the language model without history, and the answer is returned as the compressed string.
 
-#### Component Overview
+###
+<a name="compress-and-compare-function"></a> Compress and Compare Function
+The `compress_and_compare` function takes in the following parameters:
+* `data`: The list of strings to be compressed and compared
+* `model`: The language model used for compression and comparison
+* `project_settings`: The project settings, including the prompt and other configuration
+* `compress_power`: The power of compression, which determines the level of compression
+* `progress_bar`: The progress bar used to track the progress of the compression and comparison process
 
-| Class | Responsibility | Key Methods |
-|-------|-----------------|-------------|
-| `BaseProgress` | Abstract progress interface | `create_new_subtask`, `update_task`, `remove_subtask` |
-| `LibProgress` | Rich‑based implementation | Overrides all abstract methods |
-| `ConsoleTask` | Lightweight console counter | `progress()` prints percent |
-| `ConsoleGtiHubProgress` | Console fallback with a default “General” task | Overrides progress methods |
+The function iterates over the input data, compressing each string using the `compress` function and comparing the results. The compressed strings are then combined into a single list, and the progress bar is updated to reflect the progress of the process.
 
-#### Interaction Flow
+###
+<a name="compress-to-one-function"></a> Compress to One Function
+The `compress_to_one` function takes in the following parameters:
+* `data`: The list of strings to be compressed
+* `model`: The language model used for compression
+* `project_settings`: The project settings, including the prompt and other configuration
+* `compress_power`: The power of compression, which determines the level of compression
+* `progress_bar`: The progress bar used to track the progress of the compression process
 
-1. **Create** a concrete progress instance (`LibProgress` or `ConsoleGtiHubProgress`).  
-2. **Create** a sub‑task: `create_new_subtask(name, total_len)`.  
-3. **Advance** with `update_task()` per iteration.  
-4. **Remove** sub‑task once done: `remove_subtask()`.  
+The function repeatedly applies the `compress_and_compare` function to the input data, reducing the number of strings in the list until only one string remains. The final compressed string is then returned.
 
-If no sub‑task exists, the *General* task advances.
+###
+<a name="split-data-function"></a> Split Data Function
+The `split_data` function is used to split the preprocessed data into smaller chunks.
 
-> **Assumption:** The `Progress` object passed to `LibProgress` is a `rich.progress.Progress` instance; its `add_task` returns a task ID used by `update_task`.
+###
+<a name="split-data-parameters"></a> Split Data Parameters
+The `split_data` function takes the following parameters:
+* `data`: The preprocessed string data to be split.
+* `max_symbols`: The maximum number of symbols in each chunk.
 
-#### Data Contract
+###
+<a name="split-data-return-value"></a> Split Data Return Value
+The `split_data` function returns a list of strings, where each string is a chunk of the input data.
 
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `name` | `str` | Sub‑task identifier | Displayed in console or progress bar |
-| `total_len` | `int` | Total units of work | Determines progress percentage |
-| `progress` | `rich.progress.Progress` | Rich progress bar instance | Only used by `LibProgress` |
+###
+<a name="split-data-functionality"></a> Split Data Functionality
+###
+<a name="technical-logic-flow"></a> Technical Logic Flow
+The technical logic flow includes the following steps:
+1. Create a logger using the `BaseLogger` class.
+2. Create a progress bar using the `BaseProgress` class.
+3. Use the logger to log messages.
+4. Use the progress bar to update the progress.
 
----
-<a name="install-ps1"></a>
-## Installation Helper – PowerShell Script (`install.ps1`)  
+##
+<a name="functional-flow"></a> Functional Flow
+The functional flow of the project is as follows:
+1. The `Manager` initializes the pipeline, creating a cache folder and setting up the configuration.
+2. The `CodeMix` preprocesses the source code, producing a unified string.
+3. The `DocFactory` generates documentation using LLMs, with optional post-processing.
+4. The `Embedding` generates vector embeddings for doc parts.
+5. The `Manager` saves the final documentation and schema.
 
-### Purpose
-Automate the creation of a GitHub Actions workflow and a default `autodocconfig.yml` file for a project, ensuring the Auto‑Doc Generator is ready to run without manual setup.
+###
+<a name="component-logic"></a> Component Logic
+The project consists of the following components:
+* **`Manager`**: Orchestrates the pipeline, holding shared state and configuration.
+* **`CodeMix`**: Preprocesses source code into a unified string.
+* **`DocFactory`**: Generates documentation via LLMs and post-processing.
+* **`Embedding`**: Wraps generated doc parts with vector embeddings.
+* **`Config`**: Stores global settings and cache metadata.
 
-#### Key Steps
+###
+<a name="key-context-for-snippets"></a> Key Context for Snippets
+* **Shared State:** `Manager` instance holds `doc_info`, `config`, and `llm_model`.
+* **Cache Folder:** `.auto_doc_cache` stores intermediate artifacts.
+* **Entry Points:** `Manager.generate_code_file`, `Manager.generate_global_info`, `Manager.generate_doc_parts`, `Manager.factory_generate_doc`.
+* **Terminal Points:** `Manager.save` writes final markdown and schema.
 
-1. **Create** `.github/workflows` directory if missing.  
-2. **Write** `autodoc.yml` workflow that references the reusable `reuseble_agd.yml` template.  
-3. **Generate** a YAML configuration file containing:
-   - Project name (derived from current folder)
-   - Language
-   - Ignored file patterns
-   - Build and structure settings
+##
+<a name="logger-functionality"></a> Logger Functionality
+The logger functionality is implemented using the following classes:
+- `BaseLog`: This class is the base class for all logs. It has a `message` attribute and a `level` attribute.
+- `ErrorLog`, `WarningLog`, `InfoLog`: These classes inherit from `BaseLog` and override the `format` method to include the log level.
+- `BaseLoggerTemplate`: This class is a template for loggers. It has a `log_level` attribute and methods for logging and global logging.
+- `FileLoggerTemplate`: This class inherits from `BaseLoggerTemplate` and logs to a file.
+- `BaseLogger`: This class is a singleton that provides a global logger.
 
-> **Side effect:** Emits a green “✅ Done!” message to the console upon completion.
+##
+<a name="progress-bar-functionality"></a> Progress Bar Functionality
+The progress bar functionality is implemented using the following classes:
+- `BaseProgress`: This class is the base class for progress bars. It has methods for creating new subtasks, updating tasks, and removing subtasks.
+- `LibProgress`: This class inherits from `BaseProgress` and uses the `rich` library to create a progress bar.
+- `ConsoleTask`: This class represents a task with a name and a total length. It has methods for starting the task and updating the progress.
+- `ConsoleGtiHubProgress`: This class inherits from `BaseProgress` and uses `ConsoleTask` to create a progress bar.
 
-#### Data Contract
-
-| Entity | Type | Role | Notes |
-|--------|------|------|-------|
-| `project_name` | `str` | Derived from current folder | Used for configuration metadata |
-| `language` | `str` | Localization setting | Default `en` |
-| `ignore_files` | `list[str]` | File glob patterns to skip | Passed to `Config` |
-| `build_settings` | `dict` | Runtime flags | e.g., `save_logs`, `log_level` |
-| `structure_settings` | `dict` | Document layout flags | e.g., `include_intro_text` |
-
----
-<a name="install-bash"></a>
-## Install.sh Script – Workflow Automation  
-
-### Purpose  
-Creates a minimal CI setup for Auto‑Doc Generator in an existing repository by:
-
-1. Generating a GitHub Actions workflow that re‑uses the shared `reuseble_agd.yml` template.  
-2. Writing a default `autodocconfig.yml` that captures project metadata, ignore patterns, and build/structure settings.  
-
-This eliminates manual configuration steps, enabling immediate `autodocgenerator` runs from the command line or within CI.  
-
-### Data Contract  
-
-| Entity          | Type | Role | Notes |
-|-----------------|------|------|-------|
-| `project_name`  | `str` | Derived from the current working directory | Populates `project_name` in `autodocconfig.yml`. |
-| `language`      | `str` | Localization flag | Defaults to `"en"` in the config. |
-| `ignore_files`  | `list[str]` | File glob patterns to skip | Directly copied into the config. |
-| `build_settings`| `dict` | Runtime flags for the generator | e.g., `save_logs`, `log_level`. |
-| `structure_settings` | `dict` | Document layout flags | e.g., `include_intro_*`, `use_global_file`. |
-| `workflow_path` | `str` | Target path for GitHub Action | `.github/workflows/autodoc.yml`. |
-| `config_path`   | `str` | Target path for config | `autodocconfig.yml`. |
-
-> **Side effect**: prints a green “✅ Done!” message once each file is written.  
-
-### Step‑by‑Step Logic  
-
-1. **Create workflow directory**  
-   ```bash
-   mkdir -p .github/workflows
-   ```
-   *Creates `.github/workflows` if missing, ensuring GitHub can discover the workflow.*
-
-2. **Write GitHub Actions workflow**  
-   ```bash
-   cat <<EOF > .github/workflows/autodoc.yml
-   name: AutoDoc
-   on: [workflow_dispatch]
-   jobs:
-     run:
-       permissions:
-         contents: write
-       uses: Drag-GameStudio/ADG/.github/workflows/reuseble_agd.yml@main
-       secrets:
-         GROCK_API_KEY: \${{ secrets.GROCK_API_KEY }}
-   EOF
-   ```
-   *A single‑file workflow that triggers manually and forwards the `GROCK_API_KEY` secret to the reusable template.*
-
-3. **Emit completion message**  
-   ```bash
-   echo "✅ Done! .github/workflows/autodoc.yml has been created."
-   ```
-   *Immediate visual confirmation for the user.*
-
-4. **Write default `autodocconfig.yml`**  
-   ```bash
-   cat <<EOF > autodocconfig.yml
-   project_name: "$(basename "$PWD")"
-   language: "en"
-   ...
-   EOF
-   ```
-   *The file is populated with:*
-
-   - **Project metadata** – name, language.  
-   - **`ignore_files`** – a comprehensive list covering Python bytecode, caches, virtualenvs, logs, VCS data, etc.  
-   - **`build_settings`** – flags controlling log persistence and verbosity.  
-   - **`structure_settings`** – toggles for intro sections, ordering, and global file generation, plus `max_doc_part_size`.  
-
-5. **Emit second completion message**  
-   ```bash
-   echo "✅ Done! autodocconfig.yml has been created."
-   ```
-
-### Outputs  
-
-- File **`.github/workflows/autodoc.yml`**: ready to run the Auto‑Doc Generator in a CI context.  
-- File **`autodocconfig.yml`**: initial configuration that can be edited to suit a particular project.  
-- Console output: two success messages indicating successful file creation.  
-
-> **Note**: The script assumes a POSIX‑compatible shell (Bash) and that the current directory is a valid repository root.
-
----
+##
