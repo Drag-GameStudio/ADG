@@ -1,11 +1,13 @@
-from autodocgenerator.manage import Manager, split_text_by_anchors, DocContent
+from autodocgenerator.manage import Manager
 from autodocgenerator.factory.base_factory import DocFactory
 from autodocgenerator.factory.modules.general_modules import CustomModule, CustomModuleWithOutContext
 from autodocgenerator.factory.modules.intro import IntroLinks, IntroText, BaseModule
 from autodocgenerator.ui.progress_base import ConsoleGtiHubProgress
 from autodocgenerator.auto_runner.config_reader import Config, read_config, StructureSettings
 from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel
-from autodocgenerator.engine.config.config import API_KEYS
+from autodocgenerator.engine.config.config import GROQ_API_KEYS, GOOGLE_EMBEDDING_API_KEY
+from autodocgenerator.postprocessor.embedding import Embedding
+from autodocgenerator.auto_runner.check_git_status import check_git_status
 
 
 def gen_doc(project_path: str, 
@@ -13,12 +15,16 @@ def gen_doc(project_path: str,
             custom_modules: list[BaseModule], 
             structure_settings: StructureSettings) -> str:
     
-    sync_model = GPTModel(API_KEYS, use_random=False)
+    sync_model = GPTModel(GROQ_API_KEYS, use_random=False)
+    embedding_model = Embedding(GOOGLE_EMBEDDING_API_KEY)
+    
+    print(check_git_status(10, None))
     
     manager = Manager(
         project_path, 
         config=config,
         llm_model=sync_model,
+        embedding_model=embedding_model,
         progress_bar=ConsoleGtiHubProgress(), 
     )
   
@@ -45,6 +51,7 @@ def gen_doc(project_path: str,
 
     
     manager.factory_generate_doc(DocFactory(*additionals_modules, with_splited=False), to_start=True)
+    manager.create_embedding_layer()
     manager.clear_cache()
 
     manager.save()

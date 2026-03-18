@@ -9,7 +9,8 @@ from .ui.logging import BaseLogger, InfoLog, ErrorLog, WarningLog, FileLoggerTem
 from .postprocessor.sorting import get_order, split_text_by_anchors
 from .config.config import Config
 from .schema.doc_schema import DocContent, DocHeadSchema, DocInfoSchema
-
+from .postprocessor.embedding import Embedding
+import json
 
 class Manager:
     CACHE_FOLDER_NAME = ".auto_doc_cache"
@@ -18,13 +19,16 @@ class Manager:
         "code_mix": "code_mix.txt",
         "global_info": "global_info.md",
         "logs": "report.txt",
-        "output_doc": "output_doc.md"
+        "output_doc": "output_doc.md",
+        "info": "info.json",
+        ".auto_doc_cache_file": ".auto_doc_cache_file.json"
     }
 
 
     def __init__(self, project_directory: str, 
                  config: Config, 
                  llm_model: Model,
+                 embedding_model: Embedding,
                  progress_bar: BaseProgress = BaseProgress()):
         
     
@@ -35,11 +39,17 @@ class Manager:
         self.progress_bar = progress_bar
 
         self.llm_model = llm_model
+        self.embedding_model = embedding_model
 
         self.logger = BaseLogger()
         self.logger.set_logger(FileLoggerTemplate(self.get_file_path("logs"), log_level=self.config.pbc.log_level))
 
-        cache_path = os.path.join(self.project_directory, self.CACHE_FOLDER_NAME)
+        self.init_folder_system(self.project_directory)
+        
+
+    @classmethod
+    def init_folder_system(cls, project_directory):
+        cache_path = os.path.join(project_directory, cls.CACHE_FOLDER_NAME)
 
         if not os.path.isdir(cache_path):
             os.mkdir(cache_path)
@@ -52,6 +62,7 @@ class Manager:
             data = None
         return data
 
+    
     def get_file_path(self, file_key: str):
         return os.path.join(self.project_directory, self.CACHE_FOLDER_NAME, self.FILE_NAMES[file_key]) 
 
@@ -125,6 +136,10 @@ class Manager:
 
         self.progress_bar.update_task()
 
+    def create_embedding_layer(self) -> None:
+        for el in self.doc_info.doc.parts:
+            self.doc_info.doc.parts[el].init_embedding(self.embedding_model)
+
     def order_doc(self):
         result = get_order(self.llm_model, self.doc_info.doc.content_orders)
         self.doc_info.doc.content_orders = result
@@ -136,3 +151,6 @@ class Manager:
     def save(self) -> None:
         with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
             file.write(self.doc_info.doc.get_full_doc())
+
+        with open(self.get_file_path("info"), "w", encoding="utf-8") as file:
+            file.write(self.doc_info.model_dump_json())
