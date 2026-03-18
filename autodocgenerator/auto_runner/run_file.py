@@ -5,7 +5,7 @@ from autodocgenerator.factory.modules.intro import IntroLinks, IntroText, BaseMo
 from autodocgenerator.ui.progress_base import ConsoleGtiHubProgress
 from autodocgenerator.auto_runner.config_reader import Config, read_config, StructureSettings
 from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel
-from autodocgenerator.engine.config.config import API_KEY
+from autodocgenerator.engine.config.config import API_KEYS
 
 
 def gen_doc(project_path: str, 
@@ -13,7 +13,7 @@ def gen_doc(project_path: str,
             custom_modules: list[BaseModule], 
             structure_settings: StructureSettings) -> str:
     
-    sync_model = GPTModel(API_KEY, use_random=False)
+    sync_model = GPTModel(API_KEYS, use_random=False)
     
     manager = Manager(
         project_path, 
@@ -23,6 +23,7 @@ def gen_doc(project_path: str,
     )
   
 
+    
     manager.generate_code_file()
     if structure_settings.use_global_file:
         manager.generate_global_info(compress_power=4)

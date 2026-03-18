@@ -1,4 +1,4 @@
-from ..config.config import BASE_SYSTEM_TEXT, API_KEY
+from ..config.config import BASE_SYSTEM_TEXT, API_KEYS
 import random
 from typing import Union, Any, Coroutine
 from abc import abstractmethod, ABC
@@ -17,13 +17,15 @@ class History:
 
 
 class ParentModel(ABC):
-    def __init__(self, api_key=API_KEY, history: History = History(), 
+    def __init__(self, api_key=API_KEYS, history: History = History(), 
                  models_list: list[str] = ["openai/gpt-oss-120b",  "llama-3.3-70b-versatile",  "openai/gpt-oss-safeguard-20b"],
                  use_random: bool = True):
         self.history = history
-        self.api_key = api_key
+        self.api_keys = api_key
 
         self.current_model_index = 0
+        self.current_key_index = 0
+
         
         models_list = models_list.copy()
         if use_random:

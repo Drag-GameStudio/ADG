@@ -1,4 +1,4 @@
-from .model import Model, AsyncModel, API_KEY, History
+from .model import Model, AsyncModel, API_KEYS, History
 from groq import Groq, AsyncGroq
 from ..exceptions import ModelExhaustedException
 from ...ui.logging import BaseLogger, InfoLog, ErrorLog, WarningLog
@@ -8,11 +8,11 @@ class AsyncGPTModel(AsyncModel):
 
 
 class GPTModel(Model):
-    def __init__(self, api_key=API_KEY, history = History(), 
+    def __init__(self, api_key=API_KEYS, history = History(), 
                  models_list: list[str] = ["openai/gpt-oss-120b",  "llama-3.3-70b-versatile",  "openai/gpt-oss-safeguard-20b"], 
                  use_random: bool = True):
         super().__init__(api_key, history, models_list, use_random)
-        self.client = Groq(api_key=self.api_key)
+        self.client = Groq(api_key=self.api_keys[self.current_key_index])
         self.logger = BaseLogger()
 
 
@@ -42,7 +42,13 @@ class GPTModel(Model):
             except Exception as e:
                 print(e)
                 self.logger.log(WarningLog(f"Model {model_name} failed with error: {str(e)}. Trying next model..."))
-                self.current_model_index = 0 if self.current_model_index + 1 >= len(self.regen_models_name) else self.current_model_index + 1
+                self.current_key_index = 0 if self.current_key_index + 1 >= len(self.api_keys) else self.current_key_index + 1
+                if self.current_key_index == 0:
+                    self.current_model_index = 0 if self.current_model_index + 1 >= len(self.regen_models_name) else self.current_model_index + 1
+                    
+                self.client = Groq(api_key=self.api_keys[self.current_key_index])
+
+
 
 
         result = chat_completion.choices[0].message.content

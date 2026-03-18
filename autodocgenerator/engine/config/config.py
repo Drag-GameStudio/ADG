@@ -73,6 +73,7 @@ Strict Algorithmic Constraints:
 Visual Style:
 - Clean, professional, scannable.
 - Minimal emojis for visual cues.
+- use md links [Text](#anchor)
 """
 
 BASE_INTRO_CREATE = """
@@ -161,6 +162,6 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv() 
-API_KEY = os.getenv("API_KEY")
-if API_KEY is None:
+API_KEYS = os.getenv("API_KEY", "").split(",")
+if len(API_KEYS) == 0:
     raise Exception("API_KEY is not set in environment variables.")

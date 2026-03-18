@@ -2,36 +2,44 @@ import re
 from ..engine.models.model import Model
 from ..ui.logging import BaseLogger, InfoLog, WarningLog, ErrorLog
 
-def extract_links_from_start(chunks):
+def extract_links_from_start(chunks) -> tuple[list[str], bool]:
     links = []
     pattern = r'^<a name=["\']?(.*?)["\']?></a>'
     
+    have_to_del_first = False
     for chunk in chunks:
+        is_find = False
         match = re.search(pattern, chunk.strip())
         if match:
             anchor_name = match.group(1)
             if len(anchor_name) > 5:
+                is_find = True
                 links.append("#" + anchor_name)
+        if not is_find:
+            have_to_del_first = True
                 
-    return links
+    return links, have_to_del_first
 
 
 def split_text_by_anchors(text: str) -> dict[str, str]:
     pattern = r'(?=<a name=["\']?[^"\'>\s]{6,200}["\']?></a>)'
     chunks = re.split(pattern, text)
     result_chanks = [chunk.strip() for chunk in chunks if chunk.strip()]
-    all_links = extract_links_from_start(result_chanks)
+    all_links, have_to_del_first = extract_links_from_start(result_chanks)
+
 
     start_link_index = text.find("<a name")
-    if start_link_index > 10:
+    if start_link_index > 10 or have_to_del_first:
         result_chanks.pop(0)
     result = {}
+
 
     if len(all_links) != len(result_chanks):
         raise Exception("Somthing with anchors")
 
     for i in range(len(all_links)):
         result[all_links[i]] = result_chanks[i]
+
     return result
 
 
