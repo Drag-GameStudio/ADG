@@ -1,4 +1,4 @@
-from ..engine.models.gpt_model import GPTModel, AsyncGPTModel, Model, AsyncModel
+from ..engine.models.model import ParentModel, Model
 from ..engine.config.config import get_BASE_COMPRESS_TEXT
 import math
 import asyncio

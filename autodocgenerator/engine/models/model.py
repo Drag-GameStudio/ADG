@@ -1,9 +1,11 @@
-from ..config.config import BASE_SYSTEM_TEXT, API_KEY, MODELS_NAME
+from ..config.config import BASE_SYSTEM_TEXT, API_KEYS
 import random
+from typing import Union, Any, Coroutine
+from abc import abstractmethod, ABC
 
 class History:
     def __init__(self, system_prompt: str = BASE_SYSTEM_TEXT):
-        self.history = []
+        self.history: list[dict[str, str]] = []
         if system_prompt is not None:
             self.add_to_history("system", system_prompt)
 
@@ -14,21 +16,39 @@ class History:
         })
 
 
-class ParentModel():
-    def __init__(self, api_key=API_KEY, history: History = History(), use_random: bool = True):
+class ParentModel(ABC):
+    def __init__(self, api_key=API_KEYS, history: History = History(), 
+                 models_list: list[str] = ["openai/gpt-oss-120b",  "llama-3.3-70b-versatile",  "openai/gpt-oss-safeguard-20b"],
+                 use_random: bool = True):
         self.history = history
-        self.api_key = api_key
+        self.api_keys = api_key
 
         self.current_model_index = 0
-        models_copy = MODELS_NAME.copy()
+        self.current_key_index = 0
+
+        
+        models_list = models_list.copy()
         if use_random:
-            random.shuffle(models_copy)
-        self.regen_models_name = models_copy
+            random.shuffle(models_list)
+        self.regen_models_name = models_list
+
+    @abstractmethod
+    def generate_answer(self, with_history: bool = True, prompt: list[dict[str, str]] | None = None) -> Union[str, Coroutine[Any, Any, str]]:
+        return ""
+    
+    @abstractmethod
+    def get_answer_without_history(self, prompt: list[dict[str, str]]) -> Union[str, Coroutine[Any, Any, str]]:
+        return ""
+    
+    @abstractmethod
+    def get_answer(self, prompt: str) -> Union[str, Coroutine[Any, Any, str]]:
+        return ""
+
 
 
 class Model(ParentModel):
 
-    def generate_answer(self, with_history: bool = True, prompt: str = None) -> str:
+    def generate_answer(self, with_history: bool = True, prompt: list[dict[str, str]]  |  None = None) -> str:
         return "answer"
     
     def get_answer_without_history(self, prompt: list[dict[str, str]]) -> str:
@@ -42,7 +62,7 @@ class Model(ParentModel):
     
 class AsyncModel(ParentModel):
 
-    async def generate_answer(self, with_history: bool = True, prompt: str = None) -> str:
+    async def generate_answer(self, with_history: bool = True, prompt: list[dict[str, str]] | None = None) -> str:
         return "answer"
     
     async def get_answer_without_history(self, prompt: list[dict[str, str]]) -> str:

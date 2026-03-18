@@ -13,7 +13,7 @@ def _print_welcome():
     {RESET}"""
     
     print(ascii_logo)
-    print(f"{CYAN}ADG Library{RESET} | {BOLD}Status:{RESET} Ready to work")
+    print(f"{CYAN}ADG Library{RESET} | {BOLD}Status:{RESET} Ready to work V0.0.1")
     print(f"{'—' * 35}\n")
 
 _print_welcome()

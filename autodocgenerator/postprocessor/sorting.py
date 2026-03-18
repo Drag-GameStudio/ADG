@@ -2,43 +2,54 @@ import re
 from ..engine.models.model import Model
 from ..ui.logging import BaseLogger, InfoLog, WarningLog, ErrorLog
 
-def extract_links_from_start(chunks):
+def extract_links_from_start(chunks) -> tuple[list[str], bool]:
     links = []
     pattern = r'^<a name=["\']?(.*?)["\']?></a>'
     
+    have_to_del_first = False
     for chunk in chunks:
+        is_find = False
         match = re.search(pattern, chunk.strip())
         if match:
             anchor_name = match.group(1)
             if len(anchor_name) > 5:
+                is_find = True
                 links.append("#" + anchor_name)
+        if not is_find:
+            have_to_del_first = True
                 
-    return links
+    return links, have_to_del_first
 
 
-def split_text_by_anchors(text):
+def split_text_by_anchors(text: str) -> dict[str, str]:
     pattern = r'(?=<a name=["\']?[^"\'>\s]{6,200}["\']?></a>)'
     chunks = re.split(pattern, text)
     result_chanks = [chunk.strip() for chunk in chunks if chunk.strip()]
-    all_links = extract_links_from_start(result_chanks)
+    all_links, have_to_del_first = extract_links_from_start(result_chanks)
+
+
+    start_link_index = text.find("<a name")
+    if start_link_index > 10 or have_to_del_first:
+        result_chanks.pop(0)
     result = {}
 
+
     if len(all_links) != len(result_chanks):
-        return None
+        raise Exception("Somthing with anchors")
 
     for i in range(len(all_links)):
         result[all_links[i]] = result_chanks[i]
+
     return result
 
 
-def get_order(model: Model, chanks: dict[str, str]):
+def get_order(model: Model, chanks: list[str]) -> list:
     logger = BaseLogger()
     logger.log(InfoLog("Start ordering"))
-    logger.log(InfoLog(f"chanks name: {list(chanks.keys())}", level=1))
-    logger.log(InfoLog(f"chanks: {chanks}", level=2))
+    logger.log(InfoLog(f"chanks name: {chanks}", level=1))
 
 
-    prompt = [
+    prompt = [ #TODO tranport promt to prompts
         {
             "role": "user",
             "content": f"""Sort the following titles semantically (group related topics together). 
@@ -47,7 +58,7 @@ def get_order(model: Model, chanks: dict[str, str]):
                         leave # in title.
                         do not skip any title
                         Titles:
-                        {list(chanks.keys())}
+                        {chanks}
             """
         }
     ]
@@ -55,12 +66,9 @@ def get_order(model: Model, chanks: dict[str, str]):
     new_result = list(map(lambda x: x.strip(), result.split(",")))
     logger.log(InfoLog(f"End ordering result list {new_result}"))
 
-    order_output = ""
-    for el in new_result:
-        order_output += f"{chanks.get(el)} \n"
-        logger.log(InfoLog(f"Add to {chanks.get(el)}", level=2))
+    
         
-    return order_output
+    return new_result
 
 
 if __name__ == "__main__":
