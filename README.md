@@ -6,13 +6,41 @@
 ## 1. Project Title  
 **Auto‑Doc Generator – Layered + Factory + LLM‑Driven**
 
----
+| Main Package | Primary Modules (≈ 2 k lines total) | Responsibility |
+|--------------|------------------------------------|----------------|
+| `autodocgenerator` | `auto_runner/run_file.py`, `manage.py`, `config.py`, `structure_settings.py`, `base_logger.py` | Entry point, facade, configuration handling |
+| `autodocgenerator.preprocessor` | `spliter.py`, `code_mix.py`, `settings.py` | File parsing, code chunking, user‑defined settings |
+| `autodocgenerator.engine.models` | `gpt_model.py` | LLM wrapper (`GPTModel`, `AsyncGPTModel`) |
+| `autodocgenerator.factory` | `base_factory.py`, `modules/*.py` | Factory and strategy objects for post‑processing |
+| `autodocgenerator.schema` | `doc_schema.py` | Pydantic data models (`DocInfo`, `DocPart`) |
+| `autodocgenerator.ui` | `logging.py`, `progress_base.py` | Central logger, progress handling |
+| `engine/config` | `config.py` | Environment‑derived API keys |
+| `engine/utils` | `progress_bar.py` (optional) | Helper utilities |
 
 ## 2. Project Goal  
 To automatically produce a complete, readable README (or other Markdown artifacts) from the source code of a repository.  
 The tool parses the code, chunks it to stay within token limits, sends those fragments to a large‑language model (Groq or OpenAI), formats the generated text with reusable modules, and stitches the result into a single cohesive document. The solution is CI‑friendly and can be invoked from a local CLI or a GitHub Action.
 
 ---
+<a name="ui-logging"></a>  
+## UI Logging Module (`autodocgenerator.ui.logging`)
+
+| Class | Purpose | Key Methods | Notes |
+|-------|---------|-------------|-------|
+| `BaseLog` | Base data class for log entries | `__init__(message, level)`<br>`format()`<br>`_log_prefix` property | Provides a timestamped prefix via `datetime.fromtimestamp(time.time())`. |
+| `ErrorLog`, `WarningLog`, `InfoLog` | Sub‑classes that prepend a severity tag to the base format | `format()` | Severity strings: *ERROR*, *WARNING*, *INFO*. |
+| `BaseLoggerTemplate` | Abstract logger that can be swapped at runtime | `log(log)`<br>`global_log(log)` | `global_log` respects `log_level` filtering: logs with level ≤ `log_level` or if `log_level` < 0. |
+| `FileLoggerTemplate` | Writes logs to a file | `log(log)` | Appends `log.format()` with a newline. |
+| `BaseLogger` | Singleton façade that delegates to a `BaseLoggerTemplate` | `set_logger(logger)`<br>`log(log)` | `__new__` guarantees a single instance; `log` forwards to the template’s `global_log`. |
+
+### Interaction Flow
+
+1. **Log creation**  
+   ```python
+   log = InfoLog("Initialization complete", level=1)
+   ```
+2. **Template selection** – user calls `BaseLogger.set_logger(FileLoggerTemplate('app.log', log_level=1))`.  
+3. **Logging** – `BaseLogger().log(log)` triggers the template’s `global_log`, which in turn calls `log.format()` and writes the message to the configured destination.
 
 ## 3. Core Logic & Principles  
 
@@ -54,7 +82,12 @@ The pipeline is fully **layered** – each stage exposes a small, single‑purpo
 * **Singleton Logger** – `BaseLogger` funnels all logs, with optional file output via `FileLoggerTemplate`.  
 * **Progress Feedback** – `ConsoleGitHubProgress` shows real‑time status during CI runs, while `LibProgress` (Rich) can be used locally.
 
----
+| Entity | Type | Role | Notes |
+|--------|------|------|-------|
+| `name` | `str` | Task label | Displayed in console output. |
+| `total_len` | `int` | Expected steps | Used to compute percent completion. |
+| `current_len` | `int` | Internal counter | Incremented on each `progress()`. |
+| `progress` | `float` | Percent completion | Calculated as `(current_len / total_len) * 100`. |
 
 ## 4. Key Features  
 
@@ -863,7 +896,30 @@ Acts as the bridge between the Auto‑Doc Generator pipeline and an external Gro
 <a name="progress-component"></a>
 ## Progress Interface – `autodocgenerator/ui/progress_base.py`
 
-| Entity | Type | Role | Notes |
+1. Reads `global_info.md` (overrides `with_global_file`).  
+2. Calls `gen_doc_parts(full_code_mix, max_symbols, llm_model, config, language, progress_bar, global_info=global_file)`.  
+3. Saves raw output to `output_doc.md`.  
+4. Splits by anchor tags: `split_text_by_anchors(result)`.  
+5. Populates `self.doc_info.doc` with `DocContent` per anchor.  
+
+---
+<a name="gen-doc-parts"></a>  
+## `gen_doc_parts` – Orchestrating Multi‑Part Documentation Generation (autodocgenerator.preprocessor.spliter)
+
+**Role**  
+Splits the entire codebase mix into manageable parts and sequentially generates documentation for each, maintaining context by passing the last 3 k characters of the previous answer.
+
+| Parameter | Type | Role | Notes |
+|-----------|------|------|-------|
+| `full_code_mix` | `str` | Unprocessed repository string | Source for `split_data`. |
+| `max_symbols` | `int` | Chunk size limit | Propagates to `split_data`. |
+| `model` | `Model` | LLM wrapper | Drives `write_docs_by_parts`. |
+| `project_settings` | `ProjectSettings` | Project metadata | Injected into each prompt. |
+| `language` | `str` | Language hint | Passed to LLM. |
+| `progress_bar` | `BaseProgress` | UI progress control | Subtask created per call. |
+| `global_info` | `str | None` | Optional relations | Forwarded to each part. |
+
+| Output | Type | Role | Notes |
 |--------|------|------|-------|
 | `BaseProgress` | Interface | Defines progress API | Methods are no‑ops or placeholders |
 | `LibProgress` | Rich‑based implementation | Uses `rich.progress.Progress` to show a main task and optional subtasks | `create_new_subtask()`, `update_task()`, `remove_subtask()` |
@@ -1359,7 +1415,7 @@ info = {
 <a name="anchor-splitting"></a>  
 ## Text Splitting by Anchors
 
-| Entity | Type | Role | Notes |
+| Output | Type | Role | Notes |
 |--------|------|------|-------|
 | `text` | str | Raw README content | Expected to contain `<a name="..."></a>` anchors. |
 | `chunks` | list[str] | Sub‑strings separated by the anchor regex | Derived via `re.split`. |
