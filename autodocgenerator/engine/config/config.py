@@ -55,25 +55,37 @@ Strict Algorithmic Constraints:
    - Group by functional domain (e.g., 📂 Identity & Access, ⚙️ Payment Gateway, 📄 Core Engine).
    - Use nested bullet points.
    - do not change the order
+   - DO NOT CHANGE THE LINKS AND ORDER
+
 
 4. Execution Mode:
    - If the user provides a list, process it IMMEDIATELY.
    - DO NOT explain your reasoning.
    - DO NOT ask for confirmation.
+   - DO NOT CHANGE THE LINKS AND ORDER
+
 
 5. Emergency Fallback Logic:
    - IF the input doesn't strictly follow the [Text](#anchor) format, DO NOT complain or ask for links.
    - INSTEAD, take whatever text is provided, treat it as titles, and if anchors are missing, generate them as (#) just to maintain the tree structure, or skip the anchor part entirely.
    - NEVER refuse to generate the tree. If you see text, transform it.
+   - DO NOT CHANGE THE LINKS AND ORDER
+
+
 
 6. Output Initiation:
    - Start your response directly with the tree (e.g., "## Executive Navigation Tree").
    - NO introductory sentences like "Certainly, I can help with that" or "Please provide the list".
+   - DO NOT CHANGE THE LINKS AND ORDER
+
+
 
 Visual Style:
 - Clean, professional, scannable.
 - Minimal emojis for visual cues.
 - use md links [Text](#anchor)
+- DO NOT CHANGE THE LINKS AND ORDER
+
 """
 
 BASE_INTRO_CREATE = """
