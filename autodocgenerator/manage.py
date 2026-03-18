@@ -9,6 +9,7 @@ from .ui.logging import BaseLogger, InfoLog, ErrorLog, WarningLog, FileLoggerTem
 from .postprocessor.sorting import get_order, split_text_by_anchors
 from .config.config import Config
 from .schema.doc_schema import DocContent, DocHeadSchema, DocInfoSchema
+from .schema.cache_settings import CacheSettings
 from .postprocessor.embedding import Embedding
 import json
 
@@ -47,23 +48,31 @@ class Manager:
         self.init_folder_system(self.project_directory)
         
 
-    @classmethod
-    def init_folder_system(cls, project_directory):
-        cache_path = os.path.join(project_directory, cls.CACHE_FOLDER_NAME)
+    
+    def init_folder_system(self, project_directory):
+        cache_path = os.path.join(project_directory, self.CACHE_FOLDER_NAME)
 
         if not os.path.isdir(cache_path):
             os.mkdir(cache_path)
 
-    def read_file_by_file_key(self, file_key: str):
+        cache_file_path = self.get_file_path(".auto_doc_cache_file", is_outside=True)
+        if not os.path.isfile(cache_file_path):
+            with open(cache_file_path, "w", encoding="utf-8") as file:
+                file.write(CacheSettings().model_dump_json())
+            
+
+    def read_file_by_file_key(self, file_key: str, is_outside: bool = False):
         try:
-            with open(self.get_file_path(file_key), "r", encoding="utf-8") as file:
+            with open(self.get_file_path(file_key, is_outside), "r", encoding="utf-8") as file:
                 data = file.read()
         except:
             data = None
         return data
 
     
-    def get_file_path(self, file_key: str):
+    def get_file_path(self, file_key: str, is_outside: bool = False):
+        if is_outside:
+            return os.path.join(self.project_directory, self.FILE_NAMES[file_key]) 
         return os.path.join(self.project_directory, self.CACHE_FOLDER_NAME, self.FILE_NAMES[file_key]) 
 
     def generate_code_file(self):

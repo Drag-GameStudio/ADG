@@ -1,5 +1,7 @@
 import subprocess
 from autodocgenerator.engine.config.config import GITHUB_EVENT_NAME
+from autodocgenerator.manage import Manager
+from autodocgenerator.schema.cache_settings import CacheSettings
 
 
 def get_diff_by_hash(target_hash):
@@ -16,8 +18,23 @@ def get_diff_by_hash(target_hash):
     except subprocess.CalledProcessError as e:
         print(f"Ошибка при выполнении git diff: {e}")
         return None
+    
+def get_git_revision_hash() -> str:
+    return subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode('ascii').strip()
 
-def check_git_status(max_threshold: int, manager) -> bool:
+def check_git_status(manager: Manager) -> bool:
     print("GIT EVENT:", GITHUB_EVENT_NAME)
-    return True
-# print(len(get_diff_by_hash("fa1d73b1a2fd5a78d45db41e1c376148d9d893c4")))
+    if GITHUB_EVENT_NAME == "workflow_dispatch":
+        return True
+    
+    cache_settings = CacheSettings.model_validate_json(manager.read_file_by_file_key(".auto_doc_cache_file", is_outside=True))
+
+    if len(get_diff_by_hash(cache_settings.last_commit)) > manager.config.pbc.threshold_changes or cache_settings.last_commit == "":
+        cache_settings.last_commit = get_git_revision_hash()
+        with open(manager.get_file_path(".auto_doc_cache_file", is_outside=True), "w", encoding="utf-8") as file:
+            file.write(cache_settings.model_dump_json())
+        return True
+    
+    
+
+    return False

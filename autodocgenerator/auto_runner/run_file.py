@@ -18,7 +18,6 @@ def gen_doc(project_path: str,
     sync_model = GPTModel(GROQ_API_KEYS, use_random=False)
     embedding_model = Embedding(GOOGLE_EMBEDDING_API_KEY)
     
-    print(check_git_status(10, None))
     
     manager = Manager(
         project_path, 
@@ -27,7 +26,11 @@ def gen_doc(project_path: str,
         embedding_model=embedding_model,
         progress_bar=ConsoleGtiHubProgress(), 
     )
-  
+
+    should_change = check_git_status(manager)
+    if not should_change:
+        return ""
+    
 
     
     manager.generate_code_file()
