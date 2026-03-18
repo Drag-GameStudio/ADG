@@ -16,26 +16,29 @@ def extract_links_from_start(chunks):
     return links
 
 
-def split_text_by_anchors(text) -> dict | None:
+def split_text_by_anchors(text: str) -> dict[str, str]:
     pattern = r'(?=<a name=["\']?[^"\'>\s]{6,200}["\']?></a>)'
     chunks = re.split(pattern, text)
     result_chanks = [chunk.strip() for chunk in chunks if chunk.strip()]
     all_links = extract_links_from_start(result_chanks)
+
+    start_link_index = text.find("<a name")
+    if start_link_index > 10:
+        result_chanks.pop(0)
     result = {}
 
     if len(all_links) != len(result_chanks):
-        return None
+        raise Exception("Somthing with anchors")
 
     for i in range(len(all_links)):
         result[all_links[i]] = result_chanks[i]
     return result
 
 
-def get_order(model: Model, chanks: dict[str, str]) -> list:
+def get_order(model: Model, chanks: list[str]) -> list:
     logger = BaseLogger()
     logger.log(InfoLog("Start ordering"))
-    logger.log(InfoLog(f"chanks name: {list(chanks.keys())}", level=1))
-    logger.log(InfoLog(f"chanks: {chanks}", level=2))
+    logger.log(InfoLog(f"chanks name: {chanks}", level=1))
 
 
     prompt = [ #TODO tranport promt to prompts
@@ -47,7 +50,7 @@ def get_order(model: Model, chanks: dict[str, str]) -> list:
                         leave # in title.
                         do not skip any title
                         Titles:
-                        {list(chanks.keys())}
+                        {chanks}
             """
         }
     ]

@@ -8,7 +8,7 @@ from .settings import ProjectSettings
 
 def split_data(data: str, max_symbols: int) -> list[str]:
 
-    split_objects = []
+    split_objects: list[str] = []
     splited_by_files = data.split("</file>")
     
     logger = BaseLogger()
@@ -41,7 +41,8 @@ def split_data(data: str, max_symbols: int) -> list[str]:
 
     return split_objects
 
-def write_docs_by_parts(part: str, model: Model, project_settings: ProjectSettings, prev_info: str = None, language: str = "en", global_info: str = None):
+def write_docs_by_parts(part: str, model: Model, project_settings: ProjectSettings, 
+                        prev_info: str| None = None, language: str = "en", global_info: str| None = None):
     logger = BaseLogger()
     logger.log(InfoLog("Generating documentation for a part..."))
     prompt = [
@@ -85,9 +86,6 @@ def write_docs_by_parts(part: str, model: Model, project_settings: ProjectSettin
 
     answer = temp_answer.removesuffix("```")
     return answer
-
-
-
 
 def gen_doc_parts(full_code_mix, max_symbols, model: Model, project_settings: ProjectSettings,  language, progress_bar: BaseProgress, global_info = None):
     splited_data = split_data(full_code_mix, max_symbols)

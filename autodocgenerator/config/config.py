@@ -2,12 +2,12 @@ from ..factory.modules.general_modules import CustomModule
 from ..preprocessor.settings import ProjectSettings
 from ..factory.base_factory import DocFactory
 from ..factory.modules.intro import IntroLinks
-
+from typing import Any
 
 class ProjectBuildConfig:
     save_logs = False
     log_level = -1
-    def load_settings(self, data: dict[str, any]):
+    def load_settings(self, data: dict[str, Any]):
         for key, el in data.items():
             setattr(self, key, el)
 
