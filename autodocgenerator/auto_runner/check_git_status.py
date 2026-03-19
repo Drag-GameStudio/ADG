@@ -23,8 +23,11 @@ def get_git_revision_hash() -> str:
     return subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode('ascii').strip()
 
 def check_git_status(manager: Manager) -> bool:
-    if GITHUB_EVENT_NAME == "workflow_dispatch":
+    if GITHUB_EVENT_NAME == "workflow_dispatch" or manager.cache_settings.last_commit == "":
+        manager.cache_settings.last_commit = get_git_revision_hash()
+
         return True
+
 
     if len(get_diff_by_hash(manager.cache_settings.last_commit)) > manager.config.pbc.threshold_changes or manager.cache_settings.last_commit == "":
         manager.cache_settings.last_commit = get_git_revision_hash()
