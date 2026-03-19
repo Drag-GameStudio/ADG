@@ -59,6 +59,9 @@ class Manager:
         if not os.path.isfile(cache_file_path):
             with open(cache_file_path, "w", encoding="utf-8") as file:
                 file.write(CacheSettings().model_dump_json())
+
+        self.cache_settings = CacheSettings.model_validate_json(self.read_file_by_file_key(".auto_doc_cache_file", is_outside=True))
+        
             
 
     def read_file_by_file_key(self, file_key: str, is_outside: bool = False):
@@ -161,5 +164,6 @@ class Manager:
         with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
             file.write(self.doc_info.doc.get_full_doc())
 
-        with open(self.get_file_path("info"), "w", encoding="utf-8") as file:
-            file.write(self.doc_info.model_dump_json())
+        self.cache_settings.doc = self.doc_info
+        with open(self.get_file_path(".auto_doc_cache_file", is_outside=True), "w", encoding="utf-8") as file:
+            file.write(self.cache_settings.model_dump_json())
