@@ -8,6 +8,7 @@ from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel
 from autodocgenerator.engine.config.config import GROQ_API_KEYS, GOOGLE_EMBEDDING_API_KEY
 from autodocgenerator.postprocessor.embedding import Embedding
 from autodocgenerator.auto_runner.check_git_status import check_git_status
+from autodocgenerator.schema.cache_settings import CheckGitStatusResultSchema
 
 
 def gen_doc(project_path: str, 
@@ -27,15 +28,15 @@ def gen_doc(project_path: str,
         progress_bar=ConsoleGtiHubProgress(), 
     )
 
-    should_change = check_git_status(manager)
-    if not should_change:
+    change_info: CheckGitStatusResultSchema = check_git_status(manager)
+    if not change_info.need_to_remake and not change_info.remake_gl_file:
         return ""
     
 
     
     manager.generate_code_file()
     if structure_settings.use_global_file:
-        manager.generate_global_info(compress_power=4)
+        manager.generate_global_info(compress_power=4, is_reusable=not change_info.remake_gl_file)
     
     manager.generete_doc_parts(max_symbols=structure_settings.max_doc_part_size, with_global_file=structure_settings.use_global_file)
    

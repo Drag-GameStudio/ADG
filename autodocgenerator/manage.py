@@ -46,7 +46,6 @@ class Manager:
         self.logger.set_logger(FileLoggerTemplate(self.get_file_path("logs"), log_level=self.config.pbc.log_level))
 
         self.init_folder_system(self.project_directory)
-        
 
     
     def init_folder_system(self, project_directory):
@@ -62,8 +61,6 @@ class Manager:
 
         self.cache_settings = CacheSettings.model_validate_json(self.read_file_by_file_key(".auto_doc_cache_file", is_outside=True))
         
-            
-
     def read_file_by_file_key(self, file_key: str, is_outside: bool = False):
         try:
             with open(self.get_file_path(file_key, is_outside), "r", encoding="utf-8") as file:
@@ -72,7 +69,6 @@ class Manager:
             data = None
         return data
 
-    
     def get_file_path(self, file_key: str, is_outside: bool = False):
         if is_outside:
             return os.path.join(self.project_directory, self.FILE_NAMES[file_key]) 
@@ -87,15 +83,19 @@ class Manager:
         self.doc_info.code_mix = code_mix
         self.progress_bar.update_task()
 
-    def generate_global_info(self, compress_power: int = 4, max_symbols: int = 10000):
+    def generate_global_info(self, compress_power: int = 4, max_symbols: int = 10000, is_reusable: bool = False):
+        if is_reusable:
+            if self.cache_settings.doc.global_info != "":
+                self.doc_info.global_info = self.cache_settings.doc.global_info
+                self.progress_bar.update_task()
+
+                return
+
         full_code_mix = self.doc_info.code_mix
         data = split_data(full_code_mix, max_symbols)
 
         global_result = compress_to_one(data, self.llm_model, self.config.get_project_settings(), compress_power=compress_power, progress_bar=self.progress_bar)
         self.doc_info.global_info = global_result
-
-        with open(self.get_file_path("global_info"), "w", encoding="utf-8") as file:
-            file.write(global_result)
 
         self.progress_bar.update_task()
 
@@ -103,25 +103,20 @@ class Manager:
         full_code_mix = self.doc_info.code_mix
         global_file = self.doc_info.global_info if with_global_file else None
 
-        global_file = self.read_file_by_file_key("global_info")
-
         self.logger.log(InfoLog("Starting synchronous documentation generation by parts..."))
         result = gen_doc_parts(full_code_mix,
                                 max_symbols, self.llm_model, self.config.get_project_settings(),
                                 self.config.language, self.progress_bar, global_info=global_file)
         
-        with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
-            file.write(result)
         result = split_text_by_anchors(result)
         
         for el in result:
             self.doc_info.doc.add_parts(el, DocContent(content=result[el]))
 
-
         self.logger.log(InfoLog("Documentation generation by parts completed."))
         self.progress_bar.update_task()
 
-    def factory_generate_doc(self, doc_factory: DocFactory, to_start: bool = False): #TODO rewrite to new arc
+    def factory_generate_doc(self, doc_factory: DocFactory, to_start: bool = False): 
         curr_doc = self.doc_info.doc.get_full_doc()
         code_mix = self.doc_info.code_mix
         global_info = self.doc_info.global_info

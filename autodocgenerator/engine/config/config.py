@@ -135,6 +135,41 @@ NO protocols (http/https).
 This tag must appear ONLY ONCE at the very beginning. Never repeat it or use other links
 """
 
+BASE_CHANGES_CHECK_PROMPT = """
+You are a technical documentation analyst. Your task is to determine if recent code changes require updates to the existing documentation or the project's Global Information (architectural core).
+
+### INPUT DATA:
+1. **Global Info**: A description of the project's core parameters, architectural decisions, and high-level logic.
+2. **Commit Changes**: An array of objects, where each object contains:
+   - `file_name`: The name/path of the modified file.
+   - `changes_count`: The number of lines changed in that file.
+
+### EVALUATION CRITERIA:
+- **Task 1: Rewrite Documentation (Existing Docs)**
+  - Set to `true` ONLY if the changes are significant enough to affect how the code is used or understood (e.g., new features, logic shifts, or API changes).
+  - Set to `false` if changes are trivial, such as minor refactoring, styling, comments, or small bug fixes that don't change the overall functionality.
+
+- **Task 2: Rewrite Global Info**
+  - Set to `true` ONLY if the changes introduce a new core feature, a new architectural component, or a shift in the data handling paradigm.
+  - Examples of `true`: 
+    - Adding a completely new module (e.g., implementing Embeddings, Vector Search, or an AI agent).
+    - Changing the storage/persistence method (e.g., migrating from plain text files to JSON structures or a database).
+    - Introducing major third-party integrations that redefine the project's capabilities.
+  - Set to `false` for:
+    - Incremental updates to existing features (e.g., adding 1-3 new API endpoints to an existing controller).
+    - Bug fixes, refactoring, or performance optimizations.
+    - Changes that do not alter the high-level "Global Info" description of what the project is and how it fundamentally works.
+  - Default to `false` unless the change adds a new "building block" to the project.
+
+### OUTPUT FORMAT:
+Return only a string in the format: `boolean|boolean`
+- The first value is for "Rewrite Documentation".
+- The second value is for "Rewrite Global Info".
+
+Example: `true|false` (means update docs, but keep Global Info as is).
+"""
+
+
 def get_BASE_COMPRESS_TEXT(start, power):
     return f"""
 Task: Analyze the provided code snippet (~{start} chars) and generate a hyper-compressed Markdown architectural map.

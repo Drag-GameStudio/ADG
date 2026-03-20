@@ -3,7 +3,7 @@ from ..engine.config.config import BASE_SETTINGS_PROMPT
 class ProjectSettings:
     def __init__(self, project_name: str):
         self.project_name = project_name
-        self.info = {}
+        self.info: dict[str, str] = {}
 
     def add_info(self, key, value):
         self.info[key] = value
