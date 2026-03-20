@@ -73,6 +73,7 @@ dependencies = [
     "websockets==15.0.1",
     "zstandard==0.25.0",
     "numpy (>=2.4.3,<3.0.0)",
+    "azure-ai-inference (>=1.0.0b9,<2.0.0)",
 ]
 
 
