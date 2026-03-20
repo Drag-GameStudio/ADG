@@ -33,6 +33,8 @@ ignore_files:
   - ".ruff_cache"
   - ".mypy_cache"
   - ".auto_doc_cache"
+  - ".auto_doc_cache_file.json"
+
   # Environments and IDE settings
   - "venv"
   - "env"

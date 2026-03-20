@@ -29,6 +29,8 @@ def gen_doc(project_path: str,
     )
 
     change_info: CheckGitStatusResultSchema = check_git_status(manager)
+    print(change_info)
+    
     if not change_info.need_to_remake and not change_info.remake_gl_file:
         return ""
     
