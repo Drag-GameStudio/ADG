@@ -9,8 +9,10 @@ from .ui.logging import BaseLogger, InfoLog, ErrorLog, WarningLog, FileLoggerTem
 from .postprocessor.sorting import get_order, split_text_by_anchors
 from .config.config import Config
 from .schema.doc_schema import DocContent, DocHeadSchema, DocInfoSchema
-from .schema.cache_settings import CacheSettings
+from .schema.cache_settings import CacheSettings, CheckGitStatusResultSchema
 from .postprocessor.embedding import Embedding
+from .preprocessor.checker import have_to_change
+
 import json
 
 class Manager:
@@ -142,6 +144,10 @@ class Manager:
             self.doc_info.doc = self.doc_info.doc + result
 
         self.progress_bar.update_task()
+
+    def check_sense_changes(self, changes: list[dict[str, str]]) -> CheckGitStatusResultSchema:
+        result = have_to_change(self.llm_model, changes, self.cache_settings.doc.global_info)
+        return result
 
     def create_embedding_layer(self) -> None:
         for el in self.doc_info.doc.parts:

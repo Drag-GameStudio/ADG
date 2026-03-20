@@ -20,7 +20,7 @@ def get_diff_by_hash(target_hash):
         print(f"Ошибка при выполнении git diff: {e}")
         return None
     
-def get_detailed_diff_stats(target_hash):
+def get_detailed_diff_stats(target_hash) -> list[dict[str, str]]:
     cmd = ['git', 'diff', target_hash, 'HEAD', '--numstat', '--', '.', ':(exclude)*.md']
     
     result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
@@ -30,12 +30,12 @@ def get_detailed_diff_stats(target_hash):
         if not line: continue
         added, deleted, filepath = line.split('\t')
         
-        added = int(added) if added != '-' else 0
-        deleted = int(deleted) if deleted != '-' else 0
+        added = int(added) if added != '-' else 0 #type: ignore 
+        deleted = int(deleted) if deleted != '-' else 0 #type: ignore
         
-        if deleted == 0 and added > 0:
+        if deleted == 0 and added > 0: #type: ignore
             status = "ADDED"
-        elif added == 0 and deleted > 0:
+        elif added == 0 and deleted > 0: #type: ignore
             status = "DELETED"
         else:
             status = "MODIFIED"
@@ -58,7 +58,7 @@ def check_git_status(manager: Manager) -> CheckGitStatusResultSchema:
         return CheckGitStatusResultSchema(need_to_remake=True, remake_gl_file=True)
 
     changes = get_detailed_diff_stats(manager.cache_settings.last_commit)
-    result = have_to_change(manager.llm_model, changes, manager.cache_settings.doc.global_info)
+    result = manager.check_sense_changes(changes)
     
     return result
 

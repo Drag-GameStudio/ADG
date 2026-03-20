@@ -10,7 +10,7 @@ def parse_answer(answer: str) -> CheckGitStatusResultSchema:
 
     return CheckGitStatusResultSchema(need_to_remake=change_doc, remake_gl_file=change_global)
 
-def have_to_change(model: Model, diff: list[dict[str, str|int|object]], global_info: str | None = None) -> CheckGitStatusResultSchema:
+def have_to_change(model: Model, diff: list[dict[str, str]], global_info: str | None = None) -> CheckGitStatusResultSchema:
     prompt: list[dict[str, str]] = [
         {
             "role": "system",
