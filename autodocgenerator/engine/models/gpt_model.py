@@ -11,7 +11,7 @@ class AsyncGPTModel(AsyncModel):
 
 class GPT4oModel(Model):
     def __init__(self, api_key=GROQ_API_KEYS, history = History(), 
-                 models_list: list[str] = ["openai/gpt-4o"], 
+                 models_list: list[str] = ["openai/gpt-4o", "openai/gpt-4.1", "openai/gpt-5"], 
                  use_random: bool = True):
         super().__init__(api_key, history, models_list, use_random)
 
