@@ -16,7 +16,7 @@ class BaseProgress:
 
 class LibProgress(BaseProgress):
     
-    def __init__(self, progress: Progress, total=4):
+    def __init__(self, progress: Progress, total=5):
         super().__init__()
         self.progress = progress
         self._base_task = self.progress.add_task("General progress", total=total)

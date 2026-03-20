@@ -4,7 +4,9 @@ on:
   workflow_call:
     secrets:
       GROQ_API_KEYS:
-        required: true
+        required: false
+      GH_MODEL_API_KEYS:
+        required: false
       GOOGLE_EMBEDDING_API_KEY:
         required: true
 

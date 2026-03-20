@@ -4,8 +4,10 @@ from autodocgenerator.factory.modules.general_modules import CustomModule, Custo
 from autodocgenerator.factory.modules.intro import IntroLinks, IntroText, BaseModule
 from autodocgenerator.ui.progress_base import ConsoleGtiHubProgress
 from autodocgenerator.auto_runner.config_reader import Config, read_config, StructureSettings
-from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel
-from autodocgenerator.engine.config.config import GROQ_API_KEYS, GOOGLE_EMBEDDING_API_KEY
+from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel, GPT4oModel, Model
+from autodocgenerator.engine.models.azure_model import AzureModel
+
+from autodocgenerator.engine.config.config import GROQ_API_KEYS, GH_MODEL_API_KEYS, GOOGLE_EMBEDDING_API_KEY
 from autodocgenerator.postprocessor.embedding import Embedding
 from autodocgenerator.auto_runner.check_git_status import check_git_status
 from autodocgenerator.schema.cache_settings import CheckGitStatusResultSchema
@@ -16,7 +18,14 @@ def gen_doc(project_path: str,
             custom_modules: list[BaseModule], 
             structure_settings: StructureSettings) -> str:
     
-    sync_model = GPTModel(GROQ_API_KEYS, use_random=False)
+    # sync_model = GPTModel(GROQ_API_KEYS, use_random=False)
+    sync_model: Model
+    if len(GROQ_API_KEYS) > 0:
+        sync_model = GPTModel(GROQ_API_KEYS, use_random=False)
+    else:
+        sync_model = GPT4oModel(GH_MODEL_API_KEYS, use_random=False)
+
+
     embedding_model = Embedding(GOOGLE_EMBEDDING_API_KEY)
     
     
@@ -30,7 +39,7 @@ def gen_doc(project_path: str,
 
     change_info: CheckGitStatusResultSchema = check_git_status(manager)
     print(change_info)
-    
+
     if not change_info.need_to_remake and not change_info.remake_gl_file:
         return ""
     
@@ -64,12 +73,12 @@ def gen_doc(project_path: str,
     return manager.doc_info.doc.get_full_doc()
 
 if __name__ == "__main__":
-    with open("autodocconfig.yml", "r", encoding="utf-8") as file:
+    with open(r"autodocconfig.yml", "r", encoding="utf-8") as file:
         config_data = file.read()
     config, custom_modules, structure_settings = read_config(config_data)
 
     output_doc = gen_doc(
-        ".",
+        r".",
         config,
         custom_modules,
         structure_settings
