@@ -25,7 +25,6 @@ def gen_doc(project_path: str,
     else:
         sync_model = GPT4oModel(GH_MODEL_API_KEYS, use_random=False)
 
-
     embedding_model = Embedding(GOOGLE_EMBEDDING_API_KEY)
     
     

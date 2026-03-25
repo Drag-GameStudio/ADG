@@ -8,7 +8,6 @@ from openai import OpenAI
 class AsyncGPTModel(AsyncModel):
     ...
 
-
 class GPT4oModel(Model):
     def __init__(self, api_key=GROQ_API_KEYS, history = History(), 
                  models_list: list[str] = ["openai/gpt-4o", "openai/gpt-4.1", "openai/gpt-5"], 
@@ -58,7 +57,6 @@ class GPT4oModel(Model):
                     base_url="https://models.github.ai/inference",
                     api_key=self.api_keys[self.current_key_index],
                 )
-
 
 
 
