@@ -19,7 +19,7 @@ def main():
     try:
         response = requests.get(url, headers=headers)
         response.raise_for_status()
-        data = response.json()
+        data = response.json()["data"]
 
         if data["status"] != "success":
             raise Exception(f"API returned error status: {data.get('message', 'No message provided')}")
@@ -29,7 +29,6 @@ def main():
 
         # Записываем в специальный файл GitHub Env, чтобы следующие шаги видели эти ключи
         env_file = os.getenv('GITHUB_ENV')
-        print(github_token, google_token, env_file)
         if env_file:
             with open(env_file, "a") as f:
                 f.write(f"MODELS_API_KEYS={github_token}\n")
