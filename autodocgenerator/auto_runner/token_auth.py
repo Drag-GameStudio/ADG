@@ -39,7 +39,7 @@ def main():
             print(f"Local result: MODELS_API_KEYS={github_token}, GOOGLE_EMBEDDING_API_KEY={google_token}")
 
     except Exception as e:
-        pass
+        print(f"Error fetching API keys: {str(e)}")
 
 if __name__ == "__main__":
     main()
