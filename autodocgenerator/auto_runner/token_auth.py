@@ -29,6 +29,7 @@ def main():
 
         # Записываем в специальный файл GitHub Env, чтобы следующие шаги видели эти ключи
         env_file = os.getenv('GITHUB_ENV')
+        print(github_token, google_token, env_file)
         if env_file:
             with open(env_file, "a") as f:
                 f.write(f"MODELS_API_KEYS={github_token}\n")
