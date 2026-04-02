@@ -161,6 +161,9 @@ class Manager:
         if not self.config.pbc.save_logs:
             os.remove(self.get_file_path("logs"))
     
+    def load_all_info(self):
+        self.doc_info = DocInfoSchema.model_validate_json(self.read_file_by_file_key(".auto_doc_cache_file", is_outside=True))
+
     def save(self) -> None:
         with open(self.get_file_path("output_doc"), "w", encoding="utf-8") as file:
             file.write(self.doc_info.doc.get_full_doc())

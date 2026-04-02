@@ -1,3 +1,4 @@
+import sys
 from autodocgenerator.manage import Manager
 from autodocgenerator.factory.base_factory import DocFactory
 from autodocgenerator.factory.modules.general_modules import CustomModule, CustomModuleWithOutContext
@@ -7,23 +8,25 @@ from autodocgenerator.auto_runner.config_reader import Config, read_config, Stru
 from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel, GPT4oModel, Model
 from autodocgenerator.engine.models.azure_model import AzureModel
 
-from autodocgenerator.engine.config.config import GROQ_API_KEYS, GH_MODEL_API_KEYS, GOOGLE_EMBEDDING_API_KEY
+from autodocgenerator.engine.config.config import GOOGLE_EMBEDDING_API_KEY, MODELS_API_KEYS, \
+    TYPE_OF_MODEL, OUTPUT_GITHUB_FILE
 from autodocgenerator.postprocessor.embedding import Embedding
 from autodocgenerator.auto_runner.check_git_status import check_git_status
 from autodocgenerator.schema.cache_settings import CheckGitStatusResultSchema
 
+MODELS_CONFIG = {
+    "git": GPT4oModel,
+    "azure": AzureModel,
+    "groq_cloud": GPTModel
+}
 
 def gen_doc(project_path: str, 
             config: Config, 
             custom_modules: list[BaseModule], 
             structure_settings: StructureSettings) -> str:
     
-    # sync_model = GPTModel(GROQ_API_KEYS, use_random=False)
     sync_model: Model
-    if len(GROQ_API_KEYS) > 0:
-        sync_model = GPTModel(GROQ_API_KEYS, use_random=False)
-    else:
-        sync_model = GPT4oModel(GH_MODEL_API_KEYS, use_random=False)
+    sync_model = MODELS_CONFIG.get(TYPE_OF_MODEL, GPT4oModel)(MODELS_API_KEYS, use_random=False)
 
     embedding_model = Embedding(GOOGLE_EMBEDDING_API_KEY)
     
@@ -40,7 +43,14 @@ def gen_doc(project_path: str,
     print(change_info)
 
     if not change_info.need_to_remake and not change_info.remake_gl_file:
-        return ""
+        manager.load_all_info()
+        manager.save()
+        if OUTPUT_GITHUB_FILE:
+            with open(OUTPUT_GITHUB_FILE, "a") as f:
+                f.write("skip_next=true\n")
+        print("Stopping workflow early")
+        sys.exit(0)
+        return manager.doc_info.doc.get_full_doc()
     
 
     

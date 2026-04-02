@@ -11,6 +11,5 @@ jobs:
       contents: write
     uses: Drag-GameStudio/ADG/.github/workflows/reuseble_agd.yml@main
     secrets:
-      GROQ_API_KEYS: ${{ secrets.GROQ_API_KEYS }} 
-      GH_MODEL_API_KEYS: ${{ secrets.GH_MODEL_API_KEYS }} 
-      GOOGLE_EMBEDDING_API_KEY: ${{ secrets.GOOGLE_EMBEDDING_API_KEY }}
+      ADG_API_TOKEN: ${{ secrets.ADG_API_TOKEN }}
+

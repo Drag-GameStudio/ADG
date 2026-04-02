@@ -1,13 +1,8 @@
-# Это содержимое файла в ТВОЕМ репозитории (reusable-docs.yml)
 name: Create Documentation
 on:
   workflow_call:
     secrets:
-      GROQ_API_KEYS:
-        required: false
-      GH_MODEL_API_KEYS:
-        required: false
-      GOOGLE_EMBEDDING_API_KEY:
+      ADG_API_TOKEN:
         required: true
 
 jobs:
@@ -29,15 +24,37 @@ jobs:
       - name: Install adg
         run: pip install autodocgenerator
 
+      - name: Get api keys
+        run: autodocgenerator.auto_runner.token_auth
+        env:
+          ADG_API_TOKEN: ${{ secrets.ADG_API_TOKEN }}
+          DEFAULT_SERVER_URL: "https://effie-nether-overdiversely.ngrok-free.dev"
+          PYTHONUNBUFFERED: "1"
+          FORCE_COLOR: "1"        
+          TERM: "xterm-256color"
+          
+
       - name: Run doc gen
         run: python -m autodocgenerator.auto_runner.run_file
         env:
-          GROQ_API_KEYS: ${{ secrets.GROQ_API_KEYS }} 
-          GH_MODEL_API_KEYS: ${{ secrets.GH_MODEL_API_KEYS }}
-          GOOGLE_EMBEDDING_API_KEY: ${{ secrets.GOOGLE_EMBEDDING_API_KEY }}
+          MODELS_API_KEYS: ${{ env.MODELS_API_KEYS }}
+          TYPE_OF_MODEL: ${{ env.TYPE_OF_MODEL }}
+          GOOGLE_EMBEDDING_API_KEY: ${{ env.GOOGLE_EMBEDDING_API_KEY }}
+
           PYTHONUNBUFFERED: "1"
           FORCE_COLOR: "1"        
           TERM: "xterm-256color"  
+
+      - name: post to server
+        run: python -m autodocgenerator.auto_runner.post_to_server
+        env:
+          ADG_API_TOKEN: ${{ secrets.ADG_API_TOKEN }}
+          DEFAULT_SERVER_URL: "https://effie-nether-overdiversely.ngrok-free.dev"
+          REPO_ID: ${{ github.repository }}
+
+          PYTHONUNBUFFERED: "1"
+          FORCE_COLOR: "1"        
+          TERM: "xterm-256color"
 
       - name: Copy output to README
         run: cat .auto_doc_cache/output_doc.md > README.md || echo "doc not found"
@@ -51,7 +68,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
+          git add README.md 
           git add .auto_doc_cache_file.json
           git add agd_report.txt 2>/dev/null || echo "Log file hasnt been founded"
           git diff --quiet && git diff --staged --quiet || (git commit -m "auto: update README.md" && git push)

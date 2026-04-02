@@ -209,18 +209,17 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv() 
-GROQ_API_KEYS = os.getenv("GROQ_API_KEYS", "").split(",")
-GH_MODEL_API_KEYS = os.getenv("GH_MODEL_API_KEYS", "").split(",")
+
+
+MODELS_API_KEYS = os.getenv("MODELS_API_KEYS", "").split(",")
+TYPE_OF_MODEL = os.getenv("TYPE_OF_MODEL", "git").lower()
 
 GOOGLE_EMBEDDING_API_KEY = os.getenv("GOOGLE_EMBEDDING_API_KEY", "")
+
 GITHUB_EVENT_NAME = os.getenv("GITHUB_EVENT_NAME", "")
+OUTPUT_GITHUB_FILE = os.getenv('GITHUB_OUTPUT')
 
 
-if len(GROQ_API_KEYS[0]) < 2:
-    GROQ_API_KEYS = []
 
-if len(GH_MODEL_API_KEYS[0]) < 2:
-    GH_MODEL_API_KEYS = []
-
-if len(GROQ_API_KEYS) == 0 and len(GH_MODEL_API_KEYS) == 0:
+if len(MODELS_API_KEYS) == 0 or MODELS_API_KEYS[0] == "":
     raise Exception("API_KEY is not set in environment variables.")
