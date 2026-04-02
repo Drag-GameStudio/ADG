@@ -37,9 +37,9 @@ jobs:
       - name: Run doc gen
         run: python -m autodocgenerator.auto_runner.run_file
         env:
-          MODELS_API_KEYS: ${{ env.MODELS_API_KEYS }}
-          TYPE_OF_MODEL: ${{ env.TYPE_OF_MODEL }}
-          GOOGLE_EMBEDDING_API_KEY: ${{ env.GOOGLE_EMBEDDING_API_KEY }}
+          MODELS_API_KEYS: $MODELS_API_KEYS
+          TYPE_OF_MODEL: $TYPE_OF_MODEL
+          GOOGLE_EMBEDDING_API_KEY: $GOOGLE_EMBEDDING_API_KEY
 
           PYTHONUNBUFFERED: "1"
           FORCE_COLOR: "1"        
