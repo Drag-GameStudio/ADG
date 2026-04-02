@@ -28,7 +28,7 @@ jobs:
         run: python -m autodocgenerator.auto_runner.token_auth
         env:
           ADG_API_TOKEN: ${{ secrets.ADG_API_TOKEN }}
-          DEFAULT_SERVER_URL: "https://effie-nether-overdiversely.ngrok-free.dev"
+          DEFAULT_SERVER_URL: "https://effie-nether-overdiversely.ngrok-free.dev/v1"
           PYTHONUNBUFFERED: "1"
           FORCE_COLOR: "1"        
           TERM: "xterm-256color"
@@ -49,7 +49,7 @@ jobs:
         run: python -m autodocgenerator.auto_runner.post_to_server
         env:
           ADG_API_TOKEN: ${{ secrets.ADG_API_TOKEN }}
-          DEFAULT_SERVER_URL: "https://effie-nether-overdiversely.ngrok-free.dev"
+          DEFAULT_SERVER_URL: "https://effie-nether-overdiversely.ngrok-free.dev/v1"
           REPO_ID: ${{ github.repository }}
 
           PYTHONUNBUFFERED: "1"
