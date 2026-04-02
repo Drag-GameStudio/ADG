@@ -1,4 +1,4 @@
-from .model import Model, AsyncModel, GROQ_API_KEYS, History
+from .model import Model, AsyncModel, History
 from groq import Groq, AsyncGroq
 from ..exceptions import ModelExhaustedException
 from ...ui.logging import BaseLogger, InfoLog, ErrorLog, WarningLog
@@ -9,7 +9,7 @@ class AsyncGPTModel(AsyncModel):
     ...
 
 class GPT4oModel(Model):
-    def __init__(self, api_key=GROQ_API_KEYS, history = History(), 
+    def __init__(self, api_key, history = History(), 
                  models_list: list[str] = ["openai/gpt-4o", "openai/gpt-4.1", "openai/gpt-5"], 
                  use_random: bool = True):
         super().__init__(api_key, history, models_list, use_random)
@@ -69,7 +69,7 @@ class GPT4oModel(Model):
         return result
 
 class GPTModel(Model):
-    def __init__(self, api_key=GROQ_API_KEYS, history = History(), 
+    def __init__(self, api_key, history = History(), 
                  models_list: list[str] = ["openai/gpt-oss-120b",  "llama-3.3-70b-versatile",  "openai/gpt-oss-safeguard-20b"], 
                  use_random: bool = True):
         super().__init__(api_key, history, models_list, use_random)

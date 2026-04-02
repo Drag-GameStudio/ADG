@@ -1,4 +1,4 @@
-from .model import Model, AsyncModel, GROQ_API_KEYS, History
+from .model import Model, AsyncModel,  History
 from ..exceptions import ModelExhaustedException
 from ...ui.logging import BaseLogger, InfoLog, ErrorLog, WarningLog
 from azure.ai.inference import ChatCompletionsClient
@@ -8,7 +8,7 @@ import re
 
 
 class AzureModel(Model):
-    def __init__(self, api_key=GROQ_API_KEYS, history = History(), 
+    def __init__(self, api_key, history = History(), 
                  models_list: list[str] = ["deepseek/DeepSeek-V3-0324"], 
                  use_random: bool = True):
         super().__init__(api_key, history, models_list, use_random)
