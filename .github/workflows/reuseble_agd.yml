@@ -32,7 +32,15 @@ jobs:
           PYTHONUNBUFFERED: "1"
           FORCE_COLOR: "1"        
           TERM: "xterm-256color"
-          
+      
+
+      - name: Full Debug
+        run: |
+          echo "--- Перевірка файлу оточення ---"
+          cat $GITHUB_ENV
+          echo "--- Перевірка видимості змінних ---"
+          if [ -z "$MODELS_API_KEYS" ]; then echo "❌ MODELS_API_KEYS ПУСТА"; else echo "✅ Ключі є (приховані)"; fi
+          echo "TYPE_OF_MODEL: $TYPE_OF_MODEL"
 
       - name: Run doc gen
         run: python -m autodocgenerator.auto_runner.run_file
