@@ -1,41 +1,20 @@
-[2026-03-25 14:14:56.107185] [INFO] Generating answer...
-[2026-03-25 14:15:04.130171] [INFO] Generated answer with model openai/gpt-4o.
-[2026-03-25 14:15:04.130229] [INFO] Answer: ### Evaluation:
+[2026-04-03 13:34:16.577610] [INFO] Generating answer...
+[2026-04-03 13:34:22.274855] [INFO] Generated answer with model openai/gpt-4o.
+[2026-04-03 13:34:22.274916] [INFO] Answer: `true|true`
 
-#### **Task 1: Rewrite Documentation (Existing Docs)**
-To determine if the documentation needs to be updated, we evaluate whether the changes affect how the code is used or understood. Key observations:
-1. **New Features/Modules:**
-   - `autodocgenerator/engine/models/azure_model.py` (88 changes, new file): A new model implementation for Azure is added, which is a significant addition.
-   - `autodocgenerator/engine/models/gpt_model.py` (61 changes, new file): Another new model implementation is added, which is also significant.
-   - `autodocgenerator/preprocessor/checker.py` (31 changes, new file): A new preprocessor module is introduced, which likely adds new functionality.
-   - These new modules are significant and likely require updates to the documentation.
+### Explanation:
 
-2. **Logic Changes:**
-   - `autodocgenerator/auto_runner/check_git_status.py` (46 changes): Substantial modifications to the `check_git_status` logic, which may affect how the system determines when to rebuild documentation.
-   - `autodocgenerator/auto_runner/run_file.py` (27 changes): Modifications to the main entry point of the application, which could impact usage or configuration.
-   - `autodocgenerator/engine/config/config.py` (45 changes): Substantial changes to the configuration logic, which could affect how users configure the system.
-   - These changes likely affect how the system is used or understood, necessitating documentation updates.
+1. **Rewrite Documentation (Existing Docs): `true`**
+   - Significant changes have been made to multiple files that affect how the code is used or understood:
+     - `autodocconfig.yml` was modified with 23 changes, likely affecting configuration options or behavior.
+     - `autodocgenerator/auto_runner/run_file.py` was modified with 39 changes, which could impact the main entry point of the application.
+     - New files were added (`autodocgenerator/auto_runner/post_to_server.py`, `autodocgenerator/auto_runner/token_auth.py`, etc.), which likely introduce new functionality or workflows.
+     - Changes to `autodocgenerator/engine/models/gpt_model.py` (65 changes) and the addition of `autodocgenerator/engine/models/azure_model.py` (88 changes) suggest updates or new features in the LLM handling.
+     - Modifications to `autodocgenerator/manage.py` (34 changes) and `autodocgenerator/schema/cache_settings.py` (7 changes) could affect the orchestration and caching logic.
+   - These changes indicate new features, logic shifts, or updates to the behavior of the system, which require updates to the documentation.
 
-3. **Configuration and Workflow Updates:**
-   - `autodocconfig.yml` (3 changes, new file): A new configuration file is added, which may require explanation in the documentation.
-   - `.github/workflows/autodoc.yml` and `.github/workflows/reuseble_agd.yml`: Updates to workflows may need to be reflected in the documentation, especially if they impact CI/CD usage.
-
-Given the above, the changes are significant enough to require updates to the existing documentation.
-
-#### **Task 2: Rewrite Global Info**
-To determine if the Global Info needs to be updated, we evaluate whether the changes introduce new core features, architectural components, or shifts in the data handling paradigm. Key observations:
-1. **New Core Features:**
-   - The introduction of `azure_model.py` and `gpt_model.py` adds new model implementations, which could be considered new core features.
-   - The addition of `checker.py` introduces a new preprocessor module, which could be a new architectural component.
-
-2. **Architectural Changes:**
-   - The changes to `config.py` and `cache_settings.py` suggest updates to the configuration and caching mechanisms, but these appear to be incremental rather than a fundamental shift in architecture.
-   - The new configuration file (`autodocconfig.yml`) and workflow updates are not core architectural changes but rather enhancements to existing functionality.
-
-3. **Data Handling Paradigm:**
-   - There is no evidence of a shift in the data handling paradigm (e.g., moving to a new storage format or embedding system).
-
-While the new model implementations and preprocessor module are significant, they do not appear to fundamentally alter the high-level architecture or core parameters of the project. Therefore, the Global Info does not need to be rewritten.
-
-### **Output:**
-`true|false`
+2. **Rewrite Global Info: `true`**
+   - The addition of `autodocgenerator/engine/models/azure_model.py` suggests a new core feature: support for Azure-based models, which is a significant architectural change.
+   - The addition of `autodocgenerator/auto_runner/token_auth.py` and `autodocgenerator/auto_runner/post_to_server.py` implies new functionality related to authentication and server communication, potentially introducing new architectural components.
+   - Modifications to `autodocgenerator/engine/config/config.py` (46 changes) and `autodocgenerator/engine/models/gpt_model.py` (65 changes) suggest updates to the core configuration and LLM handling, which may impact the high-level architecture.
+   - These changes collectively indicate a shift in the architectural core or the addition of new building blocks, necessitating updates to the Global Info.
