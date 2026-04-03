@@ -54,7 +54,7 @@ structure_settings:
   include_order: true
   
   use_global_file: true
-  max_doc_part_size: 5000
+  max_doc_part_size: 4000
 
 project_additional_info:
   global idea: "This project was created to help developers make documentations for them projects"
