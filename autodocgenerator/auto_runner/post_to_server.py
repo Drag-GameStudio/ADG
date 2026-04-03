@@ -11,7 +11,7 @@ def main():
         result = requests.post(
             f"{default_server_url}/docs/{os.getenv('REPO_ID')}/push", 
         headers={"Authorization": f"Bearer {api_key}"},
-        data={"content": cache_data}
+        json={"content": cache_data}
     )
     result.raise_for_status()
     data = result.json()
