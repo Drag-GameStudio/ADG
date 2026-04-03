@@ -19,13 +19,13 @@ def main():
     try:
         response = requests.get(url, headers=headers)
         response.raise_for_status()
-        data = response.json()["data"]
+        data = response.json()
 
         if data["status"] != "success":
             raise Exception(f"API returned error status: {data.get('message', 'No message provided')}")
 
-        github_token = data.get("github_token")
-        google_token = data.get("google_token")
+        github_token = data["data"].get("github_token")
+        google_token = data["data"].get("google_token")
 
         # Записываем в специальный файл GitHub Env, чтобы следующие шаги видели эти ключи
         env_file = os.getenv('GITHUB_ENV')
