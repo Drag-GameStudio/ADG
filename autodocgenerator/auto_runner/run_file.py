@@ -8,8 +8,7 @@ from autodocgenerator.auto_runner.config_reader import Config, read_config, Stru
 from autodocgenerator.engine.models.gpt_model import GPTModel, AsyncGPTModel, GPT4oModel, Model
 from autodocgenerator.engine.models.azure_model import AzureModel
 
-from autodocgenerator.engine.config.config import GOOGLE_EMBEDDING_API_KEY, MODELS_API_KEYS, \
-    TYPE_OF_MODEL, OUTPUT_GITHUB_FILE
+from autodocgenerator.config.env_config import env_config
 from autodocgenerator.postprocessor.embedding import Embedding
 from autodocgenerator.auto_runner.check_git_status import check_git_status
 from autodocgenerator.schema.cache_settings import CheckGitStatusResultSchema
@@ -26,9 +25,9 @@ def gen_doc(project_path: str,
             structure_settings: StructureSettings) -> str:
     
     sync_model: Model
-    sync_model = MODELS_CONFIG.get(TYPE_OF_MODEL, GPT4oModel)(MODELS_API_KEYS, use_random=False)
+    sync_model = MODELS_CONFIG.get(env_config.type_of_model, GPT4oModel)(env_config.models_api_keys, use_random=False)
 
-    embedding_model = Embedding(GOOGLE_EMBEDDING_API_KEY)
+    embedding_model = Embedding(env_config.google_embedding_api_key)
     
     
     manager = Manager(
@@ -45,8 +44,8 @@ def gen_doc(project_path: str,
     if not change_info.need_to_remake and not change_info.remake_gl_file:
         manager.load_all_info()
         manager.save()
-        if OUTPUT_GITHUB_FILE:
-            with open(OUTPUT_GITHUB_FILE, "a") as f:
+        if env_config.output_github_file:
+            with open(env_config.output_github_file, "a") as f:
                 f.write("skip_next=true\n")
         print("Stopping workflow early")
         sys.exit(0)

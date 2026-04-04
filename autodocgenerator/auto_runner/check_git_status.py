@@ -1,5 +1,5 @@
 import subprocess
-from autodocgenerator.engine.config.config import GITHUB_EVENT_NAME
+from autodocgenerator.config.env_config import env_config
 from autodocgenerator.manage import Manager
 from autodocgenerator.schema.cache_settings import CacheSettings, CheckGitStatusResultSchema
 from autodocgenerator.preprocessor.checker import have_to_change
@@ -53,7 +53,7 @@ def get_git_revision_hash() -> str:
     return subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode('ascii').strip()
 
 def check_git_status(manager: Manager) -> CheckGitStatusResultSchema:
-    if GITHUB_EVENT_NAME == "workflow_dispatch" or manager.cache_settings.last_commit == "":
+    if env_config.github_event_name == "workflow_dispatch" or manager.cache_settings.last_commit == "":
         manager.cache_settings.last_commit = get_git_revision_hash()
         return CheckGitStatusResultSchema(need_to_remake=True, remake_gl_file=True)
 

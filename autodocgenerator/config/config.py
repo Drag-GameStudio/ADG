@@ -1,8 +1,6 @@
-from ..factory.modules.general_modules import CustomModule
 from ..preprocessor.settings import ProjectSettings
-from ..factory.base_factory import DocFactory
-from ..factory.modules.intro import IntroLinks
 from typing import Any
+
 
 class ProjectBuildConfig:
     save_logs = False
@@ -11,7 +9,6 @@ class ProjectBuildConfig:
     def load_settings(self, data: dict[str, Any]):
         for key, el in data.items():
             setattr(self, key, el)
-
 
 
 class Config:
