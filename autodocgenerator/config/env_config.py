@@ -1,9 +1,9 @@
-from pydantic import BaseModel, Field, SecretStr, field_validator, field_validator
-from pydantic_settings import SettingsConfigDict
-from typing import List
+from pydantic import Field, field_validator
+from pydantic_settings import SettingsConfigDict, BaseSettings
+from typing import List, Any
 
-class EnvConfig(BaseModel):
-    models_api_keys: List[SecretStr] = Field(..., alias="MODELS_API_KEYS")
+class EnvConfig(BaseSettings):
+    models_api_keys: str | List[str] = Field(..., alias="MODELS_API_KEYS")
     
     type_of_model: str = Field("git", alias="TYPE_OF_MODEL")
     
@@ -13,7 +13,9 @@ class EnvConfig(BaseModel):
 
     model_config = SettingsConfigDict(
         env_file=".env", 
-        extra="ignore"
+        extra="ignore",
+        env_file_encoding="utf-8",
+        populate_by_name=True
     )
 
     @field_validator("models_api_keys", mode="before")
@@ -33,3 +35,4 @@ class EnvConfig(BaseModel):
 
 
 env_config = EnvConfig()
+print(env_config)
