@@ -2,7 +2,7 @@ from google import genai
 from google.genai import types
 import numpy as np
 from typing import Any
-
+import numpy as np
 
 def bubble_sort_by_dist(arr: list) -> list:
     n = len(arr)
@@ -13,7 +13,7 @@ def bubble_sort_by_dist(arr: list) -> list:
     return arr
 
 def get_len_btw_vectors(vector1, vector2) -> float:
-    diff = np.linalg.norm(vector1 - vector2)
+    diff = np.linalg.norm(np.array(vector1) - np.array(vector2))
     return float(diff)
 
 def sort_vectors(root_vector, other: dict[str, Any]) -> list[str]:
