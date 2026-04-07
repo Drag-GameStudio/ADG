@@ -50,6 +50,7 @@ jobs:
           TERM: "xterm-256color"  
 
       - name: post to server
+        if: steps.python_step.outputs.skip_next != 'true'
         run: python -m autodocgenerator.auto_runner.post_to_server
         env:
           ADG_API_TOKEN: ${{ secrets.ADG_API_TOKEN }}
@@ -69,6 +70,7 @@ jobs:
           cat .auto_doc_cache/report.txt > agd_report.txt || echo "Logs not found"
 
       - name: Commit and Push changes
+        if: steps.python_step.outputs.skip_next != 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
