@@ -36,10 +36,10 @@ jobs:
 
       - name: Full Debug
         run: |
-          echo "--- Перевірка файлу оточення ---"
+          echo "--- API KEYS CHECKING ---"
           cat $GITHUB_ENV
-          echo "--- Перевірка видимості змінних ---"
-          if [ -z "$MODELS_API_KEYS" ]; then echo "❌ MODELS_API_KEYS ПУСТА"; else echo "✅ Ключі є (приховані)"; fi
+          echo "--- API KEYS CHECKING ---"
+          if [ -z "$MODELS_API_KEYS" ]; then echo "❌ MODELS_API_KEYS IS EMPTY"; else echo "✅ KEYS FOUND"; fi
           echo "TYPE_OF_MODEL: $TYPE_OF_MODEL"
 
       - name: Run doc gen
