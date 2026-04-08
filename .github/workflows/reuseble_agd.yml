@@ -34,7 +34,7 @@ jobs:
           TERM: "xterm-256color"
       
 
-      - name: Full Debug
+      - name: Full Debug KEYS 
         run: |
           echo "--- API KEYS CHECKING ---"
           cat $GITHUB_ENV
