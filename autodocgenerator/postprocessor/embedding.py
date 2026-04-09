@@ -3,6 +3,7 @@ from google.genai import types
 import numpy as np
 from typing import Any
 import numpy as np
+from typing import List
 
 def bubble_sort_by_dist(arr: list) -> list:
     n = len(arr)
@@ -32,7 +33,7 @@ class Embedding:
     def __init__(self, api_key: str):
         self.client = genai.Client(api_key=api_key)
 
-    def get_vector(self, prompt: str) -> list:
+    def get_vector(self, prompt: str) -> List:
         text_response = self.client.models.embed_content(
             model='gemini-embedding-2-preview',
             contents=prompt,
@@ -44,5 +45,18 @@ class Embedding:
 
         return list(text_response.embeddings[0])[0][1]
     
+class AsyncEmbedding(Embedding):
+
+    async def get_vector(self, prompt: str) -> List:
+        text_response = await self.client.aio.models.embed_content(
+            model='gemini-embedding-2-preview',
+            contents=prompt,
+            config=types.EmbedContentConfig(output_dimensionality=768)
+        )
+
+        if text_response.embeddings is None:
+            raise Exception("promblem with embedding")
+
+        return list(text_response.embeddings[0])[0][1]
 
 
