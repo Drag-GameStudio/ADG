@@ -17,7 +17,8 @@ def main():
     )
     result.raise_for_status()
     data = result.json()
-    curr_doc_id = data.data.doc_id
+    print(f"Server response: {data}")
+    curr_doc_id = data["doc_id"]
     print(f"Received data: {data}")
     print(f"Current document ID: {curr_doc_id}")
 
