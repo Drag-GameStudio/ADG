@@ -29,7 +29,12 @@ def sort_vectors(root_vector, other: dict[str, Any]) -> list[str]:
 
     return result_list
 
-class Embedding:
+
+class EmbeddingParent:
+    def __init__(self):
+        pass
+
+class Embedding(EmbeddingParent):
     def __init__(self, api_key: str):
         self.client = genai.Client(api_key=api_key)
 
@@ -45,7 +50,10 @@ class Embedding:
 
         return list(text_response.embeddings[0])[0][1]
     
-class AsyncEmbedding(Embedding):
+class AsyncEmbedding(EmbeddingParent):
+
+    def __init__(self, api_key: str):
+        self.client = genai.Client(api_key=api_key)
 
     async def get_vector(self, prompt: str) -> List:
         text_response = await self.client.aio.models.embed_content(
