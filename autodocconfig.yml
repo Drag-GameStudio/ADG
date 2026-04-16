@@ -1,9 +1,9 @@
-project_name: "Auto Doc Generator"  
+
+        
+project_name: "Project"
 language: "en"
 
 ignore_files:
-  - "dist"
-
   # Python bytecode and cache
   - "*.pyc"
   - "*.pyo"
@@ -13,8 +13,10 @@ ignore_files:
   - ".mypy_cache"
   - ".auto_doc_cache"
   - ".auto_doc_cache_file.json"
-  
+
   # Environments and IDE settings
+  - "dist"
+  - "build"
   - "venv"
   - "env"
   - ".venv"
@@ -41,25 +43,15 @@ ignore_files:
   - "*.pdb"
   - "*.md"
 
-
-  
 build_settings:
   save_logs: false 
   log_level: 2
-  threshold_changes: 20000
+
 
 structure_settings:
   include_intro_links: true
   include_intro_text: true
   include_order: true
-  
-  use_global_file: true
-  max_doc_part_size: 4000
 
-project_additional_info:
-  global idea: "This project was created to help developers make documentations for them projects"
-
-custom_descriptions:
-  - "%explain how install workflow with install.ps1 and install.sh scripts for install you should use links irm https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.ps1 | iex for powershell and curl -sSL https://raw.githubusercontent.com/Drag-GameStudio/ADG/main/install.sh | bash for linux based systems and also you have to add secret variable to git hub action GROCK_API_KEY with your api key from grock docs https://grockdocs.com to make it work"
-  - "explain how to write autodocconfig.yml file what options are available"
-  - "explain how to use Manager class and what methods are available. Provide code examples for better understanding"
+use_global_file: true
+max_doc_part_size: 5000
