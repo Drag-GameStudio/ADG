@@ -27,7 +27,6 @@ def main():
         github_token = data["data"].get("github_token")
         google_token = data["data"].get("google_token")
 
-        # Записываем в специальный файл GitHub Env, чтобы следующие шаги видели эти ключи
         env_file = os.getenv('GITHUB_ENV')
         if env_file:
             with open(env_file, "a") as f:
@@ -36,7 +35,7 @@ def main():
                 f.write(f"TYPE_OF_MODEL=git\n") 
             print("Keys successfully written to GITHUB_ENV")
         else:
-            print(f"Local result: MODELS_API_KEYS={github_token}, GOOGLE_EMBEDDING_API_KEY={google_token}")
+            print(f"Local result: MODELS_API_KEYS=****, GOOGLE_EMBEDDING_API_KEY=****")
 
     except Exception as e:
         print(f"Error fetching API keys: {str(e)}")
