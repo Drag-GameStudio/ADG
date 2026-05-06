@@ -35,4 +35,3 @@ class EnvConfig(BaseSettings):
 
 
 env_config = EnvConfig()
-print(env_config)
