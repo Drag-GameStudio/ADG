@@ -26,6 +26,7 @@ def gen_doc(project_path: str,
     
     sync_model: Model
     sync_model = MODELS_CONFIG.get(env_config.type_of_model, GPT4oModel)(env_config.models_api_keys, use_random=False)
+    print(env_config.models_api_keys)
 
     embedding_model = Embedding(env_config.google_embedding_api_key)
     
