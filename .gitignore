@@ -5,6 +5,7 @@ desktop.ini
 $RECYCLE.BIN/
 test.py
 
+
 # --- Логи и временные файлы ---
 *.log
 logs
